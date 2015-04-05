@@ -1,7 +1,5 @@
 from sqlalchemy import (
     Column,
-    Index,
-    Integer,
     Text,
     )
 
@@ -12,16 +10,15 @@ from sqlalchemy.orm import (
     sessionmaker,
     )
 
+from sqlalchemy.types import BINARY
+
 from zope.sqlalchemy import ZopeTransactionExtension
 
 DBSession = scoped_session(sessionmaker(extension=ZopeTransactionExtension()))
 Base = declarative_base()
 
 
-class MyModel(Base):
-    __tablename__ = 'models'
-    id = Column(Integer, primary_key=True)
-    name = Column(Text)
-    value = Column(Integer)
-
-Index('my_index', MyModel.name, unique=True, mysql_length=255)
+class HashModel(Base):
+    __tablename__ = 'hashes'
+    hash = Column(BINARY(length=32), primary_key=True)  # hashlib.new('sha256').digest_size => 32L
+    long_url = Column(Text)

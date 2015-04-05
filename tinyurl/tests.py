@@ -13,12 +13,12 @@ class TestMyViewSuccessCondition(unittest.TestCase):
         engine = create_engine('sqlite://')
         from .models import (
             Base,
-            MyModel,
+            HashModel,
             )
         DBSession.configure(bind=engine)
         Base.metadata.create_all(engine)
         with transaction.manager:
-            model = MyModel(name='one', value=55)
+            model = HashModel(hash='\x00', long_url='say what')
             DBSession.add(model)
 
     def tearDown(self):
@@ -26,12 +26,10 @@ class TestMyViewSuccessCondition(unittest.TestCase):
         testing.tearDown()
 
     def test_passing_view(self):
-        from .views import my_view
+        from .views import create_GET
         request = testing.DummyRequest()
-        info = my_view(request)
-        self.assertEqual(info['one'].name, 'one')
-        self.assertEqual(info['project'], 'tinyurl')
-
+        info = create_GET(request)
+        self.assertEqual(info, {'hey': 'this should really be a static view'})
 
 class TestMyViewFailureCondition(unittest.TestCase):
     def setUp(self):
@@ -40,7 +38,7 @@ class TestMyViewFailureCondition(unittest.TestCase):
         engine = create_engine('sqlite://')
         from .models import (
             Base,
-            MyModel,
+            HashModel,
             )
         DBSession.configure(bind=engine)
 
@@ -49,7 +47,7 @@ class TestMyViewFailureCondition(unittest.TestCase):
         testing.tearDown()
 
     def test_failing_view(self):
-        from .views import my_view
+        from .views import create_POST
         request = testing.DummyRequest()
-        info = my_view(request)
-        self.assertEqual(info.status_int, 500)
+        info = create_POST(request)
+        self.assertEqual(info.status_int, 400)
