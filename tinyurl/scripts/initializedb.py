@@ -36,5 +36,6 @@ def main(argv=sys.argv):
     DBSession.configure(bind=engine)
     Base.metadata.create_all(engine)
     with transaction.manager:
-        model = HashModel(hash='\x00\x01\x02', long_url='http://not-really-a-url')
+        model = HashModel(human_hash='corned beef hash',
+                          long_url='http://not-really-a-url')
         DBSession.add(model)

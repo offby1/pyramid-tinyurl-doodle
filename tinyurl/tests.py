@@ -18,7 +18,8 @@ class TestMyViewSuccessCondition(unittest.TestCase):
         DBSession.configure(bind=engine)
         Base.metadata.create_all(engine)
         with transaction.manager:
-            model = HashModel(hash='\x00', long_url='say what')
+            model = HashModel(human_hash='human!',
+                              long_url='say what')
             DBSession.add(model)
 
     def tearDown(self):

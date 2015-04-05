@@ -20,5 +20,5 @@ Base = declarative_base()
 
 class HashModel(Base):
     __tablename__ = 'hashes'
-    hash = Column(BINARY(length=32), primary_key=True)  # hashlib.new('sha256').digest_size => 32L
+    human_hash = Column(Text, primary_key=True)
     long_url = Column(Text)
