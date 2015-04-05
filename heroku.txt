@@ -1,0 +1,3 @@
+From Pyramid's point of view: 
+
+http://pyramid-cookbook.readthedocs.org/en/latest/deployment/heroku.html
