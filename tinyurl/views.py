@@ -35,3 +35,13 @@ def create_POST(request):
     if not old_item:
         DBSession.add(new_item)
     return Response(body=str(human_hash))
+
+
+@view_config(route_name='lookup', request_method='GET')
+def lookup_GET(request):
+    session = DBSession()
+    human_hash = request.matchdict['human_hash']
+    old_item = session.query(HashModel).filter_by(human_hash=human_hash).first()
+    if old_item:
+        return pyramid.httpexceptions.HTTPSeeOther(location=old_item.long_url)
+    return pyramid.httpexceptions.HTTPNotFound()
