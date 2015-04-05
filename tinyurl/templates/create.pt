@@ -1,0 +1,13 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>Gimme URL, You</title>
+  </head>
+  <body>
+    <form action="/create/" method="post">
+      <label for="input_url">URL To Make Tiny</label>
+      <input type="text" id="input_url" name="input_url" placeholder="Type a URL here, yo"/>
+      <br/>
+      <input type="submit" value="Tiny-ify it"/>
+    </form>
+  </body>
+</html>

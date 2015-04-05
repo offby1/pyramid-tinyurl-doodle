@@ -33,3 +33,11 @@ might be caused by one of the following things:
 After you fix the problem, please restart the Pyramid application to
 try it again.
 """
+
+@view_config(route_name='create', renderer='templates/create.pt', request_method='GET')
+def create_GET(request):
+    return {'hey': 'this should really be a static view'}
+
+@view_config(route_name='create', request_method='POST')
+def create_POST(request):
+    return Response(body=request.params.get('input_url'))
