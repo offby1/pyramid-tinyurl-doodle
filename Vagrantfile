@@ -9,7 +9,11 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   # Crude by-hand deployment instructions:
   # apt-get install postgresql
-  # su - postgres
-  # createuser -DRS vagrant ; createdb -O vagrant vagrantwork ; exit
   # apt-get build-dep python-psycopg2
+  # su - postgres
+  # createuser -DRSP vagrant ; enter sekrit password 'vagrant'
+  # createdb -O vagrant vagrantwork ; exit
+  # exit (back to vagrant user)
+  # psql vagrantwork
+  # vagrantwork=> alter role vagrant with password 'vagrant';
 end
