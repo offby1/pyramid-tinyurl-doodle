@@ -34,7 +34,8 @@ def create_POST(request):
     old_item = session.query(HashModel).filter_by(human_hash=human_hash).first()
     if not old_item:
         DBSession.add(new_item)
-    return Response(body=str(human_hash))
+    short_url = '{}/{}'.format(request.application_url, human_hash)
+    return Response(body='Dig: <a href="{}">{}</a>'.format(short_url, short_url))
 
 
 @view_config(route_name='lookup', request_method='GET')
