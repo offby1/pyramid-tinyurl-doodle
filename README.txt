@@ -14,3 +14,4 @@ Getting Started
 
 - $VENV/bin/pserve development.ini
 
+Note that 'run', 'runapp.py', and 'Procfile' are for heroku.

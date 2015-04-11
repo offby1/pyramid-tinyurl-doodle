@@ -1,3 +1,5 @@
+import os
+
 from pyramid.config import Configurator
 from sqlalchemy import engine_from_config
 
@@ -6,12 +8,16 @@ from .models import (
     Base,
     )
 
-
-# http://stackoverflow.com/a/16446566/20146
+def expandvars_dict(settings):
+    """Expands all environment variables in a settings dictionary."""
+    return dict((key, os.path.expandvars(value)) for
+                key, value in settings.iteritems())
 
 def main(global_config, **settings):
     """ This function returns a Pyramid WSGI application.
     """
+    settings = expandvars_dict (settings)
+
     engine = engine_from_config(settings, 'sqlalchemy.')
     DBSession.configure(bind=engine)
     Base.metadata.bind = engine
