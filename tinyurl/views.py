@@ -17,7 +17,7 @@ from .models import (
 def create_GET(request):
     return {'hey': 'this should really be a static view'}
 
-@view_config(route_name='create', request_method='POST')
+@view_config(route_name='create', request_method='GET')
 def create_POST(request):
     session = DBSession()
     try:

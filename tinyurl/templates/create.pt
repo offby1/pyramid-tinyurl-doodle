@@ -8,7 +8,7 @@
     <link href="${request.static_url('tinyurl:static/theme.css')}" rel="stylesheet">
   </head>
   <body>
-    <form action="/create/" method="post">
+    <form action="/create/" method="get">
       <label for="input_url">URL To Make Tiny</label>
       <input type="text" id="input_url" name="input_url" placeholder="Type a URL here, yo"/>
       <br/>
