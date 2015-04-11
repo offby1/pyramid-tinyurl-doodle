@@ -27,7 +27,7 @@ def create_POST(request):
 
     hash_object = hashlib.sha256(long_url)
     binary_hash = hash_object.digest()
-    human_hash  = binascii.b2a_base64(binary_hash)[:10]
+    human_hash  = binascii.b2a_base64(binary_hash)[:10].replace('+', '').replace('/', '')
 
     new_item = HashModel(human_hash=human_hash,
                          long_url=long_url)
