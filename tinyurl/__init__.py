@@ -1,4 +1,5 @@
 import os
+import re
 
 from pyramid.config import Configurator
 from sqlalchemy import engine_from_config
@@ -10,8 +11,15 @@ from .models import (
 
 def expandvars_dict(settings):
     """Expands all environment variables in a settings dictionary."""
-    return dict((key, os.path.expandvars(value)) for
-                key, value in settings.iteritems())
+    expanded = dict((key, os.path.expandvars(value)) for
+                    key, value in settings.iteritems())
+    # Kludge-o-rama: sqlalchemy fails with
+    # sqlalchemy.exc.NoSuchModuleError: Can't load plugin: sqlalchemy.dialects:postgres.pg8000
+    # if we don't do this.
+    if 'sqlalchemy.url' in expanded:
+        expanded['sqlalchemy.url'] = re.sub(r'^postgres://', 'postgresql+pg8000://', expanded['sqlalchemy.url'])
+
+    return expanded
 
 def main(global_config, **settings):
     """ This function returns a Pyramid WSGI application.

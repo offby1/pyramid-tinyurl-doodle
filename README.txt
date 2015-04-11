@@ -15,3 +15,8 @@ Getting Started
 - $VENV/bin/pserve development.ini
 
 Note that 'run', 'runapp.py', and 'Procfile' are for heroku.
+
+The only way I found to get it working on OS X was to install http://postgresapp.com/.
+To run it on OS X:
+
+        pserve --reload development.ini 

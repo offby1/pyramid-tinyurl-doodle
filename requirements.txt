@@ -5,12 +5,12 @@ PasteDeploy==1.5.2
 Pygments==2.0.2
 SQLAlchemy==1.0.0b5
 WebOb==1.4
-psycopg2==2.6
-pyramid==1.5.4
+pg8000==1.10.2
 pyramid-chameleon==0.3
 pyramid-debugtoolbar==2.3
 pyramid-mako==1.0.2
 pyramid-tm==0.11
+pyramid==1.5.4
 repoze.lru==0.6
 transaction==1.4.3
 translationstring==1.3
