@@ -1,5 +1,6 @@
 import binascii
 import hashlib
+import logging
 
 import pyramid.httpexceptions
 from pyramid.response import Response
@@ -12,6 +13,7 @@ from .models import (
     HashModel,
     )
 
+logger = logging.getLogger ('tinyurl')
 
 @view_config(route_name='home', renderer='templates/homepage.pt', request_method='GET')
 def home_GET(request):
@@ -44,5 +46,6 @@ def lengthen_GET(request):
     human_hash = request.matchdict['human_hash']
     old_item = session.query(HashModel).filter_by(human_hash=human_hash).first()
     if old_item:
+        logger.info ("Redirecting to %r", old_item.long_url)
         return pyramid.httpexceptions.HTTPSeeOther(location=old_item.long_url)
     return pyramid.httpexceptions.HTTPNotFound()
