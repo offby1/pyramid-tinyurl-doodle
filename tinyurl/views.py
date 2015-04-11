@@ -1,13 +1,16 @@
+# Core
 import binascii
 import hashlib
 import logging
+import urlparse
 
+# 3rd-party
 import pyramid.httpexceptions
 from pyramid.response import Response
 from pyramid.view import view_config
-
 from sqlalchemy.exc import DBAPIError
 
+# Local
 from .models import (
     DBSession,
     HashModel,
@@ -15,6 +18,7 @@ from .models import (
 
 logger = logging.getLogger ('tinyurl')
 
+# Yeah, yeah, this should probably be a static view.
 @view_config(route_name='home', renderer='templates/homepage.pt', request_method='GET')
 def home_GET(request):
     return {}
