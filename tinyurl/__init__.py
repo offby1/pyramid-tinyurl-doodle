@@ -7,6 +7,8 @@ from .models import (
     )
 
 
+# http://stackoverflow.com/a/16446566/20146
+
 def main(global_config, **settings):
     """ This function returns a Pyramid WSGI application.
     """
