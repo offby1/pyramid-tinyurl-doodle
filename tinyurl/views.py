@@ -19,11 +19,11 @@ from .models import (
 logger = logging.getLogger ('tinyurl')
 
 # Yeah, yeah, this should probably be a static view.
-@view_config(route_name='home', renderer='templates/homepage.pt', request_method='GET')
+@view_config(route_name='home', renderer='templates/homepage.mak', request_method='GET')
 def home_GET(request):
     return {}
 
-@view_config(route_name='shorten', request_method='GET')
+@view_config(route_name='shorten', renderer='templates/homepage.mak', request_method='GET')
 def create_POST(request):
     session = DBSession()
     try:
@@ -46,7 +46,7 @@ def create_POST(request):
     if not old_item:
         DBSession.add(new_item)
     short_url = request.route_url ('lengthen', human_hash=human_hash)
-    return Response(body='Dig: <a href="{}">{}</a>'.format(short_url, short_url))
+    return {'short_url': short_url}
 
 
 @view_config(route_name='lengthen', request_method='GET')

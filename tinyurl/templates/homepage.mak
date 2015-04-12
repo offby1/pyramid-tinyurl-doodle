@@ -14,5 +14,14 @@
       <br/>
       <input type="submit" value="Tiny-ify it"/>
     </form>
+    %if short_url:
+    <div>
+    <p>Dig: <a href="${short_url}">${short_url}</a></p>
+    </div>
+    %else:
+    <div>
+    <p>Your short URL will appear here.</p>
+    </div>
+    %endif
   </body>
 </html>
