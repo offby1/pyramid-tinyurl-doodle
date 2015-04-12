@@ -52,7 +52,7 @@ def create_POST(request):
     now = datetime.datetime.now(pytz.utc)
 
     # TODO -- ideally, entries without dates would be considered old for the purposes of this sort
-    recent_entries = reversed(session.query(HashModel).order_by(HashModel.create_date)[-5:])
+    recent_entries = reversed(session.query(HashModel).filter(HashModel.create_date.isnot(None)).order_by(HashModel.create_date)[-5:])
     return {
         'short_url': short_url,
         'recent_entries': [dict(
