@@ -41,5 +41,35 @@
           %endfor
         </table>
       </div>
+      <div>
+        <p>Yer environment:</p>
+        <table border="1" style="font-family: monospace;">
+          <tr>
+            <th>Key</th>
+            <th>Value</th>
+          </tr>
+          %for k, v in environment:
+          <tr>
+            <td>${k}</td>
+            <td>${v}</td>
+          </tr>
+          %endfor
+        </table>
+      </div>
+      <div>
+        <p>HTTP Request headers:</p>
+        <table border="1" style="font-family: monospace;">
+          <tr>
+            <th>Key</th>
+            <th>Value</th>
+          </tr>
+          %for k, v in headers:
+          <tr>
+            <td>${k}</td>
+            <td>${v}</td>
+          </tr>
+          %endfor
+        </table>
+      </div>
     </body>
   </html>
