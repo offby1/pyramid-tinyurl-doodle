@@ -49,7 +49,7 @@ def create_POST(request):
     # Fail if long_url has no 'netloc'.  Otherwise, when "lengthen"
     # would try to redirect to it, confusing things will happen.
     if urlparse.urlparse (long_url).netloc == '':
-        raise pyramid.httpexceptions.HTTPBadRequest("{!r} has no 'netloc'".format (long_url))
+        raise pyramid.httpexceptions.HTTPBadRequest("{!r} just doesn't look like a proper URL!".format (long_url))
 
     hash_object = hashlib.sha256(long_url)
     binary_hash = hash_object.digest()
