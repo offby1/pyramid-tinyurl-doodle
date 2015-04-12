@@ -1,5 +1,6 @@
 from sqlalchemy import (
     Column,
+    DateTime,
     Text,
     )
 
@@ -9,6 +10,8 @@ from sqlalchemy.orm import (
     scoped_session,
     sessionmaker,
     )
+
+from sqlalchemy.sql.expression import func
 
 from sqlalchemy.types import BINARY
 
@@ -20,5 +23,7 @@ Base = declarative_base()
 
 class HashModel(Base):
     __tablename__ = 'hashes'
-    human_hash = Column(Text, primary_key=True)
-    long_url = Column(Text)
+
+    create_date   = Column(DateTime(timezone=True), default=func.now())
+    human_hash    = Column(Text, primary_key=True)
+    long_url      = Column(Text)

@@ -1,13 +1,16 @@
 # Core
 import binascii
+import datetime
 import hashlib
 import logging
 import urlparse
 
 # 3rd-party
+from babel.dates import format_timedelta
 import pyramid.httpexceptions
 from pyramid.response import Response
 from pyramid.view import view_config
+import pytz
 from sqlalchemy.exc import DBAPIError
 
 # Local
@@ -46,7 +49,18 @@ def create_POST(request):
     if not old_item:
         DBSession.add(new_item)
     short_url = request.route_url ('lengthen', human_hash=human_hash)
-    return {'short_url': short_url}
+    now = datetime.datetime.now(pytz.utc)
+
+    # TODO -- ideally, entries without dates would be considered old for the purposes of this sort
+    recent_entries = reversed(session.query(HashModel).order_by(HashModel.create_date)[-5:])
+    return {
+        'short_url': short_url,
+        'recent_entries': [dict(
+            age=format_timedelta(now - e.create_date) if e.create_date else '?',
+            human_hash=e.human_hash,
+            long_url=e.long_url
+        ) for e in recent_entries]
+    }
 
 
 @view_config(route_name='lengthen', request_method='GET')
