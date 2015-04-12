@@ -21,10 +21,22 @@ from .models import (
 
 logger = logging.getLogger ('tinyurl')
 
+def _recent_entries(session):
+    now = datetime.datetime.now(pytz.utc)
+
+    return [dict(
+        age        = format_timedelta(now - e.create_date) if e.create_date else '?',
+        human_hash = e.human_hash,
+        long_url   = e.long_url
+    ) for e in reversed(session.query(HashModel).filter(HashModel.create_date.isnot(None)).order_by(HashModel.create_date)[-5:])]
+
 # Yeah, yeah, this should probably be a static view.
 @view_config(route_name='home', renderer='templates/homepage.mak', request_method='GET')
 def home_GET(request):
-    return {}
+    session = DBSession()
+    return {
+        'recent_entries': _recent_entries(session)
+    }
 
 @view_config(route_name='shorten', renderer='templates/homepage.mak', request_method='GET')
 def create_POST(request):
@@ -49,17 +61,10 @@ def create_POST(request):
     if not old_item:
         DBSession.add(new_item)
     short_url = request.route_url ('lengthen', human_hash=human_hash)
-    now = datetime.datetime.now(pytz.utc)
 
-    # TODO -- ideally, entries without dates would be considered old for the purposes of this sort
-    recent_entries = reversed(session.query(HashModel).filter(HashModel.create_date.isnot(None)).order_by(HashModel.create_date)[-5:])
     return {
         'short_url': short_url,
-        'recent_entries': [dict(
-            age=format_timedelta(now - e.create_date) if e.create_date else '?',
-            human_hash=e.human_hash,
-            long_url=e.long_url
-        ) for e in recent_entries]
+        'recent_entries': _recent_entries(session)
     }
 
 
