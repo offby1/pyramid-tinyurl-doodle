@@ -29,14 +29,14 @@
         <table border="1" style="font-family: monospace;">
           <tr>
             <th>Age</th>
-            <th>Short</th>
             <th>Long</th>
+            <th>Short</th>
           </tr>
           %for e in recent_entries:
           <tr>
             <td>${e['age']}</td>
-            <td>${e['human_hash']}</td>
             <td><a href="${e['long_url']}">${e['long_url']}</a></td>
+            <td>${e['human_hash']}</td>
           </tr>
           %endfor
         </table>
