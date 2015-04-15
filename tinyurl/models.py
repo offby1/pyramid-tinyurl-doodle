@@ -13,8 +13,6 @@ from sqlalchemy.orm import (
 
 from sqlalchemy.sql.expression import func
 
-from sqlalchemy.types import BINARY
-
 from zope.sqlalchemy import ZopeTransactionExtension
 
 DBSession = scoped_session(sessionmaker(extension=ZopeTransactionExtension()))
