@@ -2,3 +2,5 @@
 *.pyc
 /.vagrant/
 /TODO.html
+/tinyurl.egg-info/
+/venv/
