@@ -9,6 +9,7 @@ from .models import (
     Base,
     )
 
+
 def expandvars_dict(settings):
     """Expands all environment variables in a settings dictionary."""
     expanded = dict((key, os.path.expandvars(value)) for
@@ -20,6 +21,7 @@ def expandvars_dict(settings):
         expanded['sqlalchemy.url'] = re.sub(r'^postgres://', 'postgresql+pg8000://', expanded['sqlalchemy.url'])
 
     return expanded
+
 
 def main(global_config, **settings):
     """ This function returns a Pyramid WSGI application.

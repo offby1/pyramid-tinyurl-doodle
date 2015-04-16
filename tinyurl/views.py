@@ -8,10 +8,8 @@ import urlparse
 # 3rd-party
 from babel.dates import format_timedelta
 import pyramid.httpexceptions
-from pyramid.response import Response
 from pyramid.view import view_config
 import pytz
-from sqlalchemy.exc import DBAPIError
 
 # Local
 from .models import (
@@ -20,6 +18,7 @@ from .models import (
     )
 
 logger = logging.getLogger ('tinyurl')
+
 
 def _recent_entries(session):
     now = datetime.datetime.now(pytz.utc)
@@ -30,6 +29,7 @@ def _recent_entries(session):
         long_url   = e.long_url
     ) for e in reversed(session.query(HashModel).filter(HashModel.create_date.isnot(None)).order_by(HashModel.create_date)[-5:])]
 
+
 # Yeah, yeah, this should probably be a static view.
 @view_config(route_name='home', renderer='templates/homepage.mak', request_method='GET')
 def home_GET(request):
@@ -37,6 +37,7 @@ def home_GET(request):
     return {
         'recent_entries': _recent_entries(session)
     }
+
 
 @view_config(route_name='shorten', renderer='templates/homepage.mak', request_method='GET')
 def create_POST(request):

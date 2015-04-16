@@ -32,15 +32,13 @@ class TestMyViewSuccessCondition(unittest.TestCase):
         info = create_GET(request)
         self.assertEqual(info, {'hey': 'this should really be a static view'})
 
+
 class TestMyViewFailureCondition(unittest.TestCase):
     def setUp(self):
         self.config = testing.setUp()
         from sqlalchemy import create_engine
         engine = create_engine('sqlite://')
-        from .models import (
-            Base,
-            HashModel,
-            )
+
         DBSession.configure(bind=engine)
 
     def tearDown(self):
