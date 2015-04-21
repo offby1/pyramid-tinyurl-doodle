@@ -1,8 +1,8 @@
 tinyurl README
 ==================
 
-Getting Started
----------------
+Getting Started Locally
+-----------------------
 
 - cd <directory containing this file>
 
@@ -26,3 +26,14 @@ well as installing from
 http://www.enterprisedb.com/products-services-training/pgdownload#osx;
 but in both cases, I couldn't figure out how to set up postgres' users
 :-(  Somehow postgresapp Just Works™.
+
+Doing The Heroku Thing
+----------------------
+
+Can't remember :-|
+
+
+Doing The Docker Thang
+----------------------
+
+$ vagrant up
