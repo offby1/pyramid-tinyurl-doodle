@@ -39,7 +39,7 @@
           <tr>
             <td>${e['age']}</td>
             <td><a href="${e['long_url']}">${truncate(e['long_url'], 50)}</a></td>
-            <td>${e['human_hash']}</td>
+            <td><a href="${e['short_url']}">${e['human_hash']}</a></td>
           </tr>
           %endfor
         </table>
