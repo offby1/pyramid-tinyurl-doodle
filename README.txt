@@ -16,7 +16,9 @@ Getting Started
 
 Note that 'run', 'runapp.py', and 'Procfile' are for heroku.
 
-The only way I found to get it working on OS X was to install http://postgresapp.com/.
-To run it on OS X:
-
-        pserve --reload development.ini 
+The only way I found to get it working on OS X was to install
+http://postgresapp.com/ -- I'd tried "brew install postgresql", as
+well as installing from
+http://www.enterprisedb.com/products-services-training/pgdownload#osx;
+but in both cases, I couldn't figure out how to set up postgres' users
+:-(  Somehow postgresapp Just Works™.
