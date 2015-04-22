@@ -12,9 +12,13 @@ Getting Started
 
 - $VENV/bin/initialize_tinyurl_db development.ini
 
-- $VENV/bin/pserve development.ini
+- LC_ALL=C $VENV/bin/pserve --reload development.ini 
 
 Note that 'run', 'runapp.py', and 'Procfile' are for heroku.
+
+The LC_ALL setting is a workaround for
+https://github.com/mitsuhiko/babel/issues/137, it might not always be
+needed.
 
 The only way I found to get it working on OS X was to install
 http://postgresapp.com/ -- I'd tried "brew install postgresql", as
