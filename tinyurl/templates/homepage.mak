@@ -38,7 +38,7 @@
           %for e in recent_entries:
           <tr>
             <td>${e['age']}</td>
-            <td><a href="${e['long_url']}">${e['long_url']}</a></td>
+            <td><a href="${e['long_url']}">${truncate(e['long_url'], 50)}</a></td>
             <td>${e['human_hash']}</td>
           </tr>
           %endfor

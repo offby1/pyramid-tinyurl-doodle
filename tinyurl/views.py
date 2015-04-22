@@ -19,6 +19,11 @@ from .models import (
 
 logger = logging.getLogger ('tinyurl')
 
+def truncate(string, maxlen):
+    suffix = '...'
+    if len(string) > maxlen:
+        return string[:maxlen] + suffix
+    return string
 
 def _recent_entries(session):
     now = datetime.datetime.now(pytz.utc)
@@ -35,7 +40,8 @@ def _recent_entries(session):
 def home_GET(request):
     session = DBSession()
     return {
-        'recent_entries': _recent_entries(session)
+        'recent_entries': _recent_entries(session),
+        'truncate': truncate,
     }
 
 
@@ -65,7 +71,8 @@ def create_POST(request):
 
     return {
         'short_url': short_url,
-        'recent_entries': _recent_entries(session)
+        'recent_entries': _recent_entries(session),
+        'truncate': truncate,
     }
 
 
