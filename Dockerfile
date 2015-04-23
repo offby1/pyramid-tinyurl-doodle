@@ -3,11 +3,14 @@ MAINTAINER eric.hanchrow@gmail.com
 
 COPY sources.list /etc/apt/sources.list.d/
 
-RUN DEBIAN_FRONTEND=noninteractive apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y python-pip 
+RUN DEBIAN_FRONTEND=noninteractive apt-get update &&\
+    DEBIAN_FRONTEND=noninteractive apt-get install -y python-pip
+
+COPY requirements.txt /tinyurl/
+RUN pip install -r /tinyurl/requirements.txt
 
 COPY . /tinyurl/
 
-RUN pip install -r /tinyurl/requirements.txt
 RUN cd /tinyurl &&\
     python setup.py install
 
