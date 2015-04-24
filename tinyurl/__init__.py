@@ -1,6 +1,8 @@
+import datetime
 import os
 import re
 
+import babel.dates
 from pyramid.config import Configurator
 from sqlalchemy import engine_from_config
 
@@ -26,6 +28,14 @@ def expandvars_dict(settings):
 def main(global_config, **settings):
     """ This function returns a Pyramid WSGI application.
     """
+
+    # Work around https://github.com/mitsuhiko/babel/issues/137
+    try:
+        babel.dates.format_timedelta(datetime.timedelta(0))
+    except AttributeError:
+        os.environ['LC_ALL'] = 'C'
+        reload(babel.dates)
+
     settings = expandvars_dict (settings)
 
     engine = engine_from_config(settings, 'sqlalchemy.')
