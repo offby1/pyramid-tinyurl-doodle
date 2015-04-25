@@ -33,7 +33,7 @@ def _recent_entries(session, request):
         human_hash = e.human_hash,
         short_url  = request.route_url ('lengthen', human_hash=e.human_hash),
         long_url   = e.long_url
-    ) for e in reversed(session.query(HashModel).filter(HashModel.create_date.isnot(None)).order_by(HashModel.create_date)[-5:])]
+    ) for e in session.query(HashModel).filter(HashModel.create_date.isnot(None)).order_by(HashModel.create_date.desc()).limit(5)]
 
 
 # Yeah, yeah, this should probably be a static view.
