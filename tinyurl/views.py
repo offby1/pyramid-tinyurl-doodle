@@ -6,10 +6,13 @@ import logging
 import urlparse
 
 # 3rd-party
-from babel.dates import format_timedelta
-import pyramid.httpexceptions
-from pyramid.view import view_config
-import pytz
+from    babel.dates import format_timedelta
+import  pyramid.httpexceptions
+from    pyramid.renderers import render_to_response
+from    pyramid.response import Response
+from    pyramid.view import view_config
+import  pytz
+import  webob.acceptparse
 
 # Local
 from .models import (
@@ -37,16 +40,30 @@ def _recent_entries(session, request):
 
 
 # Yeah, yeah, this should probably be a static view.
-@view_config(route_name='home', renderer='templates/homepage.mak', request_method='GET')
+@view_config(route_name='home', request_method='GET')
 def home_GET(request):
     session = DBSession()
-    return {
-        'recent_entries': _recent_entries(session, request),
-        'truncate': truncate,
-    }
+    return render(request,
+                  {
+                      'recent_entries': _recent_entries(session, request),
+                      'truncate': truncate,
+                  })
 
 
-@view_config(route_name='shorten', renderer='templates/homepage.mak', request_method='GET')
+def render(request, value):
+    accept_header = webob.acceptparse.Accept(str(request.accept))
+
+    if accept_header.best_match(['application/json', 'text/html']) == 'text/html':
+        return render_to_response ('templates/homepage.mak',
+                                   value,
+                                   request=request)
+
+    r = Response(body=value.get('short_url'),
+                 status='200 OK')
+    r.content_type = 'text/plain'
+    return r
+
+@view_config(route_name='shorten', request_method='GET')
 def create_GET(request):
     session = DBSession()
     try:
@@ -70,11 +87,12 @@ def create_GET(request):
         DBSession.add(new_item)
     short_url = request.route_url ('lengthen', human_hash=human_hash)
 
-    return {
-        'short_url': short_url,
-        'recent_entries': _recent_entries(session, request),
-        'truncate': truncate,
-    }
+    return render(request,
+                  {
+                      'short_url': short_url,
+                      'recent_entries': _recent_entries(session, request),
+                      'truncate': truncate,
+                  })
 
 
 @view_config(route_name='lengthen', request_method='GET')
