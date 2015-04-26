@@ -39,7 +39,6 @@ def _recent_entries(session, request):
     ) for e in session.query(HashModel).filter(HashModel.create_date.isnot(None)).order_by(HashModel.create_date.desc()).limit(5)]
 
 
-# Yeah, yeah, this should probably be a static view.
 @view_config(route_name='home', request_method='GET')
 def home_GET(request):
     session = DBSession()
