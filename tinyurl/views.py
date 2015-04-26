@@ -47,7 +47,7 @@ def home_GET(request):
 
 
 @view_config(route_name='shorten', renderer='templates/homepage.mak', request_method='GET')
-def create_POST(request):
+def create_GET(request):
     session = DBSession()
     try:
         long_url = request.params['input_url']

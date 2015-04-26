@@ -28,7 +28,7 @@ class TestMyViewSuccessCondition(unittest.TestCase):
 
     def test_passing_view(self):
         from .views import create_GET
-        request = testing.DummyRequest()
+        request = testing.DummyRequest(params={'input_url': 'http://floogie/hoogie'})
         info = create_GET(request)
         self.assertEqual(info, {'hey': 'this should really be a static view'})
 
@@ -46,7 +46,7 @@ class TestMyViewFailureCondition(unittest.TestCase):
         testing.tearDown()
 
     def test_failing_view(self):
-        from .views import create_POST
+        from .views import create_GET
         request = testing.DummyRequest()
-        info = create_POST(request)
+        info = create_GET(request)
         self.assertEqual(info.status_int, 400)
