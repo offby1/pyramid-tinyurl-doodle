@@ -31,13 +31,22 @@ def truncate(string, maxlen):
 def _recent_entries(session, request):
     now = datetime.datetime.now(pytz.utc)
 
-    return [dict(
-        age        = format_timedelta(now - e.create_date) if e.create_date else '?',
-        human_hash = e.human_hash,
-        short_url  = request.route_url ('lengthen', human_hash=e.human_hash),
-        long_url   = e.long_url
-    ) for e in session.query(HashModel).filter(HashModel.create_date.isnot(None)).order_by(HashModel.create_date.desc()).limit(5)]
+    for e in session.query(HashModel).filter(HashModel.create_date.isnot(None)).order_by(HashModel.create_date.desc()).limit(5):
 
+        # some databases -- such as sqlite -- don't preserve time zone
+        # info.  If that's the case, just delete it from now, so as to
+        # avoid an exception
+        if e.create_date.tzinfo is None:
+            now = now.replace(tzinfo = None)
+
+        age = format_timedelta(now - e.create_date)
+
+        yield dict(
+            age        = age,
+            human_hash = e.human_hash,
+            short_url  = request.route_url ('lengthen', human_hash=e.human_hash),
+            long_url   = e.long_url
+        )
 
 @view_config(route_name='home', request_method='GET')
 def home_GET(request):

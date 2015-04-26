@@ -1,5 +1,6 @@
-*~
 *.pyc
+*.sqlite
+*~
 /.vagrant/
 /TODO.html
 /tinyurl.egg-info/
