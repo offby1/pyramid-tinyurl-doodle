@@ -11,7 +11,10 @@
     <link href="${request.static_path('tinyurl:static/theme.css')}" rel="stylesheet">
     </head>
     <body>
-      <p><big><big><a href="/">HOME</a></big></big></p>
+      <div>
+        <p   style="text-align:left"><big><big><a href="/">HOME</a></big></big></p>
+        <img style="float:right" src="https://img.shields.io/github/release/offby1/pyramid-tinyurl.svg"/>
+      </div>
       <form action="/shorten/" method="get">
         <label for="input_url">URL To Make Tiny</label>
         <input type="text" id="input_url" name="input_url" placeholder="Type a URL here, yo"/>
