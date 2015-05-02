@@ -13,7 +13,9 @@
     <body>
       <div>
         <p   style="text-align:left"><big><big><a href="/">HOME</a></big></big></p>
-        <img style="float:right" src="https://img.shields.io/github/release/offby1/pyramid-tinyurl.svg"/>
+        <a href="https://github.com/offby1/pyramid-tinyurl-doodle/releases">
+          <img style="float:right" src="https://img.shields.io/github/release/offby1/pyramid-tinyurl-doodle.svg"/>
+        </a>
       </div>
       <form action="/shorten/" method="get">
         <label for="input_url">URL To Make Tiny</label>
