@@ -67,7 +67,13 @@
       </div>
       <footer class="footer">
         <div class="container">
-          <p class="text-muted">© 2015 <a href="http://github.com/offby1/">This guy right here</a></p>
+          <div class="text-center">
+            <p class="text-muted">
+              © 2015 <a href="http://github.com/offby1/">This guy right here</a>
+              |
+              A shameless ripoff of <a href="http://tinyurl.com/">tinyurl.com</a>
+            </p>
+          </div>
         </div>
       </footer>
     </body>
