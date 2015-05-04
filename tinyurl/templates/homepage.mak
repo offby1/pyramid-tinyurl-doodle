@@ -21,7 +21,7 @@
         <div class="row" style="margin-bottom: 5rem;">
           <div class="col-md-12">
             <div class="text-center">
-              <form action="/shorten/" method="get" style="margin-bottom: 2rem;">
+              <form action="${request.route_url('shorten')}" method="get" style="margin-bottom: 2rem;">
                 <input type="text" id="input_url" name="input_url" placeholder="Type a URL here, yo"/>
                 <input type="submit" value="Tiny-ify it"/>
               </form>
