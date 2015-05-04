@@ -45,7 +45,11 @@ def main(global_config, **settings):
 
     config.add_static_view('static', 'static', cache_max_age=3600)
     config.add_route('home', '/')
-    config.add_route('shorten', '/shorten/')
-    config.add_route('lengthen', '/lengthen/{human_hash}')
+
+    # The trailing - ensures that no human_hash will be spelled the
+    # same way.
+    config.add_route('shorten', '/shorten-/')
+
+    config.add_route('lengthen', '/{human_hash}')
     config.scan()
     return config.make_wsgi_app()
