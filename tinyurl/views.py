@@ -88,11 +88,10 @@ def create_GET(request):
     binary_hash = hash_object.digest()
     human_hash  = binascii.b2a_base64(binary_hash).replace('+', '').replace('/', '')[:10]
 
-    new_item = HashModel(human_hash=human_hash,
-                         long_url=long_url)
-    old_item = session.query(HashModel).filter_by(human_hash=human_hash).first()
-    if not old_item:
-        DBSession.add(new_item)
+    if not session.query(HashModel).filter_by(human_hash=human_hash).first():
+        DBSession.add(HashModel(human_hash=human_hash,
+                                long_url=long_url))
+
     short_url = request.route_url ('lengthen', human_hash=human_hash)
 
     return render(request,
