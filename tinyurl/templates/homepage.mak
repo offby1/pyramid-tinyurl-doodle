@@ -27,7 +27,11 @@
               </form>
               %if short_url:
               <div>
-                <p>Dig: <a href="${short_url}">${short_url}</a></p>
+                <big>
+                  <big>
+                    <p><strong>Dig: <a href="${short_url}">${short_url}</a></strong></p>
+                  </big>
+                </big>
               </div>
               %else:
               <div>
