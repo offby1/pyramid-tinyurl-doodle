@@ -25,6 +25,17 @@ def expandvars_dict(settings):
     return expanded
 
 
+def _grab_git_info():
+    try:
+        with open('.git-post-checkout-info') as inf:
+            for index, line in enumerate(inf):
+                if index == 1:
+                    return line.rstrip()
+    except IOError as e:
+        print(e)
+        return None
+
+
 def main(global_config, **settings):
     """ This function returns a Pyramid WSGI application.
     """
@@ -37,6 +48,8 @@ def main(global_config, **settings):
         reload(babel.dates)
 
     settings = expandvars_dict (settings)
+
+    settings['git_info'] = _grab_git_info()
 
     engine = engine_from_config(settings, 'sqlalchemy.')
     DBSession.configure(bind=engine)

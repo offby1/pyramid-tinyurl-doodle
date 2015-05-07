@@ -17,7 +17,7 @@
       <div class="container-fluid">
         <div class="row" style="margin-bottom: 5rem; margin-left: 0%; font-size: 200%;">
           <p><a href="/">HOME</a></p>
-          <a href="https://github.com/offby1/pyramid-tinyurl-doodle"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/52760788cde945287fbb584134c4cbc2bc36f904/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f77686974655f6666666666662e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_white_ffffff.png"></a>
+          <a href="${github_home_page}"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/52760788cde945287fbb584134c4cbc2bc36f904/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f77686974655f6666666666662e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_white_ffffff.png"></a>
         </div>
         <div class="row" style="margin-bottom: 5rem;">
           <div class="col-md-12">
@@ -73,6 +73,10 @@
               © 2015 <a href="http://github.com/offby1/">This guy right here</a>
               |
               A shameless ripoff of <a href="http://tinyurl.com/">tinyurl.com</a>
+              %if this_commit_url:
+              |
+              <a href="${this_commit_url}">Source</a>
+              %endif
             </p>
           </div>
         </div>

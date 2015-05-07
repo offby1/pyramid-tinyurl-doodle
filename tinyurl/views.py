@@ -62,8 +62,14 @@ def render(request, value):
     accept_header = webob.acceptparse.Accept(str(request.accept))
 
     if accept_header.best_match(['application/json', 'text/html']) == 'text/html':
+        this_commit_url = request.registry.settings['github_home_page'] + 'commit/' + request.registry.settings['git_info']
         return render_to_response ('templates/homepage.mak',
-                                   value,
+
+                                   # Stick my beloved git info in there
+                                   dict(value,
+                                        github_home_page=request.registry.settings['github_home_page'],
+                                        this_commit_url=this_commit_url),
+
                                    request=request)
 
     r = Response(body=value.get('short_url'),
