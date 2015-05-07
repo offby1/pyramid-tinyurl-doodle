@@ -6,6 +6,8 @@ Getting Started Locally
 
 - cd <directory containing this file>
 
+- cp git/post-checkout .git/hooks
+
 - $VENV/bin/pip install -r requirements.txt
 
 - $VENV/bin/python setup.py develop

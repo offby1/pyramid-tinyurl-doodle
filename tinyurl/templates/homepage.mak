@@ -75,7 +75,7 @@
               A shameless ripoff of <a href="http://tinyurl.com/">tinyurl.com</a>
               %if this_commit_url:
               |
-              <a href="${this_commit_url}">Source</a>
+              <a href="${this_commit_url}">Version</a>
               %endif
             </p>
           </div>
