@@ -22,11 +22,13 @@ from .models import (
 
 logger = logging.getLogger ('tinyurl')
 
+
 def truncate(string, maxlen):
     suffix = '...'
     if len(string) > maxlen:
         return string[:maxlen] + suffix
     return string
+
 
 def _recent_entries(session, request):
     now = datetime.datetime.now(pytz.utc)
@@ -44,9 +46,10 @@ def _recent_entries(session, request):
         yield dict(
             age        = age,
             human_hash = e.human_hash,
-            short_url  = request.route_url ('lengthen', human_hash=e.human_hash),
+            short_url  = request.route_path ('lengthen', human_hash=e.human_hash),
             long_url   = e.long_url
         )
+
 
 @view_config(route_name='home', request_method='GET')
 def home_GET(request):
@@ -79,6 +82,7 @@ def render(request, value):
     r.content_type = 'text/plain'
     return r
 
+
 @view_config(route_name='shorten', request_method='GET')
 def create_GET(request):
     session = DBSession()
@@ -100,7 +104,7 @@ def create_GET(request):
         DBSession.add(HashModel(human_hash=human_hash,
                                 long_url=long_url))
 
-    short_url = request.route_url ('lengthen', human_hash=human_hash)
+    short_url = request.route_path ('lengthen', human_hash=human_hash)
 
     return render(request,
                   {
