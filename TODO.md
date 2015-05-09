@@ -1,2 +1,2 @@
-- The long URLs in the "Recent entries" table can get mighty long! I
-  should probably truncate them.
+- Keep track of how many times we've lengthened each short URL.  Also
+  a timestamp for the last such time.
