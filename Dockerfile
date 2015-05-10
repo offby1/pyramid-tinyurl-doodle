@@ -11,8 +11,9 @@ RUN pip install -r /tinyurl/requirements.txt
 
 COPY . /tinyurl/
 
-RUN cd /tinyurl &&\
-    python setup.py install
+WORKDIR /tinyurl
+
+RUN python setup.py install
 
 ENV DATABASE_URL=postgres://postgres@db:5432/postgres
 ENV LC_ALL=C
