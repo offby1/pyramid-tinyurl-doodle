@@ -77,7 +77,7 @@ def render(request, value):
 
                                    request=request)
 
-    r = Response(body=value.get('short_url'),
+    r = Response(body=request.application_url + value.get('short_url', ''),
                  status='200 OK')
     r.content_type = 'text/plain'
     return r
