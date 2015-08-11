@@ -6,3 +6,5 @@
 /tinyurl.egg-info/
 /venv/
 /.git-post-checkout-info
+#*#
+*_flymake.py

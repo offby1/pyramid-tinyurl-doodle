@@ -3,7 +3,6 @@ import binascii
 import datetime
 import hashlib
 import logging
-import urlparse
 
 # 3rd-party
 from    babel.dates import format_timedelta
@@ -12,6 +11,7 @@ from    pyramid.renderers import render_to_response
 from    pyramid.response import Response
 from    pyramid.view import view_config
 import  pytz
+import  six.moves.urllib.parse
 import  webob.acceptparse
 
 # Local
@@ -93,18 +93,21 @@ def create_GET(request):
 
     # Fail if long_url has no 'netloc'.  Otherwise, when "lengthen"
     # would try to redirect to it, confusing things will happen.
-    if urlparse.urlparse (long_url).netloc == '':
+    if six.moves.urllib.parse.urlparse (long_url).netloc == '':
         raise pyramid.httpexceptions.HTTPBadRequest("{!r} just doesn't look like a proper URL!".format (long_url))
 
-    hash_object = hashlib.sha256(long_url)
+    long_url_bytes = long_url.encode('utf-8')
+    hash_object = hashlib.sha256(long_url_bytes)
     binary_hash = hash_object.digest()
-    human_hash  = binascii.b2a_base64(binary_hash).replace('+', '').replace('/', '')[:10]
+    human_hash_bytes = binascii.b2a_base64(binary_hash)
+    human_hash_bytes = human_hash_bytes.replace(b'+', b'').replace(b'/', b'')[:10]
+    human_hash_string = human_hash_bytes.decode('utf-8')
 
-    if not session.query(HashModel).filter_by(human_hash=human_hash).first():
-        DBSession.add(HashModel(human_hash=human_hash,
+    if not session.query(HashModel).filter_by(human_hash=human_hash_string).first():
+        DBSession.add(HashModel(human_hash=human_hash_string,
                                 long_url=long_url))
 
-    short_url = request.route_path ('lengthen', human_hash=human_hash)
+    short_url = request.route_path ('lengthen', human_hash=human_hash_bytes)
 
     return render(request,
                   {

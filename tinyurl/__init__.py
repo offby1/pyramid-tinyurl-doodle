@@ -1,9 +1,13 @@
+# Core
 import datetime
 import os
 import re
 
+# 3rd-party
 import babel.dates
 from pyramid.config import Configurator
+import six
+from six.moves import reload_module
 from sqlalchemy import engine_from_config
 
 from .models import (
@@ -15,7 +19,7 @@ from .models import (
 def expandvars_dict(settings):
     """Expands all environment variables in a settings dictionary."""
     expanded = dict((key, os.path.expandvars(value)) for
-                    key, value in settings.iteritems())
+                    key, value in six.iteritems(settings))
     # Kludge-o-rama: sqlalchemy fails with
     # sqlalchemy.exc.NoSuchModuleError: Can't load plugin: sqlalchemy.dialects:postgres.pg8000
     # if we don't do this.
@@ -45,7 +49,7 @@ def main(global_config, **settings):
         babel.dates.format_timedelta(datetime.timedelta(0))
     except AttributeError:
         os.environ['LC_ALL'] = 'C'
-        reload(babel.dates)
+        reload_module(babel.dates)
 
     settings = expandvars_dict (settings)
 
