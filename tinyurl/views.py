@@ -46,6 +46,12 @@ def _recent_entries(session, request):
         yield dict(
             age        = age,
             human_hash = e.human_hash,
+            # TODO -- follow recommendations at
+            # http://waitress.readthedocs.org/en/latest/#using-behind-a-reverse-proxy
+            # and
+            # http://waitress.readthedocs.org/en/latest/#using-paste-s-prefixmiddleware-to-set-wsgi-url-scheme,
+            # and use route_url, instead of using route_path: raydeo
+            # (Michael Merickel (~raydeo@merickel.org)) says to!
             short_url  = request.route_path ('lengthen', human_hash=e.human_hash),
             long_url   = e.long_url
         )
