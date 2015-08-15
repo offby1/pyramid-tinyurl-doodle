@@ -52,7 +52,7 @@ def _recent_entries(session, request):
             # http://waitress.readthedocs.org/en/latest/#using-paste-s-prefixmiddleware-to-set-wsgi-url-scheme,
             # and use route_url, instead of using route_path: raydeo
             # (Michael Merickel (~raydeo@merickel.org)) says to!
-            short_url  = request.route_path ('lengthen', human_hash=e.human_hash),
+            short_url  = request.route_url ('lengthen', human_hash=e.human_hash),
             long_url   = e.long_url
         )
 
@@ -113,8 +113,7 @@ def create_GET(request):
         DBSession.add(HashModel(human_hash=human_hash_string,
                                 long_url=long_url))
 
-    short_url = request.route_path ('lengthen', human_hash=human_hash_bytes)
-
+    short_url = request.route_url ('lengthen', human_hash=human_hash_bytes)
     return render(request,
                   {
                       'short_url': short_url,

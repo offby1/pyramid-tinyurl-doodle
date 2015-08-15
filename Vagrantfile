@@ -5,6 +5,7 @@ VAGRANTFILE_API_VERSION = "2"
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.box = "ubuntu/trusty64"
   config.vm.network :forwarded_port, host: 6543, guest: 6543 # us
+  config.vm.network :forwarded_port, host: 8080, guest: 7777 # us, proxied through nginx
   config.vm.synced_folder ENV["HOME"], "/home/desktop"
 
   config.vm.provider "virtualbox" do |v|
