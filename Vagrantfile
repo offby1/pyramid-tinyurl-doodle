@@ -5,6 +5,7 @@ VAGRANTFILE_API_VERSION = "2"
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.box = "ubuntu/trusty64"
   config.vm.network :forwarded_port, host: 6543, guest: 6543 # us
+  config.vm.synced_folder ENV["HOME"], "/home/desktop"
 
   config.vm.provision "docker" do |d|
     #d.build_image "/vagrant/", args: "--tag offby1/tinyurl"
