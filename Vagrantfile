@@ -11,10 +11,10 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     #d.build_image "/vagrant/", args: "--tag offby1/tinyurl"
     d.pull_images "library/postgres"
     d.run "library/postgres",
-          args: "--name db"
+          args: "--name db -v /var/lib/tinyurl-var-lib-postgresql-data:/var/lib/postgresql/data"
     d.run "tinyurl-prep",
-          image: "offby1/tinyurl",
           args: "--link db:db",
+          image: "offby1/tinyurl",
           cmd: "initialize_tinyurl_db /tinyurl/production.ini",
           daemonize: false
     d.run "offby1/tinyurl",
