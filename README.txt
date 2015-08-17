@@ -35,3 +35,14 @@ Doing The Docker Thang
 ----------------------
 
 $ vagrant up
+
+To back up a running docker DB:
+
+    $ docker run    --link db:db library/postgres pg_dump -h db -U postgres -t hashes > hashes.sql
+
+To load that into another DB:
+
+    $ docker run -i --link db:db library/postgres psql -a -h db -U postgres  < /vagrant/hashes.sql
+
+... although you might need to delete the existing "hashes" table first.
+
