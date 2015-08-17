@@ -1,0 +1,27 @@
+The first item in TODO.md says `Ensure that our db doesn't vanish if we upgrade docker!'
+
+Here's how I think I'll do that:
+
+* Maybe switch rudybot back to tinyurl
+
+* Stop the tinyurl service: `docker stop jolly_hoover'
+
+* back up the current database:
+
+  docker run --link db:db library/postgres pg_dump -h db -U postgres -t hashes > /tmp/hashes.sql
+
+* Stop the postgresql service: `docker stop db && docker rm db'
+
+* Start a new postgresql service, with a persistent volume:
+
+  docker run --name db -v /var/lib/tinyurl-var-lib-postgresql-data:/var/lib/postgresql/data library/postgres
+
+* Restore from the backup
+
+  docker run -i --link db:db library/postgres psql -a -h db -U postgres  < /tmp/hashes.sql
+
+* Restart the tinyurl service:
+
+  docker run --detach -p 80:80 --link db:db offby1/tinyurl
+
+* Maybe switch rudybot back
