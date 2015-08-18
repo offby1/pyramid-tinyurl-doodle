@@ -53,6 +53,9 @@ def _recent_entries(session, request):
 
 @view_config(route_name='home', request_method='GET')
 def home_GET(request):
+    logger.info("%s", request.url)
+    import pprint
+    pprint.pprint(dict(request.environ))
     session = DBSession()
     return render(request,
                   {
@@ -85,6 +88,7 @@ def render(request, value):
 
 @view_config(route_name='shorten', request_method='GET')
 def create_GET(request):
+    logger.info("%s", request.url)
     session = DBSession()
     try:
         long_url = request.params['input_url']
@@ -118,6 +122,7 @@ def create_GET(request):
 
 @view_config(route_name='lengthen', request_method='GET')
 def lengthen_GET(request):
+    logger.info("%s", request.url)
     session = DBSession()
     human_hash = request.matchdict['human_hash']
     old_item = session.query(HashModel).filter_by(human_hash=human_hash).first()
