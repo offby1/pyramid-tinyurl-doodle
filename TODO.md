@@ -3,4 +3,3 @@
 
 - Consider [Docker Compose](https://docs.docker.com/compose/) since I
   indeed have a couple of containers that need to run.
-
