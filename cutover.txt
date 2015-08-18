@@ -10,11 +10,17 @@ Here's how I think I'll do that:
 
   docker run --link db:db library/postgres pg_dump -h db -U postgres -t hashes > /tmp/hashes.sql
 
-* Stop the postgresql service: `docker stop db && docker rm db'
+* Stop the postgresql service:
+
+  docker rm -f db
 
 * Start a new postgresql service, with a persistent volume:
 
-  docker run --name db -v /var/lib/tinyurl-var-lib-postgresql-data:/var/lib/postgresql/data library/postgres
+  docker run --detach --name db -v /var/lib/tinyurl-var-lib-postgresql-data:/var/lib/postgresql/data library/postgres
+
+  Note that we're _not_ running initialize_tinyurl_db, since that
+  would cause the following restore to fail, mumbling about multiple
+  primary keys.
 
 * Restore from the backup
 
@@ -25,3 +31,28 @@ Here's how I think I'll do that:
   docker run --detach -p 80:80 --link db:db offby1/tinyurl
 
 * Maybe switch rudybot back
+
+I'd like to dry-run all the above, without risk.  So I'll do it on a
+Vagrant box (namely, the one defined by the Vagrantfile in this
+directory, but invoked with "vagrant up --no-provision").
+
+So ... how do I emulate the ec2 server on that box?  Ideas:
+
+# aptitude install docker.io racket
+# adduser rudybot
+# su - rudybot
+$ git clone https://github.com/offby1/rudybot.git
+$ cd rudybot/
+add an entry for "teensy.info" in /etc/hosts, so that rudybot hits the local service
+$ BOTNICK=vagrant-rudybot BOTPASSWD=xxxxxxxxxxxx BOTCHANNELS=##rudybot ./freenode-main.rkt
+
+(That complains about there not being a "log" table in the database, but I suspect that's OK.)
+
+/me thinks: this is sounding like a deployment script.  Maybe I should polish my Ansible skillz and write it up formally.
+
+(add 1 G of swap first, lest ye get "fork/exec: can't allocate memory")
+# docker run --name db -v /var/lib/tinyurl-var-lib-postgresql-data:/var/lib/postgresql/data library/postgres
+# docker run --name tinyurl-prep --link db:db offby1/tinyurl initialize_tinyurl_db /tinyurl/production.ini
+# docker run --name tinyurl --detach -p 6543:80 --link db:db offby1/tinyurl
+
+Now I should be at a point roughly corresponding to the ec2 box as it stands now.
