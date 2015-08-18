@@ -4,14 +4,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <meta charset="utf-8"/>
     <title>Gimme URL, You</title>
-    <link rel="icon" type="image/png" href="${request.static_path('tinyurl:static/pawprint.png')}" />
+    <link rel="icon" type="image/png" href="${request.static_url('tinyurl:static/pawprint.png')}" />
 
     <!-- Bootstrap core CSS -->
     <link href="//oss.maxcdn.com/libs/twitter-bootstrap/3.0.3/css/bootstrap.min.css" rel="stylesheet"/>
-    <link href="${request.static_path('tinyurl:static/sticky-footer.css')}" rel="stylesheet">
+    <link href="${request.static_url('tinyurl:static/sticky-footer.css')}" rel="stylesheet">
 
     <!-- Custom styles for this scaffold -->
-    <link href="${request.static_path('tinyurl:static/theme.css')}" rel="stylesheet">
+    <link href="${request.static_url('tinyurl:static/theme.css')}" rel="stylesheet">
     </head>
     <body>
       <div class="container-fluid">
