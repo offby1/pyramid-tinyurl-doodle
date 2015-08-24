@@ -54,8 +54,6 @@ def _recent_entries(session, request):
 @view_config(route_name='home', request_method='GET')
 def home_GET(request):
     logger.info("%s", request.url)
-    import pprint
-    pprint.pprint(dict(request.environ))
     session = DBSession()
     return render(request,
                   {
