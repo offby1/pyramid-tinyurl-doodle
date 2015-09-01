@@ -22,6 +22,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
           cmd: "initialize_tinyurl_db /tinyurl/production.ini",
           daemonize: false
     d.run "offby1/tinyurl",
-          args: "-p 6543:80 --link db:db"
+          args: "--name tinyurl -p 6543:80 --link db:db"
   end
 end
