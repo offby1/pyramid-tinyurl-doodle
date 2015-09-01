@@ -7,6 +7,10 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.network :forwarded_port, host: 6543, guest: 6543 # us
   config.vm.synced_folder ENV["HOME"], "/home/desktop"
 
+  config.vm.provider "virtualbox" do |v|
+    v.memory = 1024
+  end
+
   config.vm.provision "docker" do |d|
     #d.build_image "/vagrant/", args: "--tag offby1/tinyurl"
     d.pull_images "library/postgres"
