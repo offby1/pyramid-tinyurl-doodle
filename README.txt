@@ -46,3 +46,6 @@ To load that into another DB:
 
 ... although you might need to delete the existing "hashes" table first.
 
+To get a SQL prompt:
+
+    $ docker run -it --link db:db library/postgres psql -h db -U postgres
