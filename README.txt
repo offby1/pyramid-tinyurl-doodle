@@ -49,3 +49,9 @@ To load that into another DB:
 To get a SQL prompt:
 
     $ docker run -it --link db:db library/postgres psql -h db -U postgres
+
+To nix a spammy entry from the above SQL prompt:
+
+    postgres=# delete  from hashes where human_hash = 'rgufGVicnL';
+    DELETE 1
+    postgres=#
