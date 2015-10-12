@@ -97,10 +97,8 @@ def create_GET(request):
     except KeyError as e:
         return pyramid.httpexceptions.HTTPBadRequest(e)
 
-    # Fail if long_url has no 'netloc'.  Otherwise, when "lengthen"
-    # would try to redirect to it, confusing things will happen.
     if six.moves.urllib.parse.urlparse (long_url).netloc == '':
-        raise pyramid.httpexceptions.HTTPBadRequest("{!r} just doesn't look like a proper URL!".format (long_url))
+        long_url = u'http://' + long_url
 
     long_url_bytes = long_url.encode('utf-8')
     hash_object = hashlib.sha256(long_url_bytes)
