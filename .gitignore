@@ -8,3 +8,4 @@
 /.git-post-checkout-info
 #*#
 *_flymake.py
+.cache/
