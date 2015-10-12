@@ -79,6 +79,6 @@ To nix all spammy entries (on the assumption that the only legitimate entries ca
      2015-10-06 00:56:34.457558+00 | QnjJNfml7P | http://www.itunes-store-en.org
     (109 rows)
 
-    postgres=# delete from hashes where length(long_url) < 50 ;
+    postgres=# delete from hashes where length(long_url) <= 60 ;
     DELETE 109
     postgres=#
