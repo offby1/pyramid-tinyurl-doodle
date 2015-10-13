@@ -100,6 +100,9 @@ def create_GET(request):
     if six.moves.urllib.parse.urlparse (long_url).netloc == '':
         long_url = u'http://' + long_url
 
+    if len(long_url) <= 60:
+        raise pyramid.httpexceptions.HTTPBadRequest("Are you a spammer?")
+
     long_url_bytes = long_url.encode('utf-8')
     hash_object = hashlib.sha256(long_url_bytes)
     binary_hash = hash_object.digest()
