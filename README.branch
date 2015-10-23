@@ -1,0 +1,4 @@
+The idea: tweak this so that I can deploy it to Amazon's Elastic Beanstalk.
+
+I was inspired to do this by a fellow Puget Sound Python dude (Dan
+Goodburn), who has put https://github.com/dgoodburn/Project on it.
