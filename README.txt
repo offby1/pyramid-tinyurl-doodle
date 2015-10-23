@@ -10,6 +10,10 @@ Getting Started Locally
 
 - $VENV/bin/pip install -r requirements.txt
 
+Note that "requirements.txt", despite being checked in to git, is
+automatically generated from "requirements.in".  See
+https://github.com/nvie/pip-tools for details.
+
 - $VENV/bin/python setup.py develop
 
 - $VENV/bin/initialize_tinyurl_db development.ini
