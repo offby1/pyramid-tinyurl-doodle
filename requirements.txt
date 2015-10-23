@@ -8,6 +8,7 @@ babel==2.1.1
 chameleon==2.22           # via pyramid-chameleon
 mako==1.0.2               # via pyramid-mako
 markupsafe==0.23          # via mako
+paste==2.0.2
 pastedeploy==1.5.2        # via pyramid
 pg8000==1.10.2
 pygments==2.0.2           # via pyramid-debugtoolbar
@@ -19,7 +20,7 @@ pyramid==1.6a2
 pytz==2015.6
 repoze.lru==0.6           # via pyramid, pyramid-debugtoolbar
 six==1.10.0
-sqlalchemy==1.0.8
+sqlalchemy==1.0.9
 transaction==1.4.4
 translationstring==1.3    # via pyramid
 venusian==1.0             # via pyramid

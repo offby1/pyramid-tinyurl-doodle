@@ -12,7 +12,15 @@ Getting Started Locally
 
 Note that "requirements.txt", despite being checked in to git, is
 automatically generated from "requirements.in".  See
-https://github.com/nvie/pip-tools for details.
+https://github.com/nvie/pip-tools for details.  Also note that, to
+regenerate those files (at least, on my Mac, using Python 3), you
+gotta put LC_ALL=en_US.utf-8 in the environment, lest ye get an
+annoying exception:
+
+    RuntimeError: Click will abort further execution because Python 3
+    was configured to use ASCII as encoding for the
+    environment. Either switch to Python 2 or consult
+    http://click.pocoo.org/python3/ for mitigation steps.
 
 - $VENV/bin/python setup.py develop
 

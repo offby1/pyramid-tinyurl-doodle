@@ -1,5 +1,6 @@
 Babel
 SQLAlchemy
+Paste
 pg8000
 pyramid
 pyramid_chameleon
