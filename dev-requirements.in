@@ -1,4 +1,5 @@
 autopep8
+awsebcli
 flake8
 importmagic
 pip-tools
