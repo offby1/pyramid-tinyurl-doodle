@@ -36,7 +36,7 @@ def _grab_git_info():
                 if index == 1:
                     return line.rstrip()
     except IOError as e:
-        print(e)
+        print('{} -- ignoring'.format(e))
         return None
 
 
