@@ -9,3 +9,5 @@
 #*#
 *_flymake.py
 .cache/
+/README.branch.html
+/README.html
