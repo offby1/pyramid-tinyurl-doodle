@@ -1,4 +1,5 @@
 Babel
+MySQL-python
 SQLAlchemy
 Paste
 pg8000

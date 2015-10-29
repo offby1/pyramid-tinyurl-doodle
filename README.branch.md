@@ -9,17 +9,25 @@ port to mysql.  Shouldn't be hard.
 
 * uwsgi
 
-uwsgi seems quite complex, but I stumbled onto a formula that seems to work (on Ubuntu "trusty"):
+    uwsgi seems quite complex, but I stumbled onto a formula that seems to work (on Ubuntu "trusty"):
 
-    $ sudo aptitude install python3-pip
-    $ pip3 install --user virtualenv
-    $ ~/.local/bin/virtualenv venv.$(uname -s)
-    $ source venv.$(uname -s)/bin/activate
-    (venv.Linux)$ pip install -r requirements.txt
-    (venv.Linux)$ pip install uwsgi
-    (venv.Linux)$ python setup.py develop
-    (venv.Linux)$ initialize_tinyurl_db development.ini
-    (venv.Linux)$ uwsgi --paste config://$(pwd)/development.ini  --http 0.0.0.0:6543
+        $ sudo aptitude install python3-pip
+        $ pip3 install --user virtualenv
+        $ ~/.local/bin/virtualenv venv.$(uname -s)
+        $ source venv.$(uname -s)/bin/activate
+        (venv.Linux)$ pip install -r requirements.txt
+        (venv.Linux)$ pip install uwsgi
+        (venv.Linux)$ python setup.py develop
+        (venv.Linux)$ initialize_tinyurl_db development.ini
+        (venv.Linux)$ uwsgi --paste config://$(pwd)/development.ini  --http 0.0.0.0:6543
 
-Since the above appears to work, and didn't require me to change any
-of the app's code, I hereby pronounce the app to be uwsgi-ready.
+    Since the above appears to work, and didn't require me to change any
+    of the app's code, I hereby pronounce the app to be uwsgi-ready.
+
+* mysql
+
+        $ sudo aptitude install mysql-server # set root password to "root" when prompted
+
+Gaah.  "pip install MySQL-python" fails, probably because that package
+hasn't been ported to python3 ... and yet it's what SQLAlchemy wants
+... oy ...
