@@ -26,8 +26,10 @@ port to mysql.  Shouldn't be hard.
 
 * mysql
 
-        $ sudo aptitude install mysql-server # set root password to "root" when prompted
-
-Gaah.  "pip install MySQL-python" fails, probably because that package
-hasn't been ported to python3 ... and yet it's what SQLAlchemy wants
-... oy ...
+        $ sudo aptitude install libmysqlclient-dev mysql-server # set root password to "root" when prompted
+        $ mysql -u root -proot -e 'create database if not exists tinyurl'
+        $ source venv.$(uname -s)/bin/activate
+        (venv.Linux)$ pip install -r requirements.txt
+        (venv.Linux)$ python setup.py develop
+        (venv.Linux)$ initialize_tinyurl_db development.ini
+        (venv.Linux)$ uwsgi --paste config://$(pwd)/development.ini  --http 0.0.0.0:6543

@@ -2,6 +2,7 @@ from sqlalchemy import (
     Column,
     DateTime,
     Text,
+    VARCHAR,
     )
 
 from sqlalchemy.ext.declarative import declarative_base
@@ -23,5 +24,5 @@ class HashModel(Base):
     __tablename__ = 'hashes'
 
     create_date   = Column(DateTime(timezone=True), default=func.now())
-    human_hash    = Column(Text, primary_key=True)
+    human_hash    = Column(VARCHAR(10), primary_key=True)
     long_url      = Column(Text)
