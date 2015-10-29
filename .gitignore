@@ -11,3 +11,5 @@
 /TODO.html
 /tinyurl.egg-info/
 /venv/
+.sandstorm/.vagrant/
+env/

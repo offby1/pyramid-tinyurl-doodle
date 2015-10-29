@@ -26,6 +26,8 @@ port to mysql.  Shouldn't be hard.
 
 * mysql
 
+    Do the below in a "trusty" Vagrant box: 
+        
         $ sudo aptitude install libmysqlclient-dev mysql-server # set root password to "root" when prompted
         $ mysql -u root -proot -e 'create database if not exists tinyurl'
         $ source venv.$(uname -s)/bin/activate
@@ -33,3 +35,25 @@ port to mysql.  Shouldn't be hard.
         (venv.Linux)$ python setup.py develop
         (venv.Linux)$ initialize_tinyurl_db development.ini
         (venv.Linux)$ uwsgi --paste config://$(pwd)/development.ini  --http 0.0.0.0:6543
+
+* sandstorm!!
+
+    Following along
+    [the tutorial](https://docs.sandstorm.io/en/latest/vagrant-spk/customizing/),
+    do this on this very machine:
+        
+        $ vagrant-spk setupvm uwsgi
+        $ vagrant-spk up
+... long pause...
+
+        $ vagrant-spk init
+        $ vagrant-spk dev 
+
+    That last command failed with
+
+        oursqlx/compat.h:13:19: fatal error: mysql.h: No such file or directory
+
+    I can't explain why, but I suspect it's because I'm using Python3;
+    I bet the uwsgi stack ony works with python2.  So ... time to hack
+    things to work with python2.
+
