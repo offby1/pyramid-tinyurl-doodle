@@ -26,8 +26,8 @@ port to mysql.  Shouldn't be hard.
 
 * mysql
 
-    Do the below in a "trusty" Vagrant box: 
-        
+    Do the below in a "trusty" Vagrant box:
+
         $ sudo aptitude install python-dev libmysqlclient-dev mysql-server # set root password to "root" when prompted
         $ mysql -u root -proot -e 'create database if not exists tinyurl'
         $ source venv.$(uname -s)/bin/activate
@@ -41,13 +41,13 @@ port to mysql.  Shouldn't be hard.
     Following along
     [the tutorial](https://docs.sandstorm.io/en/latest/vagrant-spk/customizing/),
     do this on this very machine:
-        
+
         $ vagrant-spk setupvm uwsgi
         $ vagrant-spk up
 ... long pause...
 
         $ vagrant-spk init
-        $ vagrant-spk dev 
+        $ vagrant-spk dev
 
     Almost works, except it hangs.  I see this when I click the console icon (that's the log viewer):
 
