@@ -11,7 +11,7 @@ port to mysql.  Shouldn't be hard.
 
     uwsgi seems quite complex, but I stumbled onto a formula that seems to work (on Ubuntu "trusty"):
 
-        $ sudo aptitude install python3-pip
+        $ sudo aptitude install python-pip
         $ pip3 install --user virtualenv
         $ ~/.local/bin/virtualenv venv.$(uname -s)
         $ source venv.$(uname -s)/bin/activate
@@ -28,7 +28,7 @@ port to mysql.  Shouldn't be hard.
 
     Do the below in a "trusty" Vagrant box: 
         
-        $ sudo aptitude install libmysqlclient-dev mysql-server # set root password to "root" when prompted
+        $ sudo aptitude install python-dev libmysqlclient-dev mysql-server # set root password to "root" when prompted
         $ mysql -u root -proot -e 'create database if not exists tinyurl'
         $ source venv.$(uname -s)/bin/activate
         (venv.Linux)$ pip install -r requirements.txt
@@ -48,12 +48,4 @@ port to mysql.  Shouldn't be hard.
 
         $ vagrant-spk init
         $ vagrant-spk dev 
-
-    That last command failed with
-
-        oursqlx/compat.h:13:19: fatal error: mysql.h: No such file or directory
-
-    I can't explain why, but I suspect it's because I'm using Python3;
-    I bet the uwsgi stack ony works with python2.  So ... time to hack
-    things to work with python2.
 

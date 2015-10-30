@@ -2,4 +2,4 @@ autopep8
 flake8
 importmagic
 pip-tools
-rope_py3k
+rope
