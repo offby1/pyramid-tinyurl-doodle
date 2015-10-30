@@ -49,8 +49,11 @@ port to mysql.  Shouldn't be hard.
         $ vagrant-spk init
         $ vagrant-spk dev
 
-    Almost works, except it hangs.  I see this when I click the console icon (that's the log viewer):
+woot!
 
-        KeyError: 'getpwuid(): uid not found: 1000'
+Very helpful guy on IRC says
 
-    I think that's a known problem; it looks familiar.
+    <asheesh> (-: !                                                         [02:35]
+    <asheesh> Per https://docs.sandstorm.io/en/latest/developing/path/ if you can use the empty string as your base URL, that's best, btw.
+
+Dunno what he's talkin' 'bout but it seems worthwhile to investigate :)
