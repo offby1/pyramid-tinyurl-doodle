@@ -9,4 +9,5 @@ fi
 
 if [ -f /opt/app/requirements.txt ] ; then
     $VENV/bin/pip install -r /opt/app/requirements.txt
+    $VENV/bin/pip install -e /opt/app/
 fi

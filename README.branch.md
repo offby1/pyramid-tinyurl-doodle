@@ -49,3 +49,8 @@ port to mysql.  Shouldn't be hard.
         $ vagrant-spk init
         $ vagrant-spk dev 
 
+    Almost works, except it hangs.  I see this when I click the console icon (that's the log viewer):
+
+        KeyError: 'getpwuid(): uid not found: 1000'
+
+    I think that's a known problem; it looks familiar.
