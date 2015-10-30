@@ -13,3 +13,4 @@
 /venv/
 .sandstorm/.vagrant/
 env/
+/.sandstorm/sandstorm-files.list

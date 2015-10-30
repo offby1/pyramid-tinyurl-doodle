@@ -34,7 +34,7 @@ port to mysql.  Shouldn't be hard.
         (venv.Linux)$ pip install -r requirements.txt
         (venv.Linux)$ python setup.py develop
         (venv.Linux)$ initialize_tinyurl_db development.ini
-        (venv.Linux)$ uwsgi --paste config://$(pwd)/development.ini  --http 0.0.0.0:6543
+        (venv.Linux)$ uwsgi --paste config://$(pwd)/sandstorm.ini  --http 0.0.0.0:6543
 
 * sandstorm!!
 

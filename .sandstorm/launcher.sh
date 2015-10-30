@@ -27,6 +27,10 @@ while [ ! -e $MYSQL_SOCKET_FILE ] ; do
     sleep .2
 done
 
+# Initialize db
+echo "CREATE DATABASE IF NOT EXISTS app; GRANT ALL on app.* TO 'app'@'localhost' IDENTIFIED BY 'app';" | mysql -uroot
+/opt/app/env/bin/initialize_tinyurl_db /opt/app/sandstorm.ini
+
 # Spawn uwsgi
 HOME=/var uwsgi \
         --socket $UWSGI_SOCKET_FILE \
