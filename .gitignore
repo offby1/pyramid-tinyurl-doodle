@@ -4,6 +4,7 @@
 *_flymake.py
 *~
 .cache/
+.sandstorm/.vagrant/
 /.git-post-checkout-info
 /.vagrant/
 /README.branch.html
@@ -11,6 +12,4 @@
 /TODO.html
 /tinyurl.egg-info/
 /venv/
-.sandstorm/.vagrant/
 env/
-/.sandstorm/sandstorm-files.list
