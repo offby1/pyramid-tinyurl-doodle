@@ -23,6 +23,14 @@ from .models import (
 logger = logging.getLogger ('tinyurl')
 
 
+@view_config(route_name='robots', request_method='GET')
+def robots_GET(request):
+    r = Response(body="User-agent: *\nDisallow: /\n",
+                 status='200 OK')
+    r.content_type = 'text/plain'
+    return r
+
+
 def truncate(string, maxlen):
     suffix = '...'
     if len(string) > maxlen:

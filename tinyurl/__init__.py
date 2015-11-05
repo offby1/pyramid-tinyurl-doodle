@@ -61,6 +61,7 @@ def main(global_config, **settings):
     config = Configurator(settings=settings)
 
     config.add_static_view('static', 'static', cache_max_age=3600)
+    config.add_route('robots', '/robots.txt')
     config.add_route('home', '/')
 
     # The trailing - ensures that no human_hash will be spelled the
