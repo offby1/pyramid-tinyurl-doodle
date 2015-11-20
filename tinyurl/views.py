@@ -108,7 +108,12 @@ def create_GET(request):
     if six.moves.urllib.parse.urlparse (long_url).netloc == '':
         long_url = u'http://' + long_url
 
-    if len(long_url) <= 60:
+    # Note that the most-active client of this service
+    # (https://github.com/offby1/rudybot/) never submits anything
+    # shorter than some threshold; as of this writing that's 75
+    # characters.  So as long as the value here is no greater than
+    # that, rudybot will keep working.
+    if len(long_url) <= 65:
         raise pyramid.httpexceptions.HTTPBadRequest("Are you a spammer?")
 
     long_url_bytes = long_url.encode('utf-8')
