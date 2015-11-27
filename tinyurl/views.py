@@ -69,36 +69,29 @@ def _recent_entries(session, request):
 
 @view_config(route_name='home', request_method='GET')
 def home_GET(request):
-    userid = authenticated_userid(request)
-
-    if userid is None:
-        raise Forbidden
-
     session = DBSession()
     return render(request,
                   {
                       'recent_entries': _recent_entries(session, request),
                       'truncate': truncate,
-                      'userid': userid,
                   })
 
 
 def render(request, values):
     accept_header = webob.acceptparse.Accept(str(request.accept))
 
-    # I'm too lazy to do auth properly, so this is a workaround
-    values.setdefault('userid', '???')
-
     if accept_header.best_match(['application/json', 'text/html']) == 'text/html':
         git_info = request.registry.settings['git_info']
 
         this_commit_url = git_info and '{}commit/{}'.format(request.registry.settings['github_home_page'], git_info)
+        userid = authenticated_userid(request)
         return render_to_response ('templates/homepage.mak',
 
-                                   # Stick my beloved git info in there
                                    dict(values,
                                         github_home_page=request.registry.settings['github_home_page'],
-                                        this_commit_url=this_commit_url),
+                                        this_commit_url=this_commit_url,
+                                        userid=userid,
+                                        bossman=(userid == 'eric.hanchrow@gmail.com')),
 
                                    request=request)
 
