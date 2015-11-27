@@ -12,6 +12,12 @@
 
     <!-- Custom styles for this scaffold -->
     <link href="${request.static_path('tinyurl:static/theme.css')}" rel="stylesheet">
+
+    <!-- Persona mumbo jumbo -->
+    <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+    <script src="https://login.persona.org/include.js" type="text/javascript"></script>
+    <script type="text/javascript">${request.persona_js}</script>
+
     </head>
     <body>
       <div class="container-fluid">
@@ -20,7 +26,9 @@
           <a href="${github_home_page}"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/52760788cde945287fbb584134c4cbc2bc36f904/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f77686974655f6666666666662e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_white_ffffff.png"></a>
         </div>
 
-        <p>Hello, ${userid}</p>
+        <div>
+          <p>Hello, ${userid}</p>
+        </div>
 
         <div class="row" style="margin-bottom: 5rem;">
           <div class="col-md-12">
@@ -47,6 +55,12 @@
             <p>Some recent entries:</p>
           </div>
         </div>
+        ${request.persona_button}
+        %if bossman:
+        You da boss, ${userid}
+        %else:
+        Piss off, ${userid}
+        %endif
         <div class="row">
           <div class="col-md-12">
             <div class="table-responsive">
