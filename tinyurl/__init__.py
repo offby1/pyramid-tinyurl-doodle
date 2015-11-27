@@ -56,7 +56,7 @@ def main(global_config, **settings):
     settings['git_info'] = _grab_git_info()
 
     settings['persona.secret'] = 'xyzzy'
-    settings['persona.audiences'] = 'http://localhost:6543'
+    settings['persona.audiences'] = 'http://0.0.0.0:6543'
 
     engine = engine_from_config(settings, 'sqlalchemy.')
     DBSession.configure(bind=engine)
