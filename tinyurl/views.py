@@ -6,9 +6,11 @@ import logging
 
 # 3rd-party
 from    babel.dates import format_timedelta
+from    pyramid.exceptions import Forbidden
 import  pyramid.httpexceptions
 from    pyramid.renderers import render_to_response
 from    pyramid.response import Response
+from    pyramid.security import authenticated_userid
 from    pyramid.view import view_config
 import  pytz
 import  six.moves.urllib.parse
@@ -67,6 +69,10 @@ def _recent_entries(session, request):
 
 @view_config(route_name='home', request_method='GET')
 def home_GET(request):
+    userid = authenticated_userid(request)
+
+    logger.info ("userid is %r", userid)
+
     session = DBSession()
     return render(request,
                   {
