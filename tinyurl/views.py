@@ -71,13 +71,15 @@ def _recent_entries(session, request):
 def home_GET(request):
     userid = authenticated_userid(request)
 
-    logger.info ("userid is %r", userid)
+    if userid is None:
+        raise Forbidden
 
     session = DBSession()
     return render(request,
                   {
                       'recent_entries': _recent_entries(session, request),
                       'truncate': truncate,
+                      'userid': userid,
                   })
 
 
