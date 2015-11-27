@@ -5,6 +5,7 @@ pg8000
 pyramid
 pyramid_chameleon
 pyramid_debugtoolbar
+pyramid_persona
 pyramid_tm
 pytz
 six
