@@ -52,18 +52,12 @@ def main(global_config, **settings):
         reload_module(babel.dates)
 
     settings = expandvars_dict (settings)
-
     settings['git_info'] = _grab_git_info()
-
-    settings['persona.secret'] = 'xyzzy'
-    settings['persona.audiences'] = 'http://0.0.0.0:6543'
 
     engine = engine_from_config(settings, 'sqlalchemy.')
     DBSession.configure(bind=engine)
     Base.metadata.bind = engine
     config = Configurator(settings=settings)
-
-    config.include('pyramid_persona')
 
     config.add_static_view('static', 'static', cache_max_age=3600)
     config.add_route('robots', '/robots.txt')
