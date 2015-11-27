@@ -81,8 +81,11 @@ def home_GET(request):
                   })
 
 
-def render(request, value):
+def render(request, values):
     accept_header = webob.acceptparse.Accept(str(request.accept))
+
+    # I'm too lazy to do auth properly, so this is a workaround
+    values.setdefault('userid', '???')
 
     if accept_header.best_match(['application/json', 'text/html']) == 'text/html':
         git_info = request.registry.settings['git_info']
@@ -91,13 +94,13 @@ def render(request, value):
         return render_to_response ('templates/homepage.mak',
 
                                    # Stick my beloved git info in there
-                                   dict(value,
+                                   dict(values,
                                         github_home_page=request.registry.settings['github_home_page'],
                                         this_commit_url=this_commit_url),
 
                                    request=request)
 
-    r = Response(body=request.application_url + value.get('short_url', ''),
+    r = Response(body=request.application_url + values.get('short_url', ''),
                  status='200 OK')
     r.content_type = 'text/plain'
     return r
