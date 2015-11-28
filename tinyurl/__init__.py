@@ -52,6 +52,7 @@ def main(global_config, **settings):
         reload_module(babel.dates)
 
     settings = expandvars_dict (settings)
+
     settings['git_info'] = _grab_git_info()
 
     engine = engine_from_config(settings, 'sqlalchemy.')
