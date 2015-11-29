@@ -16,7 +16,6 @@ from sqlalchemy.sql.expression import func
 from zope.sqlalchemy import ZopeTransactionExtension
 import calendar
 import pytz
-import time
 
 DBSession = scoped_session(sessionmaker(extension=ZopeTransactionExtension()))
 Base = declarative_base()
