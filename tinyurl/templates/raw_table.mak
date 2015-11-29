@@ -34,7 +34,7 @@
                 </tr>
                 %for e in table:
                 <tr>
-                  <td>${e.create_date}</td>
+                  <td>${e.create_date_with_tz}</td>
                   <td>${e.human_hash}</td>
                   <td>${e.long_url}</td>
                 </tr>
