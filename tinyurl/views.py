@@ -77,6 +77,10 @@ def home_GET(request):
                   })
 
 
+def _is_boss(userid):
+    return (userid == 'eric.hanchrow@gmail.com')
+
+
 def render(request, values):
     accept_header = webob.acceptparse.Accept(str(request.accept))
 
@@ -91,7 +95,7 @@ def render(request, values):
                                         github_home_page=request.registry.settings['github_home_page'],
                                         this_commit_url=this_commit_url,
                                         userid=userid,
-                                        bossman=(userid == 'eric.hanchrow@gmail.com')),
+                                        bossman=_is_boss(userid)),
 
                                    request=request)
 
@@ -150,3 +154,12 @@ def lengthen_GET(request):
         logger.info ("Redirecting to %r", old_item.long_url)
         return pyramid.httpexceptions.HTTPSeeOther(location=old_item.long_url)
     return pyramid.httpexceptions.HTTPNotFound()
+
+
+@view_config(route_name='edit', request_method='GET', renderer='templates/raw_table.mak')
+def edit_GET(request):
+    if not _is_boss(authenticated_userid(request)):
+        raise Forbidden
+
+    session = DBSession()
+    return {'table': session.query(HashModel).all()}

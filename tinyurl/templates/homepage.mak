@@ -51,12 +51,7 @@
             <p>Some recent entries:</p>
           </div>
         </div>
-        ${request.persona_button}
-        %if bossman:
-        You da boss, ${userid}
-        %else:
-        Piss off, ${userid}
-        %endif
+
         <div class="row">
           <div class="col-md-12">
             <div class="table-responsive">
@@ -77,6 +72,7 @@
             </div>
           </div>
         </div>
+        <a href="/edit">Edit this stuff</a>
       </div>
       <footer class="footer">
         <div class="container">
