@@ -18,6 +18,9 @@
     <script src="https://login.persona.org/include.js" type="text/javascript"></script>
     <script type="text/javascript">${request.persona_js}</script>
 
+    <!-- handsontable -->
+    <script src="//handsontable.com/dist/handsontable.full.js"></script>
+    <link rel="stylesheet" media="screen" href="//handsontable.com/dist/handsontable.full.css">
     </head>
 
     <body>
@@ -25,24 +28,28 @@
         ${request.persona_button}
         <div class="row">
           <div class="col-md-12">
-            <div class="table-responsive">
-              <table class="table">
-                <tr>
-                  <th>Date</th>
-                  <th>Hash</th>
-                  <th>Url</th>
-                </tr>
-                %for e in table:
-                <tr>
-                  <td>${e.create_date}</td>
-                  <td>${e.human_hash}</td>
-                  <td>${e.long_url}</td>
-                </tr>
-                %endfor
-              </table>
+            <div class="table-responsive" id="example">
             </div>
           </div>
         </div>
       </div>
     </body>
+    <script type="text/javascript">
+      var data = [
+      %for e in table:
+      [new Date("${e.create_date}"),
+      "${e.human_hash}",
+      "${e.long_url}"],
+      %endfor
+      ];
+
+      var container = document.getElementById('example');
+      var hot = new Handsontable(container, {
+                                 data: data,
+                                 minSpareRows: 0,
+                                 rowHeaders: true,
+                                 colHeaders: ["Date", "Hash", "URL"],
+                                 contextMenu: true
+      });
+    </script>
   </html>
