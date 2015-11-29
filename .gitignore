@@ -1,12 +1,11 @@
+#*#
 *.pyc
 *.sqlite
+*_flymake.py
 *~
+.cache/
+/*.html
+/.git-post-checkout-info
 /.vagrant/
-/TODO.html
 /tinyurl.egg-info/
 /venv/
-/.git-post-checkout-info
-#*#
-*_flymake.py
-.cache/
-/README.html
