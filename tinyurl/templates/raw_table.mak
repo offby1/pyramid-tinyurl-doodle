@@ -37,7 +37,7 @@
     <script type="text/javascript">
       var data = [
       %for e in table:
-      [new Date("${e.create_date}"),
+      [new Date(${e.time_t * 1000}),
       "${e.human_hash}",
       "${e.long_url}"],
       %endfor
