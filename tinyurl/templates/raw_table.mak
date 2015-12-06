@@ -27,6 +27,7 @@
 
     <body>
       <div class="container-fluid">
+        <p><a href="/">HOME</a></p>
         ${request.persona_button}
         <div class="row">
           <div class="col-md-12">
@@ -47,9 +48,8 @@
                   <td>${e.human_hash}</td>
                   <td>${e.long_url}</td>
                   <td>
-                  <button type="button"
-                          onclick="nix_row('${request.route_path('delete', human_hash=e.human_hash)}')">
-                    Click Me!
+                  <button type="button" data-delete-url="${request.route_path('delete', human_hash=e.human_hash)}">
+                    Click Me to delete ${e.human_hash}!
                   </button>
                   </td>
                 </tr>
@@ -61,14 +61,24 @@
         </div>
       </div>
     <script type="text/javascript">
-      var nix_row = function (delete_url) {
+       $( "#index tbody" ).on( "click", "button", function() {
+         nix_row( $( this ) )
+       });
+
+      var nix_row = function (button) {
+        var delete_url = button.data ('deleteUrl');
+
          $.ajax ({
          url: delete_url,
          type: "DELETE",
          dataType: "json",
          success: function (json) {
-            // TODO -- somehow delete the associated datatable row, or at least draw a line through it or something
-            alert(json);
+         var table = $('#index').DataTable();
+
+         table
+           .row( button.parents('tr') )
+           .remove()
+           .draw();
          },
          error: function( xhr, status, errorThrown ) {
            alert( "Sorry, there was a problem!" );
