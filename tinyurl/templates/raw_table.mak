@@ -37,6 +37,7 @@
                   <th>Date</th>
                   <th>Hash</th>
                   <th>Url</th>
+                  <th>Nix</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -45,6 +46,12 @@
                   <td>${e.create_date_with_tz}</td>
                   <td>${e.human_hash}</td>
                   <td>${e.long_url}</td>
+                  <td>
+                  <button type="button"
+                          onclick="nix_row('${request.route_path('delete', human_hash=e.human_hash)}')">
+                    Click Me!
+                  </button>
+                  </td>
                 </tr>
                 %endfor
                 </tbody>
@@ -54,6 +61,9 @@
         </div>
       </div>
     <script type="text/javascript">
+      var nix_row = function (delete_url) {
+         alert (delete_url);
+      };
       $(document).ready(function() {
       $("#index").dataTable({
       });
