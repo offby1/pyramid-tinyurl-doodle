@@ -6,9 +6,11 @@ import logging
 
 # 3rd-party
 from    babel.dates import format_timedelta
+from    pyramid.exceptions import Forbidden
 import  pyramid.httpexceptions
 from    pyramid.renderers import render_to_response
 from    pyramid.response import Response
+from    pyramid.security import authenticated_userid
 from    pyramid.view import view_config
 import  pytz
 import  six.moves.urllib.parse
@@ -75,23 +77,29 @@ def home_GET(request):
                   })
 
 
-def render(request, value):
+def _is_boss(userid):
+    return (userid == 'eric.hanchrow@gmail.com')
+
+
+def render(request, values):
     accept_header = webob.acceptparse.Accept(str(request.accept))
 
     if accept_header.best_match(['application/json', 'text/html']) == 'text/html':
         git_info = request.registry.settings['git_info']
 
         this_commit_url = git_info and '{}commit/{}'.format(request.registry.settings['github_home_page'], git_info)
+        userid = authenticated_userid(request)
         return render_to_response ('templates/homepage.mak',
 
-                                   # Stick my beloved git info in there
-                                   dict(value,
+                                   dict(values,
                                         github_home_page=request.registry.settings['github_home_page'],
-                                        this_commit_url=this_commit_url),
+                                        this_commit_url=this_commit_url,
+                                        userid=userid,
+                                        bossman=_is_boss(userid)),
 
                                    request=request)
 
-    r = Response(body=request.application_url + value.get('short_url', ''),
+    r = Response(body=request.application_url + values.get('short_url', ''),
                  status='200 OK')
     r.content_type = 'text/plain'
     return r
@@ -146,3 +154,23 @@ def lengthen_GET(request):
         logger.info ("Redirecting to %r", old_item.long_url)
         return pyramid.httpexceptions.HTTPSeeOther(location=old_item.long_url)
     return pyramid.httpexceptions.HTTPNotFound()
+
+
+@view_config(route_name='edit', request_method='GET', renderer='templates/raw_table.mak')
+def edit_GET(request):
+    if not _is_boss(authenticated_userid(request)):
+        raise Forbidden
+
+    session = DBSession()
+    return {'table': session.query(HashModel).all()}
+
+@view_config(route_name='delete', request_method='DELETE', renderer='json')
+def delete_DELETE(request):
+    if not _is_boss(authenticated_userid(request)):
+        raise Forbidden
+
+    session = DBSession()
+    human_hash = request.matchdict['human_hash']
+    # TODO -- log the deleted row, or something, for safety.
+    session.query(HashModel).filter_by(human_hash=human_hash).delete()
+    return "Deleted the row with hash {}".format(human_hash)

@@ -68,6 +68,8 @@ def main(global_config, **settings):
     # same way.
     config.add_route('shorten', '/shorten-/')
 
-    config.add_route('lengthen', '/{human_hash}')
+    config.add_route('edit', '/edit')
+    config.add_route('lengthen', '/{human_hash}', request_method='GET')
+    config.add_route('delete', '/{human_hash}', request_method='DELETE')
     config.scan()
     return config.make_wsgi_app()

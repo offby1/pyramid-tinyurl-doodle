@@ -12,6 +12,12 @@
 
     <!-- Custom styles for this scaffold -->
     <link href="${request.static_path('tinyurl:static/theme.css')}" rel="stylesheet">
+
+    <!-- Persona mumbo jumbo -->
+    <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+    <script src="https://login.persona.org/include.js" type="text/javascript"></script>
+    <script type="text/javascript">${request.persona_js}</script>
+
     </head>
     <body>
       <div class="container-fluid">
@@ -45,6 +51,7 @@
             <p>Some recent entries:</p>
           </div>
         </div>
+
         <div class="row">
           <div class="col-md-12">
             <div class="table-responsive">
@@ -65,6 +72,7 @@
             </div>
           </div>
         </div>
+        <a href="/edit">Edit this stuff</a>
       </div>
       <footer class="footer">
         <div class="container">
