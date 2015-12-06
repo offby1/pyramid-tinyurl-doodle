@@ -171,5 +171,6 @@ def delete_DELETE(request):
 
     session = DBSession()
     human_hash = request.matchdict['human_hash']
+    # TODO -- log the deleted row, or something, for safety.
     session.query(HashModel).filter_by(human_hash=human_hash).delete()
     return "Deleted the row with hash {}".format(human_hash)

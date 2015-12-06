@@ -90,6 +90,10 @@
       };
       $(document).ready(function() {
       $("#index").dataTable({
+
+        // TODO -- add some magic whereby we can sort the table by the
+        // _length_ of the long URL, since spammy URLs tend to be short.
+
       });
       }
       );
