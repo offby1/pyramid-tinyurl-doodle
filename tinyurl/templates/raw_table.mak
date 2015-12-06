@@ -62,7 +62,21 @@
       </div>
     <script type="text/javascript">
       var nix_row = function (delete_url) {
-         alert (delete_url);
+         $.ajax ({
+         url: delete_url,
+         type: "DELETE",
+         dataType: "json",
+         success: function (json) {
+            // TODO -- somehow delete the associated datatable row, or at least draw a line through it or something
+            alert(json);
+         },
+         error: function( xhr, status, errorThrown ) {
+           alert( "Sorry, there was a problem!" );
+           console.log( "Error: " + errorThrown );
+           console.log( "Status: " + status );
+           console.dir( xhr );
+         }
+         });
       };
       $(document).ready(function() {
       $("#index").dataTable({
