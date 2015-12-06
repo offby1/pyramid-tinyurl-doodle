@@ -166,6 +166,10 @@ def edit_GET(request):
 
 @view_config(route_name='delete', request_method='DELETE', renderer='json')
 def delete_DELETE(request):
+    if not _is_boss(authenticated_userid(request)):
+        raise Forbidden
+
     session = DBSession()
     human_hash = request.matchdict['human_hash']
-    return "Pretend that I deleted the row with hash {}".format(human_hash)
+    session.query(HashModel).filter_by(human_hash=human_hash).delete()
+    return "Deleted the row with hash {}".format(human_hash)
