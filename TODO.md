@@ -6,3 +6,7 @@
 
 - Serve HTTPS with a cert from
   https://letsencrypt.readthedocs.org/en/latest/intro.html
+
+- Nix PasteDeploy; use
+  [Montague](https://metaclassical.com/announcing-montague-the-new-way-to-configure-python-applications/)
+  instead!
