@@ -46,6 +46,14 @@ Can't remember :-|
 Doing The Docker Thang
 ----------------------
 
+In production:
+
+$ docker run --detach --name=db -v /var/lib/tinyurl-var-lib-postgresql-data:/var/lib/postgresql/data library/postgres
+$ docker run --link db:db offby1/tinyurl initialize_tinyurl_db /tinyurl/production.ini
+$ docker run --detach -p 80:80 --link db:db offby1/tinyurl
+
+On the desktop:
+
 $ vagrant up
 
 To back up a running docker DB:
