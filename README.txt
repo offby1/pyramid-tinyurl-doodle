@@ -48,9 +48,23 @@ Doing The Docker Thang
 
 In production:
 
-$ docker run --detach --name=db -v /var/lib/tinyurl-var-lib-postgresql-data:/var/lib/postgresql/data library/postgres
-$ docker run --link db:db offby1/tinyurl initialize_tinyurl_db /tinyurl/production.ini
-$ docker run --detach -p 80:80 --link db:db offby1/tinyurl
+$ docker run --detach              --name=db -v /var/lib/tinyurl-var-lib-postgresql-data:/var/lib/postgresql/data library/postgres
+$ docker run          --link db:db offby1/tinyurl initialize_tinyurl_db /tinyurl/production.ini
+$ docker run --detach --link db:db --name tinyurl -p 80:80  offby1/tinyurl
+
+Upgrading:
+
+Use the desktop (below) to build a new docker image, and push it.
+
+$ docker build .
+$ docker images  # note the ID of the image you just built
+$ docker tag -f deadbeef offby1/tinyurl
+$ docker push offby1/tinyurl # this is annoyingly slow
+
+Then, on the production server:
+
+$ docker pull offby1/tinyurl
+$ docker rm -f tinyurl && docker run --detach --link db:db --name tinyurl -p 80:80  offby1/tinyurl
 
 On the desktop:
 
