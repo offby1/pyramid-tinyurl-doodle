@@ -42,3 +42,9 @@ class HashModel(Base):
     @property
     def create_date_with_tz(self):
         return time.strftime('%FT%TZ', time.gmtime(self.time_t))
+
+
+    def __repr__(self):
+        return repr(dict(create_date=self.create_date,
+                         human_hash=self.human_hash,
+                         long_url=self.long_url))
