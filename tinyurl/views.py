@@ -164,6 +164,7 @@ def edit_GET(request):
     session = DBSession()
     return {'table': session.query(HashModel).all()}
 
+
 @view_config(route_name='delete', request_method='DELETE', renderer='json')
 def delete_DELETE(request):
     if not _is_boss(authenticated_userid(request)):
