@@ -91,6 +91,8 @@
       $(document).ready(function() {
       $("#index").dataTable({
 
+       "order": [] // use whatever order the rows come back from the db
+
         // TODO -- add some magic whereby we can sort the table by the
         // _length_ of the long URL, since spammy URLs tend to be short.
 

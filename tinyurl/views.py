@@ -162,7 +162,7 @@ def edit_GET(request):
         raise Forbidden
 
     session = DBSession()
-    return {'table': session.query(HashModel).all()}
+    return {'table': session.query(HashModel).order_by(HashModel.create_date.desc()).all()}
 
 
 @view_config(route_name='delete', request_method='DELETE', renderer='json')
