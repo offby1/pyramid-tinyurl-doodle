@@ -15,18 +15,18 @@ requires = [
     'transaction',
     'zope.sqlalchemy',
     'waitress',
-    ]
+]
 
 setup(name='tinyurl',
       version='0.0',
       description='tinyurl',
       long_description=README,
       classifiers=[
-        "Programming Language :: Python",
-        "Framework :: Pyramid",
-        "Topic :: Internet :: WWW/HTTP",
-        "Topic :: Internet :: WWW/HTTP :: WSGI :: Application",
-        ],
+          "Programming Language :: Python",
+          "Framework :: Pyramid",
+          "Topic :: Internet :: WWW/HTTP",
+          "Topic :: Internet :: WWW/HTTP :: WSGI :: Application",
+      ],
       author='',
       author_email='',
       url='',
@@ -41,5 +41,4 @@ setup(name='tinyurl',
       main = tinyurl:main
       [console_scripts]
       initialize_tinyurl_db = tinyurl.scripts.initializedb:main
-      """,
-      )
+      """, )

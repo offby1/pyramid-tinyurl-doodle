@@ -3,17 +3,11 @@ import sys
 
 from sqlalchemy import engine_from_config
 
-from pyramid.paster import (
-    get_appsettings,
-    setup_logging,
-    )
+from pyramid.paster import (get_appsettings, setup_logging, )
 
 from pyramid.scripts.common import parse_vars
 
-from ..models import (
-    DBSession,
-    Base,
-    )
+from ..models import (DBSession, Base, )
 
 from .. import expandvars_dict
 
@@ -32,7 +26,7 @@ def main(argv=sys.argv):
     options = parse_vars(argv[2:])
     setup_logging(config_uri)
     settings = get_appsettings(config_uri, options=options)
-    settings = expandvars_dict (settings)
+    settings = expandvars_dict(settings)
 
     engine = engine_from_config(settings, 'sqlalchemy.')
     DBSession.configure(bind=engine)

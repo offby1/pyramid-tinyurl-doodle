@@ -10,21 +10,20 @@ import six
 from six.moves import reload_module
 from sqlalchemy import engine_from_config
 
-from .models import (
-    DBSession,
-    Base,
-    )
+from .models import (DBSession, Base, )
 
 
 def expandvars_dict(settings):
     """Expands all environment variables in a settings dictionary."""
-    expanded = dict((key, os.path.expandvars(value)) for
-                    key, value in six.iteritems(settings))
+    expanded = dict((key, os.path.expandvars(value))
+                    for key, value in six.iteritems(settings))
     # Kludge-o-rama: sqlalchemy fails with
     # sqlalchemy.exc.NoSuchModuleError: Can't load plugin: sqlalchemy.dialects:postgres.pg8000
     # if we don't do this.
     if 'sqlalchemy.url' in expanded:
-        expanded['sqlalchemy.url'] = re.sub(r'^postgres://', 'postgresql+pg8000://', expanded['sqlalchemy.url'])
+        expanded['sqlalchemy.url'] = re.sub(r'^postgres://',
+                                            'postgresql+pg8000://',
+                                            expanded['sqlalchemy.url'])
 
     return expanded
 
@@ -51,7 +50,7 @@ def main(global_config, **settings):
         os.environ['LC_ALL'] = 'C'
         reload_module(babel.dates)
 
-    settings = expandvars_dict (settings)
+    settings = expandvars_dict(settings)
 
     settings['git_info'] = _grab_git_info()
 

@@ -11,15 +11,11 @@ class TestMyViewSuccessCondition(unittest.TestCase):
         self.config = testing.setUp()
         from sqlalchemy import create_engine
         engine = create_engine('sqlite://')
-        from .models import (
-            Base,
-            HashModel,
-            )
+        from .models import (Base, HashModel, )
         DBSession.configure(bind=engine)
         Base.metadata.create_all(engine)
         with transaction.manager:
-            model = HashModel(human_hash='human!',
-                              long_url='say what')
+            model = HashModel(human_hash='human!', long_url='say what')
             DBSession.add(model)
 
     def tearDown(self):
@@ -28,7 +24,8 @@ class TestMyViewSuccessCondition(unittest.TestCase):
 
     def test_passing_view(self):
         from .views import create_GET
-        request = testing.DummyRequest(params={'input_url': 'http://floogie/hoogie'})
+        request = testing.DummyRequest(
+            params={'input_url': 'http://floogie/hoogie'})
         info = create_GET(request)
         self.assertEqual(info, {'hey': 'this should really be a static view'})
 
