@@ -18,6 +18,7 @@ import webob.acceptparse
 
 # Local
 from .models import (DBSession, HashModel, )
+from . import recaptcha_client
 
 logger = logging.getLogger('tinyurl')
 
@@ -105,6 +106,15 @@ def render(request, values):
 
 @view_config(route_name='shorten', request_method='GET')
 def create_GET(request):
+    if not recaptcha_client.verify_request(request):
+        return pyramid.httpexceptions.HTTPUnauthorized(
+            body=
+            """According to <a href="https://www.google.com/recaptcha/">Google
+Recaptcha</a>, you're a robot.  Don't blame me!""")
+
+    # TODO -- set a cookie, or something, so that subsequent requests
+    # from the same client don't need to jump through the recaptcha
+    # hoops again.
     session = DBSession()
     try:
         long_url = request.params['input_url']

@@ -9,3 +9,4 @@
 /.vagrant/
 /tinyurl.egg-info/
 /venv/
+/tinyurl/.recaptcha_secret
