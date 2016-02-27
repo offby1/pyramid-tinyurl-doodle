@@ -67,10 +67,14 @@ def _recent_entries(session, request):
 
 @view_config(route_name='home', request_method='GET')
 def home_GET(request):
+    authed = request.session.get('authenticated')
+    logger.info("You %s already authenticated.", "are" if authed else "are not")
+
     session = DBSession()
     return render(request, {
         'recent_entries': _recent_entries(session, request),
         'truncate': truncate,
+        'display_captcha': not authed
     })
 
 
@@ -106,15 +110,18 @@ def render(request, values):
 
 @view_config(route_name='shorten', request_method='GET')
 def create_GET(request):
-    if not recaptcha_client.verify_request(request):
-        return pyramid.httpexceptions.HTTPUnauthorized(
-            body=
-            """According to <a href="https://www.google.com/recaptcha/">Google
-Recaptcha</a>, you're a robot.  Don't blame me!""")
+    authed = request.session.get('authenticated')
 
-    # TODO -- set a cookie, or something, so that subsequent requests
-    # from the same client don't need to jump through the recaptcha
-    # hoops again.
+    if not authed:
+        if not recaptcha_client.verify_request(request):
+            return pyramid.httpexceptions.HTTPUnauthorized(
+                body=
+                """According to <a href="https://www.google.com/recaptcha/">Google
+    Recaptcha</a>, you're a robot.  Don't blame me!""")
+        else:
+            logger.info("You just passed the Captcha; now you're authenticated.")
+            request.session['authenticated'] = True
+
     session = DBSession()
     try:
         long_url = request.params['input_url']

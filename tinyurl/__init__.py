@@ -1,11 +1,14 @@
 # Core
 import datetime
 import os
+import random
 import re
+import string
 
 # 3rd-party
 import babel.dates
 from pyramid.config import Configurator
+from pyramid.session import SignedCookieSessionFactory
 import six
 from six.moves import reload_module
 from sqlalchemy import engine_from_config
@@ -58,6 +61,9 @@ def main(global_config, **settings):
     DBSession.configure(bind=engine)
     Base.metadata.bind = engine
     config = Configurator(settings=settings)
+
+    my_session_factory = SignedCookieSessionFactory(''.join([random.choice(string.ascii_letters) for _ in range (20)]))
+    config.set_session_factory(my_session_factory)
 
     config.add_static_view('static', 'static', cache_max_age=3600)
     config.add_route('robots', '/robots.txt')

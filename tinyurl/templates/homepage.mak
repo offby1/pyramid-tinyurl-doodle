@@ -32,7 +32,11 @@
               <form action="${request.route_path('shorten')}" method="get" style="margin-bottom: 2rem;">
                 <input type="text" id="input_url" name="input_url" placeholder="Type a URL here, yo"/>
                 <input type="submit" value="Tiny-ify it"/>
-                <div class="g-recaptcha" data-sitekey="6LcsPBkTAAAAAC8PdjnUhN0GYVEcDACpW76G39cl"></div>
+                <div class="g-recaptcha" data-sitekey="6LcsPBkTAAAAAC8PdjnUhN0GYVEcDACpW76G39cl"
+                %if not display_captcha:
+                style="visibility:hidden"
+                %endif
+                     ></div>
               </form>
               %if short_url:
               <div style="font-size: 200%">
