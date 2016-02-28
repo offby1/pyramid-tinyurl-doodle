@@ -1,49 +1,41 @@
 import unittest
-import transaction
+import unittest.mock
 
 from pyramid import testing
 
-from .models import DBSession
+from . import auth
 
 
-class TestMyViewSuccessCondition(unittest.TestCase):
+class TestRecaptchaStuff(unittest.TestCase):
     def setUp(self):
         self.config = testing.setUp()
-        from sqlalchemy import create_engine
-        engine = create_engine('sqlite://')
-        from .models import (Base, HashModel, )
-        DBSession.configure(bind=engine)
-        Base.metadata.create_all(engine)
-        with transaction.manager:
-            model = HashModel(human_hash='human!', long_url='say what')
-            DBSession.add(model)
 
     def tearDown(self):
-        DBSession.remove()
         testing.tearDown()
 
-    def test_passing_view(self):
-        from .views import create_GET
-        request = testing.DummyRequest(
-            params={'input_url': 'http://floogie/hoogie'})
-        info = create_GET(request)
-        self.assertEqual(info, {'hey': 'this should really be a static view'})
-
-
-class TestMyViewFailureCondition(unittest.TestCase):
-    def setUp(self):
-        self.config = testing.setUp()
-        from sqlalchemy import create_engine
-        engine = create_engine('sqlite://')
-
-        DBSession.configure(bind=engine)
-
-    def tearDown(self):
-        DBSession.remove()
-        testing.tearDown()
-
-    def test_failing_view(self):
-        from .views import create_GET
+    def test_missing_URL_parameter(self):
         request = testing.DummyRequest()
-        info = create_GET(request)
-        self.assertEqual(info.status_int, 400)
+        self.assertFalse(auth._captcha_info_is_valid(request))
+
+    def test_Google_says_drop_dead(self):
+        request = testing.DummyRequest(params={'g-recaptcha-response': 'yeah yeah whatever'})
+        with unittest.mock.patch('tinyurl.auth._do_the_google_thang') as _goog:
+            _goog.return_value = False
+            self.assertFalse(auth._captcha_info_is_valid(request))
+
+    def test_Google_says_eva_thang_funky(self):
+        request = testing.DummyRequest(params={'g-recaptcha-response': 'yeah yeah whatever'})
+        with unittest.mock.patch('tinyurl.auth._do_the_google_thang') as _goog:
+            _goog.return_value = True
+            self.assertTrue(auth._captcha_info_is_valid(request))
+
+    def test_we_only_do_the_google_roundtrip_once(self):
+        request = testing.DummyRequest(client_addr='1.2.3.4',
+                                       params={'g-recaptcha-response': 'yeah yeah whatever'})
+        with unittest.mock.patch('tinyurl.auth._do_the_google_thang') as _goog:
+            _goog.return_value = True
+
+            self.assertTrue(auth.verify_request(request))
+            self.assertTrue(auth.verify_request(request))
+
+            self.assertEqual(len(_goog.call_args_list), 1)
