@@ -4,23 +4,9 @@ https://www.google.com/recaptcha/
 """
 
 import logging
-import os
 import requests
 
 logger = logging.getLogger(__name__)
-
-_g_recaptcha_secret = None
-
-
-def recaptcha_secret():
-    global _g_recaptcha_secret
-    if _g_recaptcha_secret is None:
-        here = os.path.abspath(os.path.dirname(__file__))
-        with open(os.path.join(here, '.recaptcha_secret')) as inf:
-            logger.info("Read recaptcha_secret from %s", inf.name)
-            _g_recaptcha_secret = inf.read()
-
-    return _g_recaptcha_secret
 
 
 def _is_whitelisted(client_addr):
@@ -43,7 +29,7 @@ def verify_request(request):
 
     response = requests.post(
         url='https://www.google.com/recaptcha/api/siteverify',
-        data=dict(secret=recaptcha_secret(),
+        data=dict(secret=request.registry.settings.get('recaptcha_secret'),
                   response=g_recaptcha_response,
                   remoteip=client_addr)).json()
 
