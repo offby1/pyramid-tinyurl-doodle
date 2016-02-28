@@ -34,7 +34,7 @@
                 <input type="submit" value="Tiny-ify it"/>
                 <div class="g-recaptcha" data-sitekey="6LcsPBkTAAAAAC8PdjnUhN0GYVEcDACpW76G39cl"
                 %if not display_captcha:
-                style="visibility:hidden"
+                style="display:none"
                 %endif
                      ></div>
               </form>
