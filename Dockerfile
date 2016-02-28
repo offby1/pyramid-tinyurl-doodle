@@ -9,6 +9,13 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update &&\
 COPY requirements.txt /tinyurl/
 RUN pip install -r /tinyurl/requirements.txt
 
+# This grabs our various secrets.  That wasn't intentional :-( It
+# works, in that the secrets get built into the docker image, but
+# they're not secret any more.  Apparently I'm not the only one with
+# this sort of problem: https://github.com/docker/docker/issues/13490
+# Perhaps http://square.github.io/keywhiz/ is a clean way to solve
+# this.
+
 COPY . /tinyurl/
 
 WORKDIR /tinyurl
