@@ -4,18 +4,21 @@
 #
 #    pip-compile dev-requirements.in
 #
-autopep8==1.2.1
-click==5.1                # via pip-tools
+autopep8==1.2.2
+click==6.3                # via pip-tools
 first==2.0.1              # via pip-tools
-flake8==2.4.1
+flake8==2.5.4
 importmagic==0.1.3
-mccabe==0.3.1             # via flake8
-pep8==1.5.7               # via autopep8, flake8
-pip-tools==1.1.6
-pyflakes==0.8.1           # via flake8
+mccabe==0.4.0             # via flake8
+pep8==1.7.0               # via autopep8, flake8
+pip-tools==1.6
+py==1.4.31                # via pytest, pytest-catchlog
+pyflakes==1.0.0           # via flake8
+pytest-catchlog==1.2.2
+pytest==2.8.7
 rope-py3k==0.9.4.post1
 six==1.10.0               # via pip-tools
 
 # The following packages are commented out because they are
 # considered to be unsafe in a requirements file:
-# setuptools==18.4          # via importmagic
+# setuptools                # via importmagic
