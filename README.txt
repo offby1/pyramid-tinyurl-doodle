@@ -30,7 +30,7 @@ lest ye get an annoying exception:
 
 - $VENV/bin/python setup.py develop
 
-- $VENV/bin/py.test tinyurl/tests.py
+- $VENV/bin/py.test tinyurl
 
 - $VENV/bin/initialize_tinyurl_db development.ini
 
