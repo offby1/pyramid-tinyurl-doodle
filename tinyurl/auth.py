@@ -3,7 +3,11 @@ Stuff for using Google's "recaptcha" to keep out spam
 https://www.google.com/recaptcha/
 """
 
+# Core
 import logging
+
+# Third-party
+from IPy import IP
 import requests
 
 logger = logging.getLogger(__name__)
@@ -17,7 +21,15 @@ def _authenticated_within_pyramid(request):
 
 def _is_from_whitelisted_IP(request):
     # TODO -- put the IP address(s) into config
-    return request.client_addr == '52.8.12.207'  # the EC2 box on which rudybot runs
+
+    # the EC2 box on which rudybot runs
+    if request.client_addr == '52.8.12.207':
+        return True
+
+    # If the client's address is private, that means it's probably me,
+    # testing this app.
+    i = IP(request.client_addr)
+    return i.iptype() == 'PRIVATE'
 
 
 def _do_the_google_thang(request):

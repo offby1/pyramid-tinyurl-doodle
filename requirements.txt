@@ -6,6 +6,7 @@
 #
 babel==2.1.1
 chameleon==2.24           # via pyramid-chameleon
+IPy==0.83
 mako==1.0.3               # via pyramid-mako
 markupsafe==0.23          # via mako, pyramid-persona
 paste==2.0.2
