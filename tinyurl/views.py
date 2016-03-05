@@ -18,6 +18,7 @@ import webob.acceptparse
 
 # Local
 from .models import (DBSession, HashModel, )
+from . import auth
 
 logger = logging.getLogger('tinyurl')
 
@@ -66,10 +67,14 @@ def _recent_entries(session, request):
 
 @view_config(route_name='home', request_method='GET')
 def home_GET(request):
+    authed = request.session.get('authenticated')
+    logger.info("You %s already authenticated.", "are" if authed else "are not")
+
     session = DBSession()
     return render(request, {
         'recent_entries': _recent_entries(session, request),
         'truncate': truncate,
+        'display_captcha': not authed
     })
 
 
@@ -105,6 +110,12 @@ def render(request, values):
 
 @view_config(route_name='shorten', request_method='GET')
 def create_GET(request):
+    if not auth.verify_request(request):
+        return pyramid.httpexceptions.HTTPUnauthorized(
+            body=
+            """According to <a href="https://www.google.com/recaptcha/">Google
+Recaptcha</a>, you're a robot.  Don't blame me!""")
+
     session = DBSession()
     try:
         long_url = request.params['input_url']
@@ -113,14 +124,6 @@ def create_GET(request):
 
     if six.moves.urllib.parse.urlparse(long_url).netloc == '':
         long_url = u'http://' + long_url
-
-    # Note that the most-active client of this service
-    # (https://github.com/offby1/rudybot/) never submits anything
-    # shorter than some threshold; as of this writing that's 75
-    # characters.  So as long as the value here is no greater than
-    # that, rudybot will keep working.
-    if len(long_url) <= 65:
-        raise pyramid.httpexceptions.HTTPBadRequest("Are you a spammer?")
 
     long_url_bytes = long_url.encode('utf-8')
     hash_object = hashlib.sha256(long_url_bytes)

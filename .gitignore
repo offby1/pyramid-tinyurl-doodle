@@ -6,6 +6,8 @@
 .cache/
 /*.html
 /.git-post-checkout-info
+/.recaptcha_secret
 /.vagrant/
 /tinyurl.egg-info/
 /venv/
+/.cookie_secret

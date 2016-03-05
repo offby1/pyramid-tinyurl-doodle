@@ -12,7 +12,11 @@ importmagic==0.1.3
 mccabe==0.4.0             # via flake8
 pep8==1.7.0               # via autopep8, flake8
 pip-tools==1.6
+py==1.4.31                # via pytest, pytest-catchlog
 pyflakes==1.0.0           # via flake8
+pytest-catchlog==1.2.2
+pytest-mock==0.11.0
+pytest==2.8.7
 rope-py3k==0.9.4.post1
 six==1.10.0               # via pip-tools
 

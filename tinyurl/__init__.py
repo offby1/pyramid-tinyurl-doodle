@@ -1,16 +1,22 @@
 # Core
 import datetime
+import logging
 import os
+import random
 import re
+import string
 
 # 3rd-party
 import babel.dates
 from pyramid.config import Configurator
+from pyramid.session import SignedCookieSessionFactory
 import six
 from six.moves import reload_module
 from sqlalchemy import engine_from_config
 
 from .models import (DBSession, Base, )
+
+logger = logging.getLogger(__name__)
 
 
 def expandvars_dict(settings):
@@ -35,8 +41,26 @@ def _grab_git_info():
                 if index == 1:
                     return line.rstrip()
     except IOError as e:
-        print('{} -- ignoring'.format(e))
+        logger.warning('%s -- ignoring', e)
         return None
+
+
+def _grab_secret(file_name, description):
+    try:
+        with open(file_name) as inf:
+            logger.info("Read %s from %s", description, inf.name)
+            return inf.read()
+    except IOError:
+        logger.exception("Couldn't read %s", description)
+        return ''
+
+
+def _grab_recaptcha_secret():
+    return _grab_secret('.recaptcha_secret', 'recaptcha secret')
+
+
+def _grab_cookie_secret():
+    return _grab_secret('.cookie_secret', 'cookie secret')
 
 
 def main(global_config, **settings):
@@ -53,11 +77,15 @@ def main(global_config, **settings):
     settings = expandvars_dict(settings)
 
     settings['git_info'] = _grab_git_info()
+    settings['recaptcha_secret'] = _grab_recaptcha_secret()
 
     engine = engine_from_config(settings, 'sqlalchemy.')
     DBSession.configure(bind=engine)
     Base.metadata.bind = engine
     config = Configurator(settings=settings)
+
+    my_session_factory = SignedCookieSessionFactory(_grab_cookie_secret())
+    config.set_session_factory(my_session_factory)
 
     config.add_static_view('static', 'static', cache_max_age=3600)
     config.add_route('robots', '/robots.txt')

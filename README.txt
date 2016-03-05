@@ -8,14 +8,20 @@ Getting Started Locally
 
 - cp git/post-checkout .git/hooks
 
+- $VENV/bin/pip install -r dev-requirements.txt
+
 - $VENV/bin/pip install -r requirements.txt
 
-Note that "requirements.txt", despite being checked in to git, is
-automatically generated from "requirements.in".  See
-https://github.com/nvie/pip-tools for details.  Also note that, to
-regenerate those files (at least, on my Mac, using Python 3), you
-gotta put LC_ALL=en_US.utf-8 in the environment, lest ye get an
-annoying exception:
+Note that the various "*requirements.txt" files, despite being checked
+in to git, are automatically generated from the corresponding
+"*requirements.in" files.  See https://github.com/nvie/pip-tools for
+details.  Also note that, to regenerate those files (at least, on my
+Mac, using Python 3), you gotta put LC_ALL=en_US.utf-8 in the
+environment, like this:
+
+    $ LC_ALL=en_US.utf-8 pip-compile dev-requirements.in > dev-requirements.txt
+
+lest ye get an annoying exception:
 
     RuntimeError: Click will abort further execution because Python 3
     was configured to use ASCII as encoding for the
@@ -24,11 +30,11 @@ annoying exception:
 
 - $VENV/bin/python setup.py develop
 
+- $VENV/bin/py.test tinyurl
+
 - $VENV/bin/initialize_tinyurl_db development.ini
 
 - $VENV/bin/pserve --reload development.ini
-
-Note that 'run', 'runapp.py', and 'Procfile' are for heroku.
 
 The only way I found to get it working on OS X was to install
 http://postgresapp.com/ -- I'd tried "brew install postgresql", as
@@ -36,12 +42,6 @@ well as installing from
 http://www.enterprisedb.com/products-services-training/pgdownload#osx;
 but in both cases, I couldn't figure out how to set up postgres' users
 :-(  Somehow postgresapp Just Works™.
-
-Doing The Heroku Thing
-----------------------
-
-Can't remember :-|
-
 
 Doing The Docker Thang
 ----------------------
