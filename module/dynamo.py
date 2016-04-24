@@ -1,20 +1,29 @@
+# Core
+import datetime
+
+# Third party
+import boto3
+import pytz
+
+# Local
 import database
 
 
-def get_one_o_them_boto_session_thingies():
-    pass
+def utcnow_string():
+    return str(datetime.datetime.now (pytz.utc))
 
 
 class DynamoDB(database.DatabaseMeta):
 
-    def __init__(self,
-                 aws_credentials='Do i look like a passsword?!',
-                 aws_region='us-west-2',
-                 aws_service=None):
-        self.session = get_one_o_them_boto_session_thingies()
+    # TODO -- allow region & credentials to be paramaterizable?
+    def __init__(self):
+        self.ddb = boto3.resource('dynamodb')
+        self.table = self.ddb.Table('hashes')
 
     def save(self, key, value):
-        self.session.put_item(key, value)
+        self.table.put_item(Item={'human_hash': key,
+                                  'long_url': value,
+                                  'create_date': utcnow_string()})
 
     def lookup(self, key):
-        self.session.get_item(key)
+        return self.table.get_item(Key={'human_hash': key})['Item']['long_url']

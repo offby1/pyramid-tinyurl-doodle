@@ -14,6 +14,7 @@ def test_it_really_is_abstract ():
     with pytest.raises(TypeError):
         MissingRequiredMethods()
 
+
 def test_dynamo_works():
     d = dynamo.DynamoDB()
 
