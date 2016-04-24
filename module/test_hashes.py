@@ -1,6 +1,7 @@
 import database
 import hashes
 
+import mock
 
 class DummyDatabase(database.DatabaseMeta):
     def __init__(self):
@@ -33,3 +34,13 @@ def test_round_trip():
         output = hashes.long_url_to_short_string(i, database)
 
         assert(hashes.lengthen_short_string(output, database) == i)
+
+
+def test_same_URL_saves_at_most_once():
+    database = mock.Mock()
+
+    long_url = 'a long, long, time ago'
+    hashes.long_url_to_short_string(long_url, database)
+    hashes.long_url_to_short_string(long_url, database)
+
+    assert len(database.save.call_args_list) == 1
