@@ -1,4 +1,5 @@
 Babel
+boto3
 IPy
 SQLAlchemy
 Paste
