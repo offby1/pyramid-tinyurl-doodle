@@ -1,7 +1,6 @@
 Babel
 boto3
 IPy
-SQLAlchemy
 Paste
 pg8000
 pyramid
@@ -13,4 +12,4 @@ pytz
 six
 transaction
 waitress
-zope.sqlalchemy
+
