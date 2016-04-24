@@ -8,7 +8,7 @@ def test_different_inputs_different_outputs():
         outputs.add(hashes.long_url_to_short_string(input))
 
     assert len(outputs) == len(inputs)
-    assert [len(o) for o in outputs] == [6, 6]
+    assert [len(o) for o in outputs] == [10, 10]
 
 
 def test_round_trip():
