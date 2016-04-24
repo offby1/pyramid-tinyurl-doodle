@@ -1,11 +1,14 @@
+# Core
 import datetime
+import uuid
 
-import database
-import dynamo
-
-
+# 3rd-party
 import pytest
 import pytz
+
+# Local
+import database
+import dynamo
 
 
 def test_it_really_is_abstract ():
@@ -25,16 +28,16 @@ def test_dynamo_works(ddb):
     k = 'key'
     v = 'http://value-village.com'
 
-    ddb.save(k, v)
+    ddb.save_or_update(k, v)
     got = ddb.lookup(k)
     assert(got.get('long_url') == v)
 
 
 def test_honors_create_date(ddb):
-    k = 'key'
+    k = str(uuid.uuid4())
     v = 'http://value-village.com'
     create_date = datetime.datetime(year=2001, month=2, day=3, tzinfo=pytz.utc)
 
-    ddb.save(k, v, create_date=create_date)
+    ddb.save_or_update(k, v, create_date=create_date)
     got = ddb.lookup(k)
     assert(got.get('create_date') == str(create_date))

@@ -2,6 +2,7 @@
 import datetime
 
 # Third party
+import botocore.exceptions
 import boto3
 import pytz
 
@@ -16,13 +17,18 @@ class DynamoDB(database.DatabaseMeta):
         self.ddb = boto3.resource('dynamodb')
         self.table = self.ddb.Table('hashes')
 
-    def save(self, key, value, create_date=None):
+    def save_or_update(self, key, value, create_date=None):
         if create_date is None:
             create_date = datetime.datetime.now (pytz.utc)
 
-        self.table.put_item(Item={'human_hash': key,
-                                  'long_url': value,
-                                  'create_date': str(create_date)})
+        try:
+            self.table.put_item(Item={'human_hash': key,
+                                      'long_url': value,
+                                      'create_date': str(create_date)},
+                            ConditionExpression='attribute_not_exists(human_hash)')
+        # TODO -- this doesn't seem like a clean way to ignore "item already exists"
+        except botocore.exceptions.ClientError:
+            pass
 
     def lookup(self, key):
         return self.table.get_item(Key={'human_hash': key})['Item']

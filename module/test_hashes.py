@@ -1,14 +1,23 @@
+import collections
+
 import database
 import hashes
 
-import mock
 
 class DummyDatabase(database.DatabaseMeta):
     def __init__(self):
         self.stuff = {}
 
-    def save(self, key, value):
+        # For testing
+        self.save_metrics = collections.Counter()
+
+    def _save(self, key, value):
         self.stuff[key] = value
+        self.save_metrics[key] += 1
+
+    def save_or_update(self, key, value):
+        if key not in self.stuff:
+            self._save(key, value)
 
     def lookup(self, input):
         return self.stuff[input]
@@ -37,10 +46,11 @@ def test_round_trip():
 
 
 def test_same_URL_saves_at_most_once():
-    database = mock.Mock()
+    database = DummyDatabase()
 
     long_url = 'a long, long, time ago'
-    hashes.long_url_to_short_string(long_url, database)
-    hashes.long_url_to_short_string(long_url, database)
+    key1 = hashes.long_url_to_short_string(long_url, database)
+    key2 = hashes.long_url_to_short_string(long_url, database)
 
-    assert len(database.save.call_args_list) == 1
+    assert key1 == key2
+    assert database.save_metrics[key1] == 1
