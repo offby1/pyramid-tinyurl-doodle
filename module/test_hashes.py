@@ -1,7 +1,8 @@
+import database
 import hashes
 
 
-class DummyDatabase:
+class DummyDatabase(database.DatabaseMeta):
     def __init__(self):
         self.stuff = {}
 
