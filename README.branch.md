@@ -8,3 +8,7 @@ Why?
   it will get the same data as the old one
 
 - Because it'd be good for me to play with DynamoDB
+
+I've created a table:
+
+    arn:aws:dynamodb:us-west-1:661326993281:table/hashes
