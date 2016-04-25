@@ -42,7 +42,7 @@ def _english_age_description(datestamp):
 def _recent_entries(request):
     now = arrow.utcnow()
 
-    for item in request.database.get_all():
+    for item in request.database.get_all()[:10]:
 
         create_date_string = item['create_date']
 
