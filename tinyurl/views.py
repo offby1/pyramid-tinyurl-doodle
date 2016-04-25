@@ -125,11 +125,22 @@ Recaptcha</a>, you're a robot.  Don't blame me!""")
 @view_config(route_name='lengthen', request_method='GET')
 def lengthen_GET(request):
     human_hash = request.matchdict['human_hash']
-    old_item = hashes.lengthen_short_string(human_hash, request.database)
-    if old_item:
-        logger.info("Redirecting to %r", old_item['long_url'])
-        return pyramid.httpexceptions.HTTPSeeOther(location=old_item['long_url'])
-    return pyramid.httpexceptions.HTTPNotFound()
+    try:
+        old_item = hashes.lengthen_short_string(human_hash, request.database)
+    except KeyError:
+        return pyramid.httpexceptions.HTTPNotFound()
+
+    long_url = old_item['long_url']
+
+    # Sort of a development hack: I have lots of items in the database
+    # that aren't actually URLs.  Clicking on one of those gets us a
+    # 404, so I prepend http: here, simply to make the failure more
+    # obvious.
+    if not long_url.startswith('http://') and not long_url.startswith('https://'):
+        long_url = 'http://{}'.format(long_url)
+
+    logger.info("Redirecting to %r", long_url)
+    return pyramid.httpexceptions.HTTPSeeOther(location=long_url)
 
 
 @view_config(route_name='edit',
