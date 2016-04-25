@@ -20,7 +20,6 @@ class DynamoDB(database.DatabaseMeta):
     def __init__(self):
         self.ddb = boto3.resource('dynamodb')
         self.table = self.ddb.Table('hashes')
-        _log.info("Hello world")
 
     def save_or_update(self, key, value, create_date=None):
         if create_date is None:
