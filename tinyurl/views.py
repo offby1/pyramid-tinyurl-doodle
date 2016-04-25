@@ -58,8 +58,8 @@ def _recent_entries(request):
             # http://waitress.readthedocs.org/en/latest/#using-paste-s-prefixmiddleware-to-set-wsgi-url-scheme,
             # and use route_url, instead of using route_path: raydeo
             # (Michael Merickel (~raydeo@merickel.org)) says to!
-            short_url=request.route_path('lengthen',
-                                         human_hash=item['human_hash']),
+            short_url=request.route_url('lengthen',
+                                        human_hash=item['human_hash']),
             long_url=item['long_url'])
 
 
@@ -122,7 +122,7 @@ Recaptcha</a>, you're a robot.  Don't blame me!""")
         long_url = u'http://' + long_url
 
     human_hash = hashes.long_url_to_short_string(long_url, request.database)
-    short_url = request.route_path('lengthen', human_hash=human_hash)
+    short_url = request.route_url('lengthen', human_hash=human_hash)
 
     return render(request, {
         'short_url': short_url,

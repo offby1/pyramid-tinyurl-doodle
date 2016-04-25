@@ -48,7 +48,7 @@
                   <td>${e.human_hash}</td>
                   <td>${e.long_url}</td>
                   <td>
-                  <button type="button" data-delete-url="${request.route_path('delete', human_hash=e.human_hash)}">
+                  <button type="button" data-delete-url="${request.route_url('delete', human_hash=e.human_hash)}">
                     Click Me to delete ${e.human_hash}!
                   </button>
                   </td>
