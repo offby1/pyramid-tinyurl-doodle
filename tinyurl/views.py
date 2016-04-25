@@ -2,6 +2,7 @@
 import logging
 
 # 3rd-party
+from pyramid.events import NewRequest, subscriber
 from pyramid.exceptions import Forbidden
 import pyramid.httpexceptions
 from pyramid.renderers import render_to_response
@@ -13,6 +14,12 @@ import webob.acceptparse
 
 # Local
 from . import auth
+from .module import dynamo, hashes
+
+
+@subscriber(NewRequest)
+def stash_ddb_connection(event):
+    event.request.database = dynamo.DynamoDB()
 
 logger = logging.getLogger('tinyurl')
 
@@ -32,6 +39,7 @@ def truncate(string, maxlen):
 
 
 def _recent_entries(session, request):
+    # TODO -- do this right! Duh
     yield dict(
         age=0,
         human_hash='I suppose',
@@ -104,7 +112,8 @@ Recaptcha</a>, you're a robot.  Don't blame me!""")
     if six.moves.urllib.parse.urlparse(long_url).netloc == '':
         long_url = u'http://' + long_url
 
-    short_url = request.route_path('lengthen', human_hash='err ... uh')
+    human_hash = hashes.long_url_to_short_string(long_url, request.database)
+    short_url = request.route_path('lengthen', human_hash=human_hash)
 
     return render(request, {
         'short_url': short_url,
@@ -116,10 +125,10 @@ Recaptcha</a>, you're a robot.  Don't blame me!""")
 @view_config(route_name='lengthen', request_method='GET')
 def lengthen_GET(request):
     human_hash = request.matchdict['human_hash']
-    old_item = None
+    old_item = hashes.lengthen_short_string(human_hash, request.database)
     if old_item:
-        logger.info("Redirecting to %r", old_item.long_url)
-        return pyramid.httpexceptions.HTTPSeeOther(location=old_item.long_url)
+        logger.info("Redirecting to %r", old_item['long_url'])
+        return pyramid.httpexceptions.HTTPSeeOther(location=old_item['long_url'])
     return pyramid.httpexceptions.HTTPNotFound()
 
 
