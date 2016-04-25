@@ -2,6 +2,8 @@
 import logging
 
 # 3rd-party
+import arrow
+from babel.dates import format_timedelta
 from pyramid.events import NewRequest, subscriber
 from pyramid.exceptions import Forbidden
 import pyramid.httpexceptions
@@ -43,10 +45,17 @@ def _english_age_description(datestamp):
 
 
 def _recent_entries(request):
+    now = arrow.utcnow()
+
     for item in request.database.get_all():
 
+        create_date_string = item['create_date']
+
+        # arrow instead of datetime.strptime because of http://bugs.python.org/issue15873
+        create_datetime = arrow.get(create_date_string)
+
         yield dict(
-            age=_english_age_description(item['create_date']),
+            age=format_timedelta(now - create_datetime),
             human_hash=item['human_hash'],
             # TODO -- follow recommendations at
             # http://waitress.readthedocs.org/en/latest/#using-behind-a-reverse-proxy
