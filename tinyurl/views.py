@@ -4,7 +4,6 @@ import logging
 # 3rd-party
 import arrow
 from babel.dates import format_timedelta
-from pyramid.events import NewRequest, subscriber
 from pyramid.exceptions import Forbidden
 import pyramid.httpexceptions
 from pyramid.renderers import render_to_response
@@ -16,12 +15,8 @@ import webob.acceptparse
 
 # Local
 from . import auth
-from .module import dynamo, hashes
+from .module import hashes
 
-
-@subscriber(NewRequest)
-def stash_ddb_connection(event):
-    event.request.database = dynamo.DynamoDB()
 
 logger = logging.getLogger('tinyurl')
 

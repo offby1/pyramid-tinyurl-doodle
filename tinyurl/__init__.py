@@ -10,6 +10,10 @@ from pyramid.session import SignedCookieSessionFactory
 import six
 from six.moves import reload_module
 
+# Local
+
+from .module import dynamo
+
 logger = logging.getLogger(__name__)
 
 
@@ -82,5 +86,8 @@ def main(global_config, **settings):
     config.add_route('edit', '/edit')
     config.add_route('lengthen', '/{human_hash}', request_method='GET')
     config.add_route('delete', '/{human_hash}', request_method='DELETE')
+
+    config.add_request_method(lambda request: dynamo.DynamoDB(), name="database", reify=True)
+
     config.scan()
     return config.make_wsgi_app()

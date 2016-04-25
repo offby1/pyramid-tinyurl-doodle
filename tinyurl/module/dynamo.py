@@ -13,6 +13,7 @@ from . import database
 
 _log = logging.getLogger(__name__)
 
+
 class DynamoDB(database.DatabaseMeta):
 
     # TODO -- allow region & credentials to be paramaterizable?
