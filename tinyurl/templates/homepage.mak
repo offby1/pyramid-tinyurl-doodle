@@ -91,6 +91,9 @@
               |
               <a href="${this_commit_url}">Version</a>
               %endif
+              |
+              If you're me, you can see the underlying data <a
+              href="https://us-west-1.console.aws.amazon.com/dynamodb/home?region=us-west-1#tables:selected=hashes">here</a>
             </p>
           </div>
         </div>
