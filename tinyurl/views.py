@@ -38,20 +38,25 @@ def truncate(string, maxlen):
     return string
 
 
-def _recent_entries(session, request):
-    # TODO -- do this right! Duh
-    yield dict(
-        age=0,
-        human_hash='I suppose',
-        # TODO -- follow recommendations at
-        # http://waitress.readthedocs.org/en/latest/#using-behind-a-reverse-proxy
-        # and
-        # http://waitress.readthedocs.org/en/latest/#using-paste-s-prefixmiddleware-to-set-wsgi-url-scheme,
-        # and use route_url, instead of using route_path: raydeo
-        # (Michael Merickel (~raydeo@merickel.org)) says to!
-        short_url=request.route_path('lengthen',
-                                     human_hash='I really ought to'),
-        long_url='actually write this bit')
+def _english_age_description(datestamp):
+    return 'a while ago'
+
+
+def _recent_entries(request):
+    for item in request.database.get_all():
+
+        yield dict(
+            age=_english_age_description(item['create_date']),
+            human_hash=item['human_hash'],
+            # TODO -- follow recommendations at
+            # http://waitress.readthedocs.org/en/latest/#using-behind-a-reverse-proxy
+            # and
+            # http://waitress.readthedocs.org/en/latest/#using-paste-s-prefixmiddleware-to-set-wsgi-url-scheme,
+            # and use route_url, instead of using route_path: raydeo
+            # (Michael Merickel (~raydeo@merickel.org)) says to!
+            short_url=request.route_path('lengthen',
+                                         human_hash=item['human_hash']),
+            long_url=item['long_url'])
 
 
 @view_config(route_name='home', request_method='GET')
@@ -60,7 +65,7 @@ def home_GET(request):
     logger.info("You %s already authenticated.", "are" if authed else "are not")
 
     return render(request, {
-        'recent_entries': _recent_entries('woteva', request),
+        'recent_entries': _recent_entries(request),
         'truncate': truncate,
         'display_captcha': not authed
     })
@@ -117,7 +122,7 @@ Recaptcha</a>, you're a robot.  Don't blame me!""")
 
     return render(request, {
         'short_url': short_url,
-        'recent_entries': _recent_entries('wat', request),
+        'recent_entries': _recent_entries(request),
         'truncate': truncate,
     })
 

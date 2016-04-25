@@ -13,3 +13,7 @@ class DatabaseMeta(metaclass=abc.ABCMeta):
     @abc.abstractmethod
     def lookup(self, input):
         pass
+
+    @abc.abstractmethod
+    def get_all(self):
+        pass

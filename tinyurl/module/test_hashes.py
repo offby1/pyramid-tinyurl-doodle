@@ -1,4 +1,5 @@
 import collections
+import operator
 
 from . import database
 from . import hashes
@@ -21,6 +22,9 @@ class DummyDatabase(database.DatabaseMeta):
 
     def lookup(self, input):
         return self.stuff[input]
+
+    def get_all(self):
+        return sorted(self.stuff, key=operator.itemgetter('create_date'))
 
 
 def test_different_inputs_different_outputs():

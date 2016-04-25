@@ -1,5 +1,7 @@
 # Core
 import datetime
+import logging
+import operator
 
 # Third party
 import botocore.exceptions
@@ -9,6 +11,7 @@ import pytz
 # Local
 from . import database
 
+_log = logging.getLogger(__name__)
 
 class DynamoDB(database.DatabaseMeta):
 
@@ -16,6 +19,7 @@ class DynamoDB(database.DatabaseMeta):
     def __init__(self):
         self.ddb = boto3.resource('dynamodb')
         self.table = self.ddb.Table('hashes')
+        _log.info("Hello world")
 
     def save_or_update(self, key, value, create_date=None):
         if create_date is None:
@@ -31,4 +35,12 @@ class DynamoDB(database.DatabaseMeta):
             pass
 
     def lookup(self, key):
-        return self.table.get_item(Key={'human_hash': key})['Item']
+        response = self.table.get_item(Key={'human_hash': key})
+        _log.debug("%s => %s", key, response)
+        return response['Item']
+
+    def get_all(self):
+        # Yup, it's a scan.  They tell me that DynamoDB scans are
+        # expensive.  But it's not obvious how else to do this ... and
+        # anyway, nobody actually uses this web site.
+        return sorted(self.table.scan()['Items'], key=operator.itemgetter('create_date'))
