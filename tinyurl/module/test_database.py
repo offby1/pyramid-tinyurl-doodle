@@ -57,4 +57,4 @@ def test_collect_em_all(ddb):
     all = ddb.get_all()
     relevant = [item for item in all if item['human_hash'] in ('key1', 'key2', 'key3')]
 
-    assert relevant == [_tuple_to_dict(r) for r in (row1, row2, row3)]
+    assert relevant == [_tuple_to_dict(r) for r in (row3, row2, row1)]

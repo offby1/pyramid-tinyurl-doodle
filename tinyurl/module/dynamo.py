@@ -43,4 +43,6 @@ class DynamoDB(database.DatabaseMeta):
         # Yup, it's a scan.  They tell me that DynamoDB scans are
         # expensive.  But it's not obvious how else to do this ... and
         # anyway, nobody actually uses this web site.
-        return sorted(self.table.scan()['Items'], key=operator.itemgetter('create_date'))
+        return sorted(self.table.scan()['Items'],
+                      key=operator.itemgetter('create_date'),
+                      reverse=True)
