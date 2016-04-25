@@ -2,6 +2,7 @@
 import datetime
 import logging
 import os
+import re
 
 # 3rd-party
 import babel.dates
@@ -89,5 +90,5 @@ def main(global_config, **settings):
 
     config.add_request_method(lambda request: dynamo.DynamoDB(), name="database", reify=True)
 
-    config.scan()
+    config.scan(ignore=[re.compile('test_').search])
     return config.make_wsgi_app()
