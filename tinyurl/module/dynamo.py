@@ -7,7 +7,7 @@ import boto3
 import pytz
 
 # Local
-import database
+from . import database
 
 
 class DynamoDB(database.DatabaseMeta):

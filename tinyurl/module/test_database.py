@@ -7,8 +7,8 @@ import pytest
 import pytz
 
 # Local
-import database
-import dynamo
+from . import database
+from . import dynamo
 
 
 def test_it_really_is_abstract ():

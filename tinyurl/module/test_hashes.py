@@ -1,7 +1,7 @@
 import collections
 
-import database
-import hashes
+from . import database
+from . import hashes
 
 
 class DummyDatabase(database.DatabaseMeta):
