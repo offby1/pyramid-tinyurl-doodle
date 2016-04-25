@@ -16,7 +16,12 @@ I've created a table:
 The code all seems to work nicely (and I wrote some tests, too, so I'm
 more confident than just "seems").
 
-The only remaining thing is to figure out how to backfill -- i.e.,
-take the data that's currently in Postgres "in production", and export
-it to Dynamo ... so that when I switch over to the new version, all
-the old URLs are still present.
+# TODO
+
+- Figure out how to backfill -- i.e., take the data that's currently
+  in Postgres "in production", and export it to Dynamo ... so that
+  when I switch over to the new version, all the old URLs are still
+  present.
+
+- Make sure it can run as a docker image.  I suspect I don't want to
+  put my aws credentials in the image, so ...
