@@ -17,7 +17,6 @@ Mako==1.0.4               # via pyramid-mako
 MarkupSafe==0.23          # via mako, pyramid-persona
 Paste==2.0.3
 PasteDeploy==1.5.2        # via pyramid
-pg8000==1.10.5
 PyBrowserID==0.10.0       # via pyramid-persona
 Pygments==2.1.3           # via pyramid-debugtoolbar
 pyramid-chameleon==0.3

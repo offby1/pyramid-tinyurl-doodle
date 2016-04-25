@@ -3,7 +3,6 @@ Babel
 boto3
 IPy
 Paste
-pg8000
 pyramid
 pyramid_chameleon
 pyramid_debugtoolbar
