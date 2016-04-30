@@ -29,10 +29,11 @@ class DynamoDB(database.DatabaseMeta):
             self.table.put_item(Item={'human_hash': key,
                                       'long_url': value,
                                       'create_date': str(create_date)},
-                            ConditionExpression='attribute_not_exists(human_hash)')
-        # TODO -- this doesn't seem like a clean way to ignore "item already exists"
-        except botocore.exceptions.ClientError:
-            pass
+                                ConditionExpression='attribute_not_exists(human_hash)')
+
+        except botocore.exceptions.ClientError as e:
+            if e.response.get('Error').get('Code') != 'ConditionalCheckFailedException':
+                raise
 
     def lookup(self, key):
         response = self.table.get_item(Key={'human_hash': key})
