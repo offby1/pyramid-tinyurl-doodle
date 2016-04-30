@@ -89,7 +89,7 @@ def render(request, values):
                 bossman=_is_boss(userid)),
             request=request)
 
-    r = Response(body=request.application_url + values.get('short_url', ''),
+    r = Response(body=values.get('short_url', ''),
                  status='200 OK')
     r.content_type = 'text/plain'
     return r
