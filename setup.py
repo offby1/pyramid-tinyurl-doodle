@@ -8,12 +8,11 @@ with codecs.open(os.path.join(here, 'README.txt'), encoding='utf-8') as f:
     README = f.read()
 
 requires = [
+    'boto3',
     'pyramid',
     'pyramid_debugtoolbar',
     'pyramid_tm',
-    'SQLAlchemy',
     'transaction',
-    'zope.sqlalchemy',
     'waitress',
 ]
 

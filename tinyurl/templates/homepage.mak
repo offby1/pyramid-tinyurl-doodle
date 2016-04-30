@@ -29,7 +29,7 @@
         <div class="row" style="margin-bottom: 5rem;">
           <div class="col-md-12">
             <div class="text-center">
-              <form action="${request.route_path('shorten')}" method="get" style="margin-bottom: 2rem;">
+              <form action="${request.route_url('shorten')}" method="get" style="margin-bottom: 2rem;">
                 <input type="text" id="input_url" name="input_url" placeholder="Type a URL here, yo"/>
                 <input type="submit" value="Tiny-ify it"/>
                 <div class="g-recaptcha" data-sitekey="6LcsPBkTAAAAAC8PdjnUhN0GYVEcDACpW76G39cl"
@@ -40,7 +40,7 @@
               </form>
               %if short_url:
               <div style="font-size: 200%">
-                <p><strong>Dig: <a href="${short_url}">${short_url}</a></strong></p>
+                <p><strong>Dig: <a href="${short_url}">${human_hash}</a></strong></p>
               </div>
               %else:
               <div>
@@ -91,6 +91,9 @@
               |
               <a href="${this_commit_url}">Version</a>
               %endif
+              |
+              If you're me, you can see the underlying data <a
+              href="https://us-west-1.console.aws.amazon.com/dynamodb/home?region=us-west-1#tables:selected=hashes">here</a>
             </p>
           </div>
         </div>

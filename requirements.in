@@ -1,8 +1,8 @@
+arrow
 Babel
+boto3
 IPy
-SQLAlchemy
 Paste
-pg8000
 pyramid
 pyramid_chameleon
 pyramid_debugtoolbar
@@ -12,4 +12,4 @@ pytz
 six
 transaction
 waitress
-zope.sqlalchemy
+

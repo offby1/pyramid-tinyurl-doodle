@@ -1,10 +1,8 @@
 # Core
-import binascii
-import datetime
-import hashlib
 import logging
 
 # 3rd-party
+import arrow
 from babel.dates import format_timedelta
 from pyramid.exceptions import Forbidden
 import pyramid.httpexceptions
@@ -12,13 +10,13 @@ from pyramid.renderers import render_to_response
 from pyramid.response import Response
 from pyramid.security import authenticated_userid
 from pyramid.view import view_config
-import pytz
 import six.moves.urllib.parse
 import webob.acceptparse
 
 # Local
-from .models import (DBSession, HashModel, )
 from . import auth
+from .module import hashes
+
 
 logger = logging.getLogger('tinyurl')
 
@@ -37,32 +35,22 @@ def truncate(string, maxlen):
     return string
 
 
-def _recent_entries(session, request):
-    now = datetime.datetime.now(pytz.utc)
+def _recent_entries(request):
+    now = arrow.utcnow()
 
-    for e in session.query(HashModel).filter(HashModel.create_date.isnot(
-            None)).order_by(HashModel.create_date.desc()).limit(5):
+    for item in request.database.get_all()[:10]:
 
-        # some databases -- such as sqlite -- don't preserve time zone
-        # info.  If that's the case, just delete it from now, so as to
-        # avoid an exception
-        if e.create_date.tzinfo is None:
-            now = now.replace(tzinfo=None)
+        create_date_string = item['create_date']
 
-        age = format_timedelta(now - e.create_date)
+        # arrow instead of datetime.strptime because of http://bugs.python.org/issue15873
+        create_datetime = arrow.get(create_date_string)
 
         yield dict(
-            age=age,
-            human_hash=e.human_hash,
-            # TODO -- follow recommendations at
-            # http://waitress.readthedocs.org/en/latest/#using-behind-a-reverse-proxy
-            # and
-            # http://waitress.readthedocs.org/en/latest/#using-paste-s-prefixmiddleware-to-set-wsgi-url-scheme,
-            # and use route_url, instead of using route_path: raydeo
-            # (Michael Merickel (~raydeo@merickel.org)) says to!
-            short_url=request.route_path('lengthen',
-                                         human_hash=e.human_hash),
-            long_url=e.long_url)
+            age=format_timedelta(now - create_datetime),
+            human_hash=item['human_hash'],
+            short_url=request.route_url('lengthen',
+                                        human_hash=item['human_hash']),
+            long_url=item['long_url'])
 
 
 @view_config(route_name='home', request_method='GET')
@@ -70,9 +58,8 @@ def home_GET(request):
     authed = request.session.get('authenticated')
     logger.info("You %s already authenticated.", "are" if authed else "are not")
 
-    session = DBSession()
     return render(request, {
-        'recent_entries': _recent_entries(session, request),
+        'recent_entries': _recent_entries(request),
         'truncate': truncate,
         'display_captcha': not authed
     })
@@ -116,7 +103,6 @@ def create_GET(request):
             """According to <a href="https://www.google.com/recaptcha/">Google
 Recaptcha</a>, you're a robot.  Don't blame me!""")
 
-    session = DBSession()
     try:
         long_url = request.params['input_url']
     except KeyError as e:
@@ -125,38 +111,36 @@ Recaptcha</a>, you're a robot.  Don't blame me!""")
     if six.moves.urllib.parse.urlparse(long_url).netloc == '':
         long_url = u'http://' + long_url
 
-    long_url_bytes = long_url.encode('utf-8')
-    hash_object = hashlib.sha256(long_url_bytes)
-    binary_hash = hash_object.digest()
-    human_hash_bytes = binascii.b2a_base64(binary_hash)
-    human_hash_bytes = human_hash_bytes.replace(b'+', b'').replace(b'/',
-                                                                   b'')[:10]
-    human_hash_string = human_hash_bytes.decode('utf-8')
-
-    if not session.query(HashModel).filter_by(
-            human_hash=human_hash_string).first():
-        DBSession.add(HashModel(human_hash=human_hash_string,
-                                long_url=long_url))
-
-    short_url = request.route_path('lengthen', human_hash=human_hash_bytes)
+    human_hash = hashes.long_url_to_short_string(long_url, request.database)
+    short_url = request.route_url('lengthen', human_hash=human_hash)
 
     return render(request, {
+        'human_hash': human_hash,
         'short_url': short_url,
-        'recent_entries': _recent_entries(session, request),
+        'recent_entries': _recent_entries(request),
         'truncate': truncate,
     })
 
 
 @view_config(route_name='lengthen', request_method='GET')
 def lengthen_GET(request):
-    session = DBSession()
     human_hash = request.matchdict['human_hash']
-    old_item = session.query(HashModel).filter_by(
-        human_hash=human_hash).first()
-    if old_item:
-        logger.info("Redirecting to %r", old_item.long_url)
-        return pyramid.httpexceptions.HTTPSeeOther(location=old_item.long_url)
-    return pyramid.httpexceptions.HTTPNotFound()
+    try:
+        old_item = hashes.lengthen_short_string(human_hash, request.database)
+    except KeyError:
+        return pyramid.httpexceptions.HTTPNotFound()
+
+    long_url = old_item['long_url']
+
+    # Sort of a development hack: I have lots of items in the database
+    # that aren't actually URLs.  Clicking on one of those gets us a
+    # 404, so I prepend http: here, simply to make the failure more
+    # obvious.
+    if not long_url.startswith('http://') and not long_url.startswith('https://'):
+        long_url = 'http://{}'.format(long_url)
+
+    logger.info("Redirecting to %r", long_url)
+    return pyramid.httpexceptions.HTTPSeeOther(location=long_url)
 
 
 @view_config(route_name='edit',
@@ -166,9 +150,7 @@ def edit_GET(request):
     if not _is_boss(authenticated_userid(request)):
         raise Forbidden
 
-    session = DBSession()
-    return {'table': session.query(HashModel).order_by(
-        HashModel.create_date.desc()).all()}
+    return {'table': request.database.get_all()}
 
 
 @view_config(route_name='delete', request_method='DELETE', renderer='json')
@@ -176,11 +158,8 @@ def delete_DELETE(request):
     if not _is_boss(authenticated_userid(request)):
         raise Forbidden
 
-    session = DBSession()
     human_hash = request.matchdict['human_hash']
 
-    victims = session.query(HashModel).filter_by(human_hash=human_hash)
-    for v in victims.all():
-        logger.info("%s: deleting %r", request.client_addr, v)
-    victims.delete()
+    logger.info("%s: deleting %r", request.client_addr, human_hash)
+    request.database.delete(human_hash)
     return "Deleted the row with hash {}".format(human_hash)

@@ -22,7 +22,6 @@ WORKDIR /tinyurl
 
 RUN python3 setup.py install
 
-ENV DATABASE_URL=postgres://postgres@db:5432/postgres
 ENV LC_ALL=C
 
 CMD ["/usr/local/bin/pserve", "/tinyurl/production.ini"]
