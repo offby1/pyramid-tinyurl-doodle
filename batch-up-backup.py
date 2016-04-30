@@ -29,8 +29,6 @@ def batches(batchsize, items):
     if current_batch:
         yield current_batch
 
-pprint.pprint(list(batches(10, open('semi-json-db-dump'))))
-# Someday I expect I'll do something like ...
 import subprocess
 child = subprocess.Popen([
     'docker', 'run',
@@ -39,8 +37,10 @@ child = subprocess.Popen([
     'psql',
     '-h', 'db',
     '-U', 'postgres',
-    '-c', 'select row_to_json(hashes) from hashes',
+    '-c', 'select row_to_json(hashes) from hashes order by create_date',
 ], stdout=subprocess.PIPE)
 
 all_the_output, _ = child.communicate()
-pprint.pprint(list(batches(10, io.StringIO(child.stdout))))
+i = io.StringIO(all_the_output.decode('utf-8'))
+
+pprint.pprint(list(batches(10, dicts_from_file(i))))
