@@ -2,7 +2,10 @@
 
 import io
 import json
-import pprint
+import subprocess
+
+from tinyurl.module.dynamo import DynamoDB
+
 
 def dicts_from_file(inf):
     """Read output from a poor man's postgresql export: "select
@@ -17,19 +20,6 @@ def dicts_from_file(inf):
         yield json.loads(line)
 
 
-# How many times have I written this ...
-def batches(batchsize, items):
-    current_batch = []
-    for item in items:
-        if len(current_batch) == batchsize:
-            yield current_batch
-            current_batch = []
-        current_batch.append(item)
-
-    if current_batch:
-        yield current_batch
-
-import subprocess
 child = subprocess.Popen([
     'docker', 'run',
     '--link', 'db:db',
@@ -43,4 +33,5 @@ child = subprocess.Popen([
 all_the_output, _ = child.communicate()
 i = io.StringIO(all_the_output.decode('utf-8'))
 
-pprint.pprint(list(batches(10, dicts_from_file(i))))
+d = DynamoDB()
+d.batch_add_key_value_pairs(dicts_from_file(i))
