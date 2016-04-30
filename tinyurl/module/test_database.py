@@ -33,6 +33,17 @@ def test_dynamo_works(ddb):
     assert(got.get('long_url') == v)
 
 
+def test_save_or_update_really_updates(ddb):
+    k = 'key'
+    v1 = 'http://valuevillage.com'
+    v2 = 'some other value'
+
+    ddb.save_or_update(k, v1)
+    ddb.save_or_update(k, v2)
+    got = ddb.lookup(k)
+    assert(got.get('long_url') == v2)
+
+
 def test_honors_create_date(ddb):
     k = str(uuid.uuid4())
     v = 'http://valuevillage.com'
