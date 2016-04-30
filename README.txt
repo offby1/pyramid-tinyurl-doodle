@@ -74,6 +74,18 @@ To back up a running docker DB:
 
     $ docker run    --link db:db library/postgres pg_dump -h db -U postgres -t hashes > hashes.sql
 
+To export the DB to almost-JSON:
+
+    $ docker run  --link db:db library/postgres psql -h db -U postgres -c 'select row_to_json(hashes) from hashes' > /tmp/zounds
+
+    # It's not quite JSON because there's a spurious line or two at
+    # both the beginning and the end, and while the other lines are
+    # proper JSON objects, the whole file isn't an array because it
+    # lacks commas separating the lines, and square brackets at the
+    # beginning and end.  Adding those manually is left as an exercise
+    # for the reader.
+
+
 To load that into another DB:
 
     $ docker run -i --link db:db library/postgres psql -a -h db -U postgres  < /vagrant/hashes.sql
