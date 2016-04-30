@@ -43,7 +43,7 @@ def test_honors_create_date(ddb):
     assert(got.get('create_date') == str(create_date))
 
 
-def test_collect_em_all(ddb):
+def test_get_all_returns_items_ordered_newest_first(ddb):
     def _tuple_to_dict(t):
         return {'human_hash': t[0],
                 'long_url': t[1],
