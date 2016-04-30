@@ -149,7 +149,7 @@ def edit_GET(request):
     if not _is_boss(authenticated_userid(request)):
         raise Forbidden
 
-    return {'table': []}
+    return {'table': request.database.get_all()}
 
 
 @view_config(route_name='delete', request_method='DELETE', renderer='json')
@@ -159,8 +159,6 @@ def delete_DELETE(request):
 
     human_hash = request.matchdict['human_hash']
 
-    victims = []
-    for v in victims:
-        logger.info("%s: deleting %r", request.client_addr, v)
-    victims.delete()
+    logger.info("%s: deleting %r", request.client_addr, human_hash)
+    request.database.delete(human_hash)
     return "Deleted the row with hash {}".format(human_hash)

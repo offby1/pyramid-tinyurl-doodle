@@ -44,6 +44,25 @@ def test_save_or_update_really_updates(ddb):
     assert(got.get('long_url') == v2)
 
 
+def test_delete(ddb):
+    k1 = 'key one'
+    v1 = 'http://valuevillage.com'
+
+    k2 = 'key two'
+    v2 = 'some other value'
+
+    ddb.save_or_update(k1, v1)
+    ddb.save_or_update(k2, v2)
+
+    assert(ddb.lookup(k1).get('long_url') == v1)
+    assert(ddb.lookup(k2).get('long_url') == v2)
+
+    ddb.delete(k1)
+    with pytest.raises(KeyError):
+        ddb.lookup(k1)
+    assert(ddb.lookup(k2).get('long_url') == v2)
+
+
 def test_honors_create_date(ddb):
     k = str(uuid.uuid4())
     v = 'http://valuevillage.com'

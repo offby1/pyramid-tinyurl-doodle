@@ -48,3 +48,6 @@ class DynamoDB(database.DatabaseMeta):
         return sorted(self.table.scan()['Items'],
                       key=operator.itemgetter('create_date'),
                       reverse=True)
+
+    def delete(self, key):
+        self.table.delete_item(Key={'human_hash': key})
