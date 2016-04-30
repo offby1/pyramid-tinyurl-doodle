@@ -25,6 +25,7 @@ class DynamoDB(database.DatabaseMeta):
         with self.table.batch_writer() as batch:
             for d in dicts:
                 batch.put_item(Item=d)
+                _log.info("put %s", d['create_date'])
 
     def add_if_not_present(self, key, value):
         create_date = datetime.datetime.now (pytz.utc).isoformat()

@@ -2,6 +2,7 @@
 
 import io
 import json
+import logging
 import subprocess
 
 from tinyurl.module.dynamo import DynamoDB
@@ -19,6 +20,8 @@ def dicts_from_file(inf):
             continue
         yield json.loads(line)
 
+
+logging.basicConfig(level=logging.INFO)
 
 child = subprocess.Popen([
     'docker', 'run',
