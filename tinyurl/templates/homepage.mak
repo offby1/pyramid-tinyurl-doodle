@@ -40,7 +40,7 @@
               </form>
               %if short_url:
               <div style="font-size: 200%">
-                <p><strong>Dig: <a href="${short_url}">${short_url}</a></strong></p>
+                <p><strong>Dig: <a href="${short_url}">${human_hash}</a></strong></p>
               </div>
               %else:
               <div>

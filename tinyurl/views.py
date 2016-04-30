@@ -115,6 +115,7 @@ Recaptcha</a>, you're a robot.  Don't blame me!""")
     short_url = request.route_url('lengthen', human_hash=human_hash)
 
     return render(request, {
+        'human_hash': human_hash,
         'short_url': short_url,
         'recent_entries': _recent_entries(request),
         'truncate': truncate,
