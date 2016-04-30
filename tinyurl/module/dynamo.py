@@ -21,14 +21,18 @@ class DynamoDB(database.DatabaseMeta):
         self.ddb = boto3.resource('dynamodb')
         self.table = self.ddb.Table('hashes')
 
-    def add_if_not_present(self, key, value, create_date=None):
-        if create_date is None:
-            create_date = datetime.datetime.now (pytz.utc)
+    def batch_add_key_value_pairs(self, dicts):
+        with self.table.batch_writer() as batch:
+            for d in dicts:
+                batch.put_item(Item=d)
+
+    def add_if_not_present(self, key, value):
+        create_date = datetime.datetime.now (pytz.utc).isoformat()
 
         try:
             self.table.put_item(Item={'human_hash': key,
                                       'long_url': value,
-                                      'create_date': str(create_date)},
+                                      'create_date': create_date},
                                 ConditionExpression='attribute_not_exists(human_hash)')
 
         except botocore.exceptions.ClientError as e:

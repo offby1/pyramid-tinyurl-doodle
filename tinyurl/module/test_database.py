@@ -65,35 +65,30 @@ def test_delete(ddb):
     assert(ddb.lookup(k2).get('long_url') == v2)
 
 
-def test_honors_create_date(ddb):
-    k = str(uuid.uuid4())
-    v = 'http://valuevillage.com'
-    create_date = datetime.datetime(year=2001, month=2, day=3, tzinfo=pytz.utc)
-
-    ddb.add_if_not_present(k, v, create_date=create_date)
-    got = ddb.lookup(k)
-    assert(got.get('create_date') == str(create_date))
-
-    # Once again just to be sure ...
-    import time
-    time.sleep(1)
-    ddb.add_if_not_present(k, v)
-    got = ddb.lookup(k)
-    assert(got.get('create_date') == str(create_date))
-
-
 def test_get_all_returns_items_ordered_newest_first(ddb):
     def _tuple_to_dict(t):
         return {'human_hash': t[0],
                 'long_url': t[1],
                 'create_date': str(t[2])}
-    row1 = ('key1', 'value1', datetime.datetime(year=2001, month=1, day=1, tzinfo=pytz.utc))
-    row2 = ('key2', 'value2', datetime.datetime(year=2002, month=2, day=2, tzinfo=pytz.utc))
-    row3 = ('key3', 'value3', datetime.datetime(year=2003, month=3, day=3, tzinfo=pytz.utc))
-    for (k, v, create_date) in (row1, row3, row2) :
-        ddb.add_if_not_present(k, v, create_date=create_date)
+    row1 = ('key1', 'value1')
+    row2 = ('key2', 'value2')
+    row3 = ('key3', 'value3')
+    for (k, v) in (row1, row3, row2) :
+        ddb.add_if_not_present(k, v)
 
     all = ddb.get_all()
-    relevant = [item for item in all if item['human_hash'] in ('key1', 'key2', 'key3')]
+    timestamps = [item['create_date'] for item in all if item['human_hash'] in ('key1', 'key2', 'key3')]
 
-    assert relevant == [_tuple_to_dict(r) for r in (row3, row2, row1)]
+    assert timestamps == sorted(timestamps, reverse=True)
+
+def test_batch_writer(ddb):
+    bulk_data = [
+        {'human_hash': 'key one', 'value': 'value one'},
+        {'human_hash': 'key two', 'value': 'value two'},
+    ]
+    for d in bulk_data:
+        ddb.delete(d['human_hash'])
+    ddb.batch_add_key_value_pairs(bulk_data)
+    for d in bulk_data:
+        got = ddb.lookup(d['human_hash'])
+        assert(got == d)
