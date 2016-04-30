@@ -7,3 +7,4 @@ pytest
 pytest-catchlog
 pytest-mock
 rope_py3k
+yapf
