@@ -18,10 +18,9 @@ more confident than just "seems").
 
 # TODO
 
-- Figure out how to backfill -- i.e., take the data that's currently
-  in Postgres "in production", and export it to Dynamo ... so that
-  when I switch over to the new version, all the old URLs are still
-  present.
-
 - Make sure it can run as a docker image.  I suspect I don't want to
   put my aws credentials in the image, so ...
+
+- Do the tests in a different table!  Or at least ensure that the rows
+  that the tests add have all the required attributes, so that the web
+  site doesn't puke when it encounters them.
