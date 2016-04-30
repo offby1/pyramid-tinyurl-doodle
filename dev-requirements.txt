@@ -7,6 +7,7 @@
 
 autopep8==1.2.2
 click==6.6                # via pip-tools
+coverage==4.0.3           # via pytest-cov
 first==2.0.1              # via pip-tools
 flake8==2.5.4
 importmagic==0.1.7
@@ -18,6 +19,7 @@ pip-tools==1.6.1
 py==1.4.31                # via pytest, pytest-catchlog
 pyflakes==1.0.0           # via flake8
 pytest-catchlog==1.2.2
+pytest-cov==2.2.1
 pytest-mock==0.11.0
 pytest==2.9.1
 rope-py3k==0.9.4.post1

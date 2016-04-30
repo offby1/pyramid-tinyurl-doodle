@@ -5,6 +5,7 @@ mock
 pip-tools
 pytest
 pytest-catchlog
+pytest-cov
 pytest-mock
 rope_py3k
 yapf

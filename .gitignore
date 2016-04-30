@@ -11,3 +11,5 @@
 /tinyurl.egg-info/
 /venv/
 /.cookie_secret
+/.coverage
+htmlcov/
