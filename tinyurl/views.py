@@ -35,10 +35,6 @@ def truncate(string, maxlen):
     return string
 
 
-def _english_age_description(datestamp):
-    return 'a while ago'
-
-
 def _recent_entries(request):
     now = arrow.utcnow()
 
