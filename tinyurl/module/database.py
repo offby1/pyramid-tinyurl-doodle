@@ -3,7 +3,7 @@ import abc
 
 class DatabaseMeta(metaclass=abc.ABCMeta):
     @abc.abstractmethod
-    def save_or_update(self, key, value):
+    def add_if_not_present(self, key, value):
         """Like save, but only writes to the database if the key is not
         already present.
 

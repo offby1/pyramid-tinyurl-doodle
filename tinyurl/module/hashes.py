@@ -16,7 +16,7 @@ def long_url_to_short_string(long_url, database):
     human_hash_bytes = human_hash_bytes.replace(b'+', b'').replace(b'/',
                                                                    b'')[:10]
     short = human_hash_bytes.decode('utf-8')
-    database.save_or_update(short, long_url)
+    database.add_if_not_present(short, long_url)
     return short
 
 

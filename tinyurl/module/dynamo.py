@@ -21,7 +21,7 @@ class DynamoDB(database.DatabaseMeta):
         self.ddb = boto3.resource('dynamodb')
         self.table = self.ddb.Table('hashes')
 
-    def save_or_update(self, key, value, create_date=None):
+    def add_if_not_present(self, key, value, create_date=None):
         if create_date is None:
             create_date = datetime.datetime.now (pytz.utc)
 

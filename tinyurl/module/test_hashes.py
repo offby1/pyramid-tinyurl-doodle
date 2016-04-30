@@ -16,7 +16,7 @@ class DummyDatabase(database.DatabaseMeta):
         self.stuff[key] = value
         self.save_metrics[key] += 1
 
-    def save_or_update(self, key, value):
+    def add_if_not_present(self, key, value):
         if key not in self.stuff:
             self._save(key, value)
 
