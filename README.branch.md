@@ -21,6 +21,4 @@ more confident than just "seems").
 - Make sure it can run as a docker image.  I suspect I don't want to
   put my aws credentials in the image, so ...
 
-- Do the tests in a different table!  Or at least ensure that the rows
-  that the tests add have all the required attributes, so that the web
-  site doesn't puke when it encounters them.
+- Do the tests in a different table!

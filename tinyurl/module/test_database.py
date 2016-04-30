@@ -53,6 +53,9 @@ def test_delete(ddb):
     k2 = 'key two'
     v2 = 'some other value'
 
+    for k in (k1, k2):
+        ddb.delete(k)
+
     ddb.add_if_not_present(k1, v1)
     ddb.add_if_not_present(k2, v2)
 
@@ -83,8 +86,8 @@ def test_get_all_returns_items_ordered_newest_first(ddb):
 
 def test_batch_writer(ddb):
     bulk_data = [
-        {'human_hash': 'key one', 'value': 'value one'},
-        {'human_hash': 'key two', 'value': 'value two'},
+        {'human_hash': 'key one', 'long_url': 'value one'},
+        {'human_hash': 'key two', 'long_url': 'value two'},
     ]
     for d in bulk_data:
         ddb.delete(d['human_hash'])
