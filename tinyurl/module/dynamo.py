@@ -42,7 +42,9 @@ class DynamoDB(database.DatabaseMeta):
     def get_all(self):
         # Yup, it's a scan.  They tell me that DynamoDB scans are
         # expensive.  But it's not obvious how else to do this ... and
-        # anyway, nobody actually uses this web site.
+        # anyway, this web site gets so little use (12 inserts per
+        # day, last I checked) that there's probably not that much
+        # data to scan.
         return sorted(self.table.scan()['Items'],
                       key=operator.itemgetter('create_date'),
                       reverse=True)
