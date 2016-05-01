@@ -1,3 +1,0 @@
-deb-src http://httpredir.debian.org/debian wheezy main
-deb-src http://httpredir.debian.org/debian wheezy-updates main
-deb-src http://security.debian.org         wheezy/updates main
