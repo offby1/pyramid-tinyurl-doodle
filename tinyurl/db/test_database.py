@@ -1,10 +1,5 @@
-# Core
-import datetime
-import uuid
-
 # 3rd-party
 import pytest
-import pytz
 
 # Local
 from . import database
@@ -83,6 +78,7 @@ def test_get_all_returns_items_ordered_newest_first(ddb):
     timestamps = [item['create_date'] for item in all if item['human_hash'] in ('key1', 'key2', 'key3')]
 
     assert timestamps == sorted(timestamps, reverse=True)
+
 
 def test_batch_writer(ddb):
     bulk_data = [
