@@ -17,9 +17,9 @@ _log = logging.getLogger(__name__)
 class DynamoDB(database.DatabaseMeta):
 
     # TODO -- allow region & credentials to be paramaterizable?
-    def __init__(self):
+    def __init__(self, table_name):
         self.ddb = boto3.resource('dynamodb')
-        self.table = self.ddb.Table('hashes')
+        self.table = self.ddb.Table(table_name)
 
     def _validate_item(self, i):
         for k in 'human_hash', 'long_url', 'create_date':
