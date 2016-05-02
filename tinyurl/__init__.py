@@ -13,7 +13,7 @@ from six.moves import reload_module
 
 # Local
 
-from .module import dynamo
+from .db import dynamo
 
 logger = logging.getLogger(__name__)
 

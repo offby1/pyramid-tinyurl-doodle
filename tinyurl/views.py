@@ -15,7 +15,7 @@ import webob.acceptparse
 
 # Local
 from . import auth
-from .module import hashes
+from .db import hashes
 
 
 logger = logging.getLogger('tinyurl')
