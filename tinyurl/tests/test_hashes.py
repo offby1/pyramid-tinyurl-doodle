@@ -1,8 +1,8 @@
 import collections
 import operator
 
-from . import database
-from . import hashes
+from tinyurl.db import database
+from tinyurl.db import hashes
 
 
 class DummyDatabase(database.DatabaseMeta):

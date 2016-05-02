@@ -2,8 +2,8 @@
 import pytest
 
 # Local
-from . import database
-from . import dynamo
+from tinyurl.db import database
+from tinyurl.db import dynamo
 
 
 def test_it_really_is_abstract ():
