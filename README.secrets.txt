@@ -1,4 +1,4 @@
-To generate the cookie secret:
+To generate the cookie secret (on OS X use `gtr` instead of `tr`; get it from `brew install coreutils`):
 
     $ cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 64 | head -n 1 > .cookie_secret
 
