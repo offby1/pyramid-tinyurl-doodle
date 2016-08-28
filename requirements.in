@@ -9,6 +9,7 @@ pyramid_debugtoolbar
 pyramid_persona
 pyramid_tm
 pytz
+request-id
 six
 transaction
 waitress
