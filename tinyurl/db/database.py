@@ -1,7 +1,9 @@
 import abc
+import six
 
 
-class DatabaseMeta(metaclass=abc.ABCMeta):
+@six.add_metaclass(abc.ABCMeta)
+class DatabaseMeta(object):
     @abc.abstractmethod
     def add_if_not_present(self, key, value):
         """Like save, but only writes to the database if the key is not
