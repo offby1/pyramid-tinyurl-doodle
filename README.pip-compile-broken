@@ -1,0 +1,7 @@
+AttributeError: 'Requirement' object has no attribute 'project_name'
+
+=>
+
+./venv3.darwin/bin/pip install pip==8.1.1
+
+See https://github.com/pypa/pip/issues/3687
