@@ -33,6 +33,7 @@
                   <th>Date</th>
                   <th>Hash</th>
                   <th>Url</th>
+                  <th>Url Length</th>
                   <th>Nix</th>
                 </tr>
                 </thead>
@@ -41,10 +42,11 @@
                 <tr>
                   <td>${e['create_date']}</td>
                   <td>${e['human_hash']}</td>
-                  <td>${e['long_url']}</td>
+                  <td><a href="${e['long_url']}">${e['long_url'][:100]}</a></td>
+                  <td>${len(e['long_url'])}</a></td>
                   <td>
                   <button type="button" data-delete-url="${request.route_url('delete', human_hash=e['human_hash'])}">
-                    Click Me to delete ${e['human_hash']}!
+                    delete
                   </button>
                   </td>
                 </tr>
@@ -87,10 +89,6 @@
       $("#index").dataTable({
 
        "order": [] // use whatever order the rows come back from the db
-
-        // TODO -- add some magic whereby we can sort the table by the
-        // _length_ of the long URL, since spammy URLs tend to be short.
-
       });
       }
       );
