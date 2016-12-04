@@ -8,7 +8,6 @@ from pyramid.exceptions import Forbidden
 import pyramid.httpexceptions
 from pyramid.renderers import render_to_response
 from pyramid.response import Response
-from pyramid.security import authenticated_userid
 from pyramid.view import view_config
 import six.moves.urllib.parse
 import webob.acceptparse
@@ -65,8 +64,8 @@ def home_GET(request):
     })
 
 
-def _is_boss(userid):
-    return (userid == 'eric.hanchrow@gmail.com')
+def _is_boss(request):
+    return auth._is_from_whitelisted_IP(request)
 
 
 def render(request, values):
@@ -78,15 +77,13 @@ def render(request, values):
 
         this_commit_url = git_info and '{}commit/{}'.format(
             request.registry.settings['github_home_page'], git_info)
-        userid = authenticated_userid(request)
         return render_to_response(
             'templates/homepage.mak',
             dict(
                 values,
                 github_home_page=request.registry.settings['github_home_page'],
                 this_commit_url=this_commit_url,
-                userid=userid,
-                bossman=_is_boss(userid)),
+                bossman=_is_boss(request)),
             request=request)
 
     r = Response(body=values.get('short_url', ''),
@@ -147,7 +144,7 @@ def lengthen_GET(request):
              request_method='GET',
              renderer='templates/raw_table.mak')
 def edit_GET(request):
-    if not _is_boss(authenticated_userid(request)):
+    if not _is_boss(request):
         raise Forbidden
 
     return {'table': request.database.get_all()}
@@ -155,7 +152,7 @@ def edit_GET(request):
 
 @view_config(route_name='delete', request_method='DELETE', renderer='json')
 def delete_DELETE(request):
-    if not _is_boss(authenticated_userid(request)):
+    if not _is_boss(request):
         raise Forbidden
 
     human_hash = request.matchdict['human_hash']
