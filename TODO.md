@@ -4,6 +4,9 @@
 - Serve HTTPS with a cert from
   https://letsencrypt.readthedocs.org/en/latest/intro.html
 
+- See if datatables has some provision for pagination -- that way I
+  don't have to wait around while it scans the entire ddb table
+
 - Nix PasteDeploy; use
   [Montague](https://metaclassical.com/announcing-montague-the-new-way-to-configure-python-applications/)
   instead!
