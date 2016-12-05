@@ -1,11 +1,14 @@
+- Don't scan the whole damned table every time we load the page; just
+  grab the first 20 or so items.
+
+- See if datatables has some provision for pagination -- that way I
+  don't have to wait around while it scans the entire ddb table
+
 - Keep track of how many times we've lengthened each short URL.  Also
   a timestamp for the last such time.
 
 - Serve HTTPS with a cert from
   https://letsencrypt.readthedocs.org/en/latest/intro.html
-
-- See if datatables has some provision for pagination -- that way I
-  don't have to wait around while it scans the entire ddb table
 
 - Nix PasteDeploy; use
   [Montague](https://metaclassical.com/announcing-montague-the-new-way-to-configure-python-applications/)
