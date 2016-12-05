@@ -4,39 +4,36 @@
 #
 #    pip-compile --output-file requirements.txt requirements.in
 #
-
 arrow==0.7.0
-Babel==2.3.4
+babel==2.3.4
 boto3==1.3.1
 botocore==1.4.13          # via boto3
-Chameleon==2.24           # via pyramid-chameleon
+chameleon==2.24           # via pyramid-chameleon
 docutils==0.12            # via botocore
-IPy==0.83
+ipy==0.83
 jmespath==0.9.0           # via boto3, botocore
-Mako==1.0.4               # via pyramid-mako
-MarkupSafe==0.23          # via mako
-Paste==2.0.3
-PasteDeploy==1.5.2        # via pyramid
-Pygments==2.1.3           # via pyramid-debugtoolbar
+mako==1.0.4               # via pyramid-mako
+markupsafe==0.23          # via mako
+paste==2.0.3
+pastedeploy==1.5.2        # via pyramid
+pygments==2.1.3           # via pyramid-debugtoolbar
 pyramid-chameleon==0.3
-pyramid-debugtoolbar==3.0.4
+pyramid-debugtoolbar==3.0.5
 pyramid-mako==1.0.2       # via pyramid-debugtoolbar
-pyramid-tm==0.12.1
+pyramid-tm==1.1.1
 pyramid==1.7a2
 python-dateutil==2.5.3    # via arrow, botocore
 pytz==2016.4
 repoze.lru==0.6           # via pyramid, pyramid-debugtoolbar
 request-id==0.2
-requests==2.9.1           # via pybrowserid
 six==1.10.0
-transaction==1.4.4
+transaction==2.0.3
 translationstring==1.3    # via pyramid
 venusian==1.0             # via pyramid
 waitress==0.9.0
-WebOb==1.6.0              # via pyramid, request-id
+webob==1.6.0              # via pyramid, request-id
 zope.deprecation==4.1.2   # via pyramid
 zope.interface==4.1.3     # via pyramid, transaction
 
-# The following packages are commented out because they are
-# considered to be unsafe in a requirements file:
+# The following packages are considered to be unsafe in a requirements file:
 # setuptools                # via pyramid, zope.deprecation, zope.interface
