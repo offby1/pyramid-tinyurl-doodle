@@ -1,5 +1,6 @@
 # Core
 import logging
+import operator
 
 # 3rd-party
 import arrow
@@ -14,6 +15,7 @@ import webob.acceptparse
 
 # Local
 from . import auth
+from . import helpers
 from .db import hashes
 
 
@@ -37,7 +39,8 @@ def truncate(string, maxlen):
 def _recent_entries(request):
     now = arrow.utcnow()
 
-    for item in request.database.get_all()[:10]:
+    day_fetcher = request.database.get_one_days_hashes
+    for item in helpers.n_most_recent(now, day_fetcher):
 
         create_date_string = item['create_date']
 

@@ -16,7 +16,7 @@ def test_it_really_is_abstract ():
 
 @pytest.fixture
 def ddb():
-    return dynamo.DynamoDB('hashes-test')
+    return dynamo.DynamoDB('hashes-test', 'create_date-create_datetime')
 
 
 def test_dynamo_works(ddb):

@@ -6,6 +6,7 @@ import operator
 # Third party
 import botocore.exceptions
 import boto3
+from boto3.dynamodb.conditions import Key
 import pytz
 
 # Local
@@ -14,18 +15,25 @@ from . import database
 _log = logging.getLogger(__name__)
 
 
+def _iso_now():
+    return datetime.datetime.now (pytz.utc).isoformat()
+
+def _truncate_to_day(iso8601_string):
+    return iso8601_string[0:10]
+
 class DynamoDB(database.DatabaseMeta):
 
     # TODO -- allow region & credentials to be paramaterizable?
-    def __init__(self, table_name):
+    def __init__(self, table_name, daily_index_name):
         self.ddb = boto3.resource('dynamodb')
+        self.daily_index_name = daily_index_name
         self.table = self.ddb.Table(table_name)
 
     def add_if_not_present(self, key, value):
-        create_date = datetime.datetime.now (pytz.utc).isoformat()
+        create_date = _iso_now()
 
         # Redundant, but handy as the hash key for a global secondary index
-        create_day = create_date[0:10]
+        create_day = _truncate_to_day(create_date)
 
         try:
             item = {'human_hash': key,
@@ -55,6 +63,16 @@ class DynamoDB(database.DatabaseMeta):
         return sorted(self.table.scan()['Items'],
                       key=operator.itemgetter('create_date'),
                       reverse=True)
+
+    def get_one_days_hashes(self, date):
+        date_string = date.isoformat()
+
+        QueryArgs = dict(IndexName=self.daily_index_name,
+                         Limit=10,
+                         KeyConditionExpression=Key('create_day').eq(date_string),
+                         ScanIndexForward=False)
+        result = self.table.query(**QueryArgs)
+        return result['Items']
 
     def delete(self, key):
         self.table.delete_item(Key={'human_hash': key})
