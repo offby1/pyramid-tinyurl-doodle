@@ -24,10 +24,15 @@ class DynamoDB(database.DatabaseMeta):
     def add_if_not_present(self, key, value):
         create_date = datetime.datetime.now (pytz.utc).isoformat()
 
+        # Redundant, but handy as the hash key for a global secondary index
+        create_day = create_date[0:10]
+
         try:
             item = {'human_hash': key,
                     'long_url': value,
-                    'create_date': create_date}
+                    'create_date': create_date,
+                    'create_day': create_day}
+
             self.table.put_item(Item=item,
                                 ConditionExpression='attribute_not_exists(human_hash)')
 
