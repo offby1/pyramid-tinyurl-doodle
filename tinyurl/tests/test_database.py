@@ -78,16 +78,3 @@ def test_get_all_returns_items_ordered_newest_first(ddb):
     timestamps = [item['create_date'] for item in all if item['human_hash'] in ('key1', 'key2', 'key3')]
 
     assert timestamps == sorted(timestamps, reverse=True)
-
-
-def test_batch_writer(ddb):
-    bulk_data = [
-        {'human_hash': 'key one', 'long_url': 'value one'},
-        {'human_hash': 'key two', 'long_url': 'value two'},
-    ]
-    for d in bulk_data:
-        ddb.delete(d['human_hash'])
-    ddb.batch_add_key_value_pairs(bulk_data)
-    for d in bulk_data:
-        got = ddb.lookup(d['human_hash'])
-        assert(got == d)
