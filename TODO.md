@@ -1,6 +1,3 @@
-- Don't scan the whole damned table every time we load the page; just
-  grab the first 20 or so items.
-
 - See if datatables has some provision for pagination -- that way I
   don't have to wait around while it scans the entire ddb table
 
