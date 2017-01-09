@@ -88,7 +88,9 @@ def main(global_config, **settings):
     config.add_route('lengthen', '/{human_hash}', request_method='GET')
     config.add_route('delete', '/{human_hash}', request_method='DELETE')
 
-    config.add_request_method(lambda request: dynamo.DynamoDB('hashes'), name="database", reify=True)
+    table = dynamo.DynamoDB(table_name='hashes',
+                            daily_index_name='create_day-create_date-index')
+    config.add_request_method(lambda request: table, name="database", reify=True)
 
     config.scan(ignore=[re.compile('test_').search])
     return config.make_wsgi_app()
