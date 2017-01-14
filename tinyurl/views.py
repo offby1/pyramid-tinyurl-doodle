@@ -5,7 +5,7 @@ import operator
 # 3rd-party
 import arrow
 from babel.dates import format_timedelta
-from pyramid.exceptions import Forbidden
+from pyramid.exceptions import HTTPForbidden
 import pyramid.httpexceptions
 from pyramid.renderers import render_to_response
 from pyramid.response import Response
@@ -148,7 +148,7 @@ def lengthen_GET(request):
              renderer='templates/raw_table.mak')
 def edit_GET(request):
     if not _is_boss(request):
-        raise Forbidden
+        raise HTTPForbidden(detail="Hint: try connecting from a private IP address.")
 
     return {'table': request.database.get_all()}
 
@@ -156,7 +156,7 @@ def edit_GET(request):
 @view_config(route_name='delete', request_method='DELETE', renderer='json')
 def delete_DELETE(request):
     if not _is_boss(request):
-        raise Forbidden
+        raise HTTPForbidden
 
     human_hash = request.matchdict['human_hash']
 
