@@ -1,10 +1,12 @@
 Getting Started Locally
 -----------------------
 
-Ensure you've got Amazon AWS config and credentials, wherever
-[boto](https://boto3.readthedocs.io/en/latest/guide/quickstart.html#configuration)
-expects to find them.  Then --- assuming you've got a
-[virtualenv](https://virtualenv.pypa.io/en/latest/) somewhere, and
+Ensure you've got Amazon AWS config and credentials,
+wherever
+[boto](https://boto3.readthedocs.io/en/latest/guide/quickstart.html#configuration) expects
+to find them (tl;dr: mine are in `~/.aws/credentials`).  Then ---
+assuming you've got
+a [virtualenv](https://virtualenv.pypa.io/en/latest/) somewhere, and
 stored its location in the variable `VENV` --- do:
 
     $ cd <directory containing this file>
