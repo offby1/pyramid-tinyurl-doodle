@@ -1,23 +1,22 @@
 #!/usr/bin/env python
 
-# Hack to get some AWS config stuff into the running image.  I'm sure
-# there's a better way, but this works.
+# Hack to get some AWS config stuff into the running image.
 
-import configparser
+# I should really be using IAM roles --
+# http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/iam-roles-for-amazon-ec2.html
+# (but the instance on which I currently run teensy.info wasn't
+# launched with any roles, and you can't add roles to an
+# already-running instance).
+
 import os
 import subprocess
 import sys
-
-c = configparser.ConfigParser ()
-c.read (os.path.expanduser('~/.aws/credentials'))
 
 server_args = [
                'docker',
                'run',
                '-p', '8000:80',
-               '--env', 'AWS_ACCESS_KEY_ID={}'.format (c['default']['aws_access_key_id']),
-               '--env', 'AWS_DEFAULT_REGION=us-west-1',
-               '--env', 'AWS_SECRET_ACCESS_KEY={}'.format (c['default']['aws_secret_access_key']),
+               '-v', '{}:/root/.aws:ro'.format(os.path.expanduser('~/.aws/'))
                ] + sys.argv[1:]
 
 subprocess.call(server_args)

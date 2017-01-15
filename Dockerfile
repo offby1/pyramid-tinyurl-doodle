@@ -14,6 +14,7 @@ COPY . /tinyurl/
 WORKDIR /tinyurl
 
 RUN python3 setup.py install
+RUN cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 64 | head -n 1 > .cookie_secret
 
 ENV LC_ALL=C
 
