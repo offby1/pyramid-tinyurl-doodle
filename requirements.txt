@@ -26,6 +26,7 @@ python-dateutil==2.5.3    # via arrow, botocore
 pytz==2016.4
 repoze.lru==0.6           # via pyramid, pyramid-debugtoolbar
 request-id==0.2
+requests==2.12.4
 six==1.10.0
 transaction==2.0.3
 translationstring==1.3    # via pyramid
