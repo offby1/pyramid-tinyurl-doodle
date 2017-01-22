@@ -1,11 +1,10 @@
 import collections
 import operator
 
-from tinyurl.db import database
 from tinyurl.db import hashes
 
 
-class DummyDatabase(database.DatabaseMeta):
+class DummyDatabase():
     def __init__(self):
         self.stuff = {}
 

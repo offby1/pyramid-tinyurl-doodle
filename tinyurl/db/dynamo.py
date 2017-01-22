@@ -9,9 +9,6 @@ import boto3
 from boto3.dynamodb.conditions import Key
 import pytz
 
-# Local
-from . import database
-
 _log = logging.getLogger(__name__)
 
 
@@ -21,7 +18,7 @@ def _iso_now():
 def _truncate_to_day(iso8601_string):
     return iso8601_string[0:10]
 
-class DynamoDB(database.DatabaseMeta):
+class DynamoDB:
 
     # TODO -- allow region & credentials to be paramaterizable?
     def __init__(self, table_name, daily_index_name):
@@ -64,12 +61,17 @@ class DynamoDB(database.DatabaseMeta):
                       key=operator.itemgetter('create_date'),
                       reverse=True)
 
-    def get_one_days_hashes(self, date):
+    def get_one_days_hashes(self, date, later_than=None):
         date_string = date.isoformat()
+
+        KeyConditionExpression = Key('create_day').eq(date_string)
+
+        if later_than:
+            KeyConditionExpression &= Key('create_date').gt(later_than.isoformat())
 
         QueryArgs = dict(IndexName=self.daily_index_name,
                          Limit=10,
-                         KeyConditionExpression=Key('create_day').eq(date_string),
+                         KeyConditionExpression=KeyConditionExpression,
                          ScanIndexForward=False)
         result = self.table.query(**QueryArgs)
         return result['Items']
