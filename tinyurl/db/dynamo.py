@@ -15,8 +15,10 @@ _log = logging.getLogger(__name__)
 def _iso_now():
     return datetime.datetime.now (pytz.utc).isoformat()
 
+
 def _truncate_to_day(iso8601_string):
     return iso8601_string[0:10]
+
 
 class DynamoDB:
 

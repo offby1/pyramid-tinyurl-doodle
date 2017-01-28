@@ -14,6 +14,7 @@ from six.moves import reload_module
 # Local
 
 from .db import dynamo
+from . import helpers
 
 logger = logging.getLogger(__name__)
 
@@ -85,12 +86,16 @@ def main(global_config, **settings):
     config.add_route('shorten', '/shorten-/')
 
     config.add_route('edit', '/edit')
+    config.add_route('304_test', '/304')
     config.add_route('lengthen', '/{human_hash}', request_method='GET')
     config.add_route('delete', '/{human_hash}', request_method='DELETE')
 
     table = dynamo.DynamoDB(table_name='hashes',
                             daily_index_name='create_day-create_date-index')
     config.add_request_method(lambda request: table, name="database", reify=True)
+
+    etag_cache_thing = helpers.EtagMemoizer()
+    config.add_request_method(lambda request: etag_cache_thing, name="etag_cache_thing", reify=True)
 
     config.scan(ignore=[re.compile('test_').search])
     return config.make_wsgi_app()
