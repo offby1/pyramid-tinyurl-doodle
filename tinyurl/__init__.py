@@ -42,8 +42,8 @@ def _grab_secret(file_name, description):
         with open(file_name) as inf:
             logger.info("Read %s from %s", description, inf.name)
             return inf.read()
-    except IOError:
-        logger.exception("Couldn't read %s", description)
+    except (IOError, FileNotFoundError):
+        logger.warning("Couldn't read %s", description)
         return ''
 
 
