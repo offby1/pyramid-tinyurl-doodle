@@ -1,3 +1,6 @@
+- Turn this into a paste site!  I'm sure I've thought about this, but
+  can't find any notes.
+
 - See if datatables has some provision for pagination -- that way I
   don't have to wait around while it scans the entire ddb table
 
