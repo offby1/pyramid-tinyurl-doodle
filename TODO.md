@@ -18,3 +18,5 @@
   <goodwill> . whitelist ip should be in config not global
   <goodwill> . test all the things
   <goodwill> . add docstrings with parameter and return docs to all the functions
+
+- Consider [chalice](https://github.com/awslabs/chalice).  Of course then I'd have to change the name of this project, since it'd no longer be using pyramid.
