@@ -5,11 +5,11 @@
 *~
 .cache/
 /*.html
+/.cookie_secret
+/.coverage
 /.git-post-checkout-info
 /.recaptcha_secret
 /.vagrant/
 /tinyurl.egg-info/
 /venv/
-/.cookie_secret
-/.coverage
 htmlcov/
