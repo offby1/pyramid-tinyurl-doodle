@@ -83,7 +83,7 @@
             <p class="text-muted">
               © 2015-2017 <a href="http://github.com/offby1/">This guy right here</a>
               |
-              A shameless ripoff of <a href="http://tinyurl.com/">tinyurl.com</a>
+              A shameless (but nicer-looking) ripoff of <a href="http://tinyurl.com/">tinyurl.com</a>
               %if this_commit_url:
               |
               <a href="${this_commit_url}">Version</a>
