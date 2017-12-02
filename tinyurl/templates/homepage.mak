@@ -50,8 +50,8 @@
 
 
         <div class="row">
-          <div class="col-md-2">
-            <p>Some recent entries:</p>
+          <div class="col-md-12">
+            <p>Some recent entries (out of ${item_count} total) :</p>
           </div>
         </div>
 

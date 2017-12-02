@@ -97,6 +97,7 @@ def home_GET(request):
 
     def expensive_computation():
         return render_html_or_text(request, {
+            'item_count': request.database.table.item_count,
             'recent_entries': _recent_entries(request),
             'truncate': truncate,
             'display_captcha': not authed
