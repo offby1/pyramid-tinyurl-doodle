@@ -2,6 +2,7 @@
 import datetime
 import logging
 import os
+import os.path
 import re
 
 # 3rd-party
@@ -39,12 +40,13 @@ def _grab_git_info():
 
 
 def _grab_secret(file_name, description):
+    file_name = os.path.abspath (file_name)
     try:
         with open(file_name) as inf:
-            logger.info("Read %s from %s", description, inf.name)
+            logger.info("Read %s from %r", description, inf.name)
             return inf.read()
     except (IOError, FileNotFoundError):
-        logger.warning("Couldn't read %s", description)
+        logger.warning("Couldn't read %s %r", description, file_name)
         return ''
 
 
