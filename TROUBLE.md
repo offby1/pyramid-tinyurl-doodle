@@ -1,14 +1,14 @@
 * deploying from my mac times out
 
-* the above can be worked around by deploying from my EC2 box.  But
-  then after pointing my browser at
-  https://h0bvqn56e3.execute-api.us-west-1.amazonaws.com/api/, I get
+* the above can be worked around by deploying from my EC2 box.  But now it's
 
-      Traceback (most recent call last):
-        File "/var/task/chalice/app.py", line 649, in _get_view_function_response
-          response = view_function(**function_args)
-        File "/var/task/app.py", line 13, in index
-          return Response(body=render_db_rows(app.current_request, db_rows_as_dicts),
-        File "/var/task/chalicelib/render.py", line 12, in render_db_rows
-          renderer = pystache.Renderer ()
-      AttributeError: module 'pystache' has no attribute 'Renderer'
+     botocore.exceptions.ClientError: An error occurred (AccessDeniedException) when calling the GetItem operation: User: arn:aws:sts::661326993281:assumed-role/teensy-dev/teensy-dev is not authorized to perform: dynamodb:GetItem on resource: arn:aws:dynamodb:us-west-1:661326993281:table/hashes
+
+I _thought_ I fixed this with
+
+    30513280b4e644bf9fbc3fda702919a513e4082f
+    Author:     Eric Hanchrow <eric.hanchrow@gmail.com>
+
+    Woohoo -- I hadda fiddle a policy but this works.
+
+but even after adding `"dynamodb:GetItem"` to the Allowed actions, it still fails :-(
