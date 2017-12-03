@@ -48,10 +48,9 @@
           </div>
         </div>
 
-
         <div class="row">
           <div class="col-md-12">
-            <p>Some recent entries (out of ${item_count} total) :</p>
+            <p>Some recent entries (out of ${request.database.table.item_count} total) :</p>
           </div>
         </div>
 
