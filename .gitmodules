@@ -1,6 +1,0 @@
-[submodule "vendor/mako"]
-	path = vendor/mako
-	url = https://github.com/zzzeek/mako.git
-[submodule "vendor/markupsafe"]
-	path = vendor/markupsafe
-	url = https://github.com/pallets/markupsafe.git

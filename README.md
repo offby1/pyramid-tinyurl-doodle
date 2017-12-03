@@ -2,15 +2,8 @@ Following along http://chalice.readthedocs.io/en/latest/quickstart.html
 
 First do
 
+    $ python3 -m venv venv
     $ ./venv/bin/pip install -r dev-requirements.txt 
-
-Be sure to do `pip install chalice`, because:
-
-- this code is but one branch of a project
-- this code, as well as the other branches, probably have a `venv` directory
-- the different branches probably want different versions of stuff in that venv directory (in particular, boto3)
-- chalice will break if the venv has the wrong version of something
-- `pip install chalice` will fix that breakage
 
 I've been using these commands to test stuff:
 
