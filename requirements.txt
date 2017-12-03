@@ -1,2 +1,3 @@
 boto3
 vendor/mako/
+vendor/markupsafe/ --install-option --without-speedups
