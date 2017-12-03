@@ -13,11 +13,19 @@ def index():
     return Response(body=render_db_rows(app.current_request, db_rows_as_dicts),
                     headers={'Content-Type': 'text/html'})
 
+@app.route('/whatever/{something}')
+def whatever(something):
+    return f'Congratulations: {something}'
+
+
 @app.route('/debug')
 def debug():
     import pprint
-    request_as_dict = app.current_request.to_dict()
-    purty_request = pprint.pformat(request_as_dict)
-    purty_app = pprint.pformat(vars(app))
-    return Response(body=purty_app + '\n' + purty_request,
+
+    wat = {
+        'app': vars(app),
+        'request': app.current_request.to_dict(),
+        'example_response': vars(Response(body='I am a body', headers={'Content-Type': 'text/shmext'}))
+    }
+    return Response(body=pprint.pformat(wat),
                     headers={'Content-Type': 'text/plain'})
