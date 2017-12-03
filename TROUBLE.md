@@ -17,9 +17,3 @@ but even after adding `"dynamodb:GetItem"` to the Allowed actions, it
 still fails :-( So  I've removed the stuff that I added, and instead
 attached the `AmazonDynamoDBReadOnlyAccess` built-in policy to the IAM
 user, and that seems to get past it, and on to the next problem.
-
-* Once again, clicking on a short link:
-
-        {"message":"Forbidden"}
-
-  Apparently those links, which look like `https://h0bvqn56e3.execute-api.us-west-1.amazonaws.com/redirect/qo22Zo6Esf`, should instead say `/api/redirect` ... at least, hacking that into the URL bar does almost the right thing ...
