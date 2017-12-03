@@ -11,8 +11,8 @@
             <tr>
                 <td>${row['create_date']}</td>
                 <td><a href="${row['long_url']}">${row['long_url']}</a></td>
-                <td style="font-family: monospace;" ><a>${row['human_hash']}</a></td>
-            </tr> 
+                <td style="font-family: monospace;" ><a href="${compute_short_url (row)}">${row['human_hash']}</a></td>
+            </tr>
         %endfor
     </table>
 </html>
