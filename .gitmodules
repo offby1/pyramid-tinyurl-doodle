@@ -1,0 +1,3 @@
+[submodule "vendor/pystache"]
+	path = vendor/pystache
+	url = https://github.com/defunkt/pystache.git

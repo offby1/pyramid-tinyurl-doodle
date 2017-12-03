@@ -1,0 +1,18 @@
+<html>
+    My samoyed is really hairy.
+    <table class="table">
+        <tr>
+            <th>Created at</th>
+            <th>Long</th>
+            <th>Short</th>
+        </tr>
+
+        {{#rows}}
+            <tr>
+                <td>{{create_date}}</td>
+                <td><a href="{{long_url}}">{{long_url}}</a></td>
+                <td style="font-family: monospace;" ><a href="{{short_url}}">{{human_hash}}</a></td>
+            </tr>
+        {{/rows}}
+    </table>
+</html>

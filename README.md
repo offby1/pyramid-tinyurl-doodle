@@ -8,6 +8,7 @@ First do
 I've been using these commands to test stuff:
 
     $ ./venv/bin/pip install -r requirements.txt
+    $ ./venv/bin/pip install vendor/pystache
     $ ./venv/bin/chalice local
 
 I suspect the above command does not automatically reload any of the python files after I hack on them, but otoh I don't need to reload after hacking on the template, since each request reloads the template.
