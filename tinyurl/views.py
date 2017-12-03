@@ -170,6 +170,7 @@ Recaptcha</a>, you're a robot.  Don't blame me!""")
 
     body, content_type = render_html_or_text(request, {
         'human_hash': human_hash,
+        'item_count': request.database.table.item_count,
         'short_url': short_url,
         'recent_entries': _recent_entries(request),
         'truncate': truncate,
