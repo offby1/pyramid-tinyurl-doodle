@@ -2,7 +2,7 @@
     My samoyed is really hairy.
     <table class="table">
         <tr>
-            <th>Age</th>
+            <th>Created at</th>
             <th>Long</th>
             <th>Short</th>
         </tr>
