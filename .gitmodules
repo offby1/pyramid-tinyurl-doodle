@@ -1,0 +1,3 @@
+[submodule "vendor/mako"]
+	path = vendor/mako
+	url = https://github.com/zzzeek/mako.git
