@@ -21,3 +21,7 @@ def get_some_entries_as_json ():
     return sorted(table.scan(Limit=10)['Items'],
                   key=operator.itemgetter('create_date'),
                   reverse=True)
+
+def lengthen_short_string(short_string):
+    gotten = table.get_item(Key={'human_hash': short_string})
+    return gotten.get('Item', {}).get('long_url')

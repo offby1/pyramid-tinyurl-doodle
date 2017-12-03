@@ -4,7 +4,7 @@ def render_db_rows(request, list_o_dicts):
 
     def short_url(db_row):
         host = request.headers['host']
-        return '//' + host + '/whatever/' + db_row['human_hash']
+        return '//' + host + '/redirect/' + db_row['human_hash']
 
     lookup = mako.lookup.TemplateLookup(["chalicelib"])
 

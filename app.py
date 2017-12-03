@@ -1,6 +1,6 @@
 from chalice import Chalice, Response
 
-from chalicelib.db import get_some_entries_as_json
+from chalicelib.db import get_some_entries_as_json, lengthen_short_string
 from chalicelib.render import render_db_rows
 
 app = Chalice(app_name='teensy')
@@ -13,9 +13,16 @@ def index():
     return Response(body=render_db_rows(app.current_request, db_rows_as_dicts),
                     headers={'Content-Type': 'text/html'})
 
-@app.route('/whatever/{something}')
-def whatever(something):
-    return f'Congratulations: {something}'
+@app.route('/redirect/{short_string}')
+def redirect(short_string):
+    long_url = lengthen_short_string(short_string)
+    if long_url:
+        return Response(body='Please hold while I get that number',
+                        status_code=302,
+                        headers={'Location': long_url})
+    return Response(body="Ain't no thang",
+                    status_code=404)
+
 
 
 @app.route('/debug')
