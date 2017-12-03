@@ -8,6 +8,7 @@ First do
 I've been using these commands to test stuff:
 
     $ ./venv/bin/pip install -r requirements.txt
+    $ git submodule update
     $ ./venv/bin/pip install vendor/pystache
     $ ./venv/bin/chalice local
 
