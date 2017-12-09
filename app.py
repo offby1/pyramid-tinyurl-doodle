@@ -4,7 +4,17 @@ from chalicelib.db import a_few_recent_entries, lengthen_short_string
 from chalicelib.render import render_db_rows
 
 app = Chalice(app_name='teensy')
+app.api.binary_types.remove('image/png')
 app.debug = True
+
+
+def _pawprint():
+    return Response(body=open('chalicelib/static/pawprint.png', 'rb').read(),
+                    headers={'Content-Type': 'image/png'})
+
+
+pawprint = app.route('/static/pawprint.png')(_pawprint)
+favicon = app.route('/favicon.ico')(_pawprint)
 
 
 @app.route('/')
