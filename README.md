@@ -17,4 +17,4 @@ To deploy for real, I run this:
 > Note that when run on my laptop, it takes so long that it times out, but when run from my ec2 instance it's quick
 
 
-    $ ./venv/bin/chalice deploy && ./venv/bin/http --pretty=format get https://v4ycr4gc52.execute-api.us-west-1.amazonaws.com/api/
+    $ ./venv/bin/chalice deploy && ./venv/bin/http --pretty=format get https://h0bvqn56e3.execute-api.us-west-1.amazonaws.com/api/
