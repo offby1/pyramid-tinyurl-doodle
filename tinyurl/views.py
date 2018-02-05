@@ -128,10 +128,9 @@ def _is_boss(request):
 
 
 def render_html_or_text(request, values):
-    accept_header = webob.acceptparse.Accept(str(request.accept))
+    accept_header = webob.acceptparse.AcceptValidHeader(str(request.accept))
 
-    if accept_header.best_match(['application/json', 'text/html'
-                                 ]) == 'text/html':
+    if accept_header.accepts_html:
         git_info = request.registry.settings['git_info']
 
         this_commit_url = git_info and '{}commit/{}'.format(
