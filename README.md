@@ -17,7 +17,7 @@ wherever
 [boto](https://boto3.readthedocs.io/en/latest/guide/quickstart.html#configuration) expects
 to find them (tl;dr: mine are in `~/.aws/credentials`).  Then do:
 
-    $ pip install pipenv
+    $ brew install pipenv # or pip install pipenv
     $ cd <directory containing this file>
     $ cp git/post-checkout .git/hooks
     $ pipenv install --dev
