@@ -15,21 +15,12 @@ scrape the "Secret Key" out of the "Keys" section, then save it into
 Ensure you've got Amazon AWS config and credentials,
 wherever
 [boto](https://boto3.readthedocs.io/en/latest/guide/quickstart.html#configuration) expects
-to find them (tl;dr: mine are in `~/.aws/credentials`).  Then ---
-assuming you've got
-a [virtualenv](https://virtualenv.pypa.io/en/latest/) somewhere, and
-stored its location in the variable `VENV` --- do:
+to find them (tl;dr: mine are in `~/.aws/credentials`).  Then do:
 
+    $ pip install pipenv
     $ cd <directory containing this file>
     $ cp git/post-checkout .git/hooks
-    $ $VENV/bin/pip install -r dev-requirements.txt
-    $ $VENV/bin/pip install -r requirements.txt
-
-> Note that the various `*requirements.txt` files, despite being
-> checked in to git, are automatically generated from the
-> corresponding `*requirements.in` files.  See
-> [the pip-tools docs](https://github.com/nvie/pip-tools) for details.
-
-    $ $VENV/bin/python setup.py develop
-    $ $VENV/bin/py.test tinyurl
-    $ $VENV/bin/pserve --reload development.ini
+    $ pipenv install --dev
+    $ pipenv run python setup.py develop
+    $ pipenv run py.test tinyurl
+    $ pipenv run pserve --reload development.ini
