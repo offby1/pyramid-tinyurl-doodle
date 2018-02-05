@@ -17,20 +17,20 @@ def null_renderer(mocker):
 
 
 @pytest.fixture
-def request():
+def dummy_request():
     rv = testing.DummyRequest()
     rv.etag_cache_thing = etag_cache_thing
     return rv
 
 
-def test_display_captcha_when_not_authed(null_renderer, request):
-    views.home_GET(request)
+def test_display_captcha_when_not_authed(null_renderer, dummy_request):
+    views.home_GET(dummy_request)
     (req, dict_), _ = null_renderer.call_args_list[0]
     assert dict_['display_captcha']
 
 
-def test_no_captcha_when_authed(null_renderer, request):
-    request.session['authenticated'] = True
-    views.home_GET(request)
+def test_no_captcha_when_authed(null_renderer, dummy_request):
+    dummy_request.session['authenticated'] = True
+    views.home_GET(dummy_request)
     (req, dict_), _ = null_renderer.call_args_list[0]
     assert not dict_['display_captcha']
