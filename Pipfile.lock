@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "a951d257e9bbf15ee54bf6713f63187f2742f6b652e2c1da70dde74820cfedf4"
+            "sha256": "a652c13e0ae15f02aedbf62dd5a3ab8cdb234a8d168354403375d98167fcd216"
         },
         "host-environment-markers": {
             "implementation_name": "cpython",
@@ -283,10 +283,10 @@
         },
         "webob": {
             "hashes": [
-                "sha256:63f4220492476c5c716b615baed7bf3d27040b3105014375787160dee0943115",
-                "sha256:8d10af182fda4b92193113ee1edeb687ab9dc44336b37d6804e413f0240d40d9"
+                "sha256:6cbd4aa5a0d37090f3d2bece656186d4691297ffbf39d08a6bbf55f189810f67",
+                "sha256:fa192842af2a04be36e3c4b4fc85e48fbaada5c462443b20dc3327d33d76ffe8"
             ],
-            "version": "==1.7.4"
+            "version": "==1.8.0rc1"
         },
         "zope.deprecation": {
             "hashes": [
@@ -446,13 +446,6 @@
                 "sha256:6074ea3b9c999bd6d0df5fa9d12dd95ccd23550df2a582f5f5b848331d2e82ca"
             ],
             "version": "==3.4.0"
-        },
-        "pytest-catchlog": {
-            "hashes": [
-                "sha256:a692966da726b918197cabd20dc0ad4da5503fbdc99baaa192e62579c8a45773",
-                "sha256:4be15dc5ac1750f83960897f591453040dff044b5966fe24a91c2f7d04ecfcf0"
-            ],
-            "version": "==1.2.2"
         },
         "pytest-cov": {
             "hashes": [
