@@ -178,6 +178,7 @@ Recaptcha</a>, you're a robot.  Don't blame me!""")
                     content_type=content_type,
                     status=200)
 
+
 @view_config(route_name='lengthen', request_method='GET')
 def lengthen_GET(request):
     human_hash = request.matchdict['human_hash']
