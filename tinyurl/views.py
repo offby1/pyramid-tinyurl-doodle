@@ -1,12 +1,13 @@
 # Core
 import logging
+import operator
 
 # 3rd-party
 import arrow
 from babel.dates import format_timedelta
 from pyramid.exceptions import HTTPForbidden
 import pyramid.httpexceptions
-from pyramid.renderers import render
+from pyramid.renderers import render_to_response
 from pyramid.response import Response
 from pyramid.view import view_config
 import six.moves.urllib.parse
@@ -19,42 +20,6 @@ from .db import hashes
 
 
 logger = logging.getLogger('tinyurl')
-
-
-def _sans_quotes(string):
-    if string is None:
-        return None
-    if string.startswith('"') and string.endswith('"'):
-        return string[1:-1]
-    return string
-
-
-@view_config(route_name='304_test')
-def _304_test(request, now=None):
-    if now is None:
-        now = arrow.now()
-
-    def expensive_computation():
-        return "At the tone, the time will be {}".format(now)
-
-    def make_200_response(text, digest):
-        return Response(body=text,
-                        etag=digest,
-                        status=200)
-
-    def make_304_response(text, digest):
-        return Response(etag=digest,
-                        status=304)
-
-    r, _ = request.etag_cache_thing.do_it_functionally(expensive_computation,
-                                                       digest=_sans_quotes(request.headers.get('If-None-Match')),
-                                                       slow=make_200_response,
-                                                       fast=make_304_response)
-
-    logger.debug("Oh, by the way: these are different: r.etag {!r} and r.headers['ETag'] {!r}"
-                 .format(r.etag, r.headers.get('ETag')))
-
-    return r
 
 
 @view_config(route_name='robots', request_method='GET')
@@ -95,39 +60,18 @@ def home_GET(request):
     authed = request.session.get('authenticated')
     logger.info("You %s already authenticated.", "are" if authed else "are not")
 
-    def expensive_computation():
-        return render_html_or_text(request, {
-            'recent_entries': _recent_entries(request),
-            'truncate': truncate,
-            'display_captcha': not authed
-        })
-
-    def make_200_response(rendered, digest):
-        text, content_type = rendered
-        assert isinstance(text, str)
-        return Response(body=text,
-                        content_type=content_type,
-                        etag=digest,
-                        status=200)
-
-    def make_304_response(rendered, digest):
-        return Response(etag=digest,
-                        status=304)
-
-    digest = request.headers.get('If-None-Match')
-    r, _ = request.etag_cache_thing.do_it_functionally(expensive_computation,
-                                                       digest=_sans_quotes(digest),
-                                                       slow=make_200_response,
-                                                       fast=make_304_response)
-
-    return r
+    return render(request, {
+        'recent_entries': _recent_entries(request),
+        'truncate': truncate,
+        'display_captcha': not authed
+    })
 
 
 def _is_boss(request):
     return auth._is_from_whitelisted_IP(request)
 
 
-def render_html_or_text(request, values):
+def render(request, values):
     accept_header = webob.acceptparse.AcceptValidHeader(str(request.accept))
 
     if accept_header.accepts_html:
@@ -135,16 +79,19 @@ def render_html_or_text(request, values):
 
         this_commit_url = git_info and '{}commit/{}'.format(
             request.registry.settings['github_home_page'], git_info)
-        return render(
+        return render_to_response(
             'templates/homepage.mak',
             dict(
                 values,
                 github_home_page=request.registry.settings['github_home_page'],
                 this_commit_url=this_commit_url,
                 bossman=_is_boss(request)),
-            request=request), 'text/html'
+            request=request)
 
-    return values.get('short_url', ''), 'text/plain'
+    r = Response(body=values.get('short_url', ''),
+                 status='200 OK')
+    r.content_type = 'text/plain'
+    return r
 
 
 @view_config(route_name='shorten', request_method='GET')
@@ -166,7 +113,7 @@ Recaptcha</a>, you're a robot.  Don't blame me!""")
     human_hash = hashes.long_url_to_short_string(long_url, request.database)
     short_url = request.route_url('lengthen', human_hash=human_hash)
 
-    body, content_type = render_html_or_text(request, {
+    body, content_type = render(request, {
         'human_hash': human_hash,
         'short_url': short_url,
         'recent_entries': _recent_entries(request),

@@ -89,7 +89,8 @@ def test_get_one_days_hashes(ddb):
                               ExpressionAttributeValues={
                                   ':long_url': item['long_url'],
                                   ':create_day': item['create_day'],
-                                  ':create_date': item['create_date']})
+                                  ':create_date': item['create_date']
+                              })
 
     assert ddb.get_one_days_hashes(datetime.date(year=2017, month=1, day=12)) == rows[0:1]
     assert ddb.get_one_days_hashes(datetime.date(year=2017, month=1, day=11)) == rows[1:3]

@@ -4,11 +4,7 @@ from functools import partial
 import mock
 import pytest
 import pytz
-from tinyurl.helpers import (
-    n_most_recent,
-    EtagMemoizer
-)
-
+from tinyurl.helpers import n_most_recent
 
 @pytest.fixture
 def db():
@@ -35,7 +31,6 @@ def fetch_day(db, dt, later_than=None):
 
 now = datetime.datetime(year=1968, month=5, day=17)
 
-
 def test_n_most_recent(db):
     gotten = list(n_most_recent (now, partial(fetch_day, db), num_items=10, days_back=4))
     assert len(gotten) == 10
@@ -44,7 +39,7 @@ def test_n_most_recent(db):
 def test_n_most_recent_honors_later_than(db):
     mock_fetcher = mock.Mock()
     mock_fetcher.side_effect = lambda dt, later_than=None: fetch_day(db, dt, later_than=later_than)
-    later_than = datetime.datetime(year=1968, month=5, day=16, hour=12, tzinfo=pytz.utc)
+    later_than=datetime.datetime(year=1968, month=5, day=16, hour=12, tzinfo=pytz.utc)
     gotten = list(n_most_recent (now, mock_fetcher, num_items=10, days_back=4, later_than=later_than))
     assert all([g['create_date'] > later_than.isoformat() for g in gotten])
     assert 2 == len(mock_fetcher.call_args_list)
@@ -69,44 +64,3 @@ def test_doesnt_run_forever(db):
 def test_doesnt_return_too_many_items(db):
     gotten = list(n_most_recent (now, partial(fetch_day, db), num_items=10, days_back=4))
     assert len(gotten) == 10
-
-
-def test__maybe_compute():
-    e = EtagMemoizer ()
-    expensive_computation = mock.Mock(return_value=10)
-    actual_value, actual_etag, was_slow = e._maybe_compute (expensive_computation, 123)
-    assert actual_value == 10
-    assert was_slow
-    expensive_computation.assert_called_once_with()
-
-    expensive_computation.reset_mock()
-    input_etag = actual_etag
-    actual_value, actual_etag, was_slow = e._maybe_compute (expensive_computation, input_etag)
-    assert actual_value == 10
-    assert actual_etag == input_etag
-    assert not was_slow
-    expensive_computation.assert_not_called()
-
-
-def test_other_idea():
-    e = EtagMemoizer()
-    expensive_computation = mock.Mock(return_value=10)
-    slow_continuation = mock.Mock(return_value='slow')
-    fast_continuation = mock.Mock(return_value='fast')
-    result, digest = e.do_it_functionally(expensive_computation, digest=None,
-                                          slow=slow_continuation,
-                                          fast=fast_continuation)
-    assert result == 'slow'
-    slow_continuation.assert_called_once_with(10, digest)
-    fast_continuation.assert_not_called()
-
-    for _ in range(2):
-        slow_continuation.reset_mock()
-        fast_continuation.reset_mock()
-        result, digest = e.do_it_functionally(expensive_computation,
-                                              digest=digest,
-                                              slow=slow_continuation,
-                                              fast=fast_continuation)
-        assert 'fast' == result
-        slow_continuation.assert_not_called()
-        fast_continuation.assert_called_once_with(10, digest)
