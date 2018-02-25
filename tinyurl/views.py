@@ -128,10 +128,9 @@ def _is_boss(request):
 
 
 def render_html_or_text(request, values):
-    accept_header = webob.acceptparse.Accept(str(request.accept))
+    accept_header = webob.acceptparse.AcceptValidHeader(str(request.accept))
 
-    if accept_header.best_match(['application/json', 'text/html'
-                                 ]) == 'text/html':
+    if accept_header.accepts_html:
         git_info = request.registry.settings['git_info']
 
         this_commit_url = git_info and '{}commit/{}'.format(
@@ -177,6 +176,7 @@ Recaptcha</a>, you're a robot.  Don't blame me!""")
     return Response(body=body,
                     content_type=content_type,
                     status=200)
+
 
 @view_config(route_name='lengthen', request_method='GET')
 def lengthen_GET(request):

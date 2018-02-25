@@ -29,7 +29,7 @@ def _is_from_whitelisted_IP(request):
     # If the client's address is private, that means it's probably me,
     # testing this app.
     i = IP(request.client_addr)
-    return i.iptype() == 'PRIVATE'
+    return i.iptype() in ('PRIVATE', 'LOOPBACK')
 
 
 def _do_the_google_thang(request):
