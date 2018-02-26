@@ -21,6 +21,12 @@ to find them (tl;dr: mine are in `~/.aws/credentials`).  Then do:
     $ cd <directory containing this file>
     $ cp git/post-checkout .git/hooks
     $ pipenv install --dev
-    $ pipenv run python setup.py develop
-    $ pipenv run py.test tinyurl
+    $ pipenv run python3 setup.py develop
+    $ pipenv run python3 -m pytest tinyurl
+
     $ pipenv run pserve --reload development.ini
+or
+    $ sudo yum install nginx
+    $ sudo cp nginx-default.conf /etc/nginx/nginx.conf # for Amazon Linux anyway
+    $ sudo /etc/init.d/nginx start
+    $ pipenv run pserve production.ini
