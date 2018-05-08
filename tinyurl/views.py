@@ -4,7 +4,6 @@ import operator
 
 # 3rd-party
 import arrow
-from babel.dates import format_timedelta
 from pyramid.exceptions import HTTPForbidden
 import pyramid.httpexceptions
 from pyramid.renderers import render_to_response
@@ -48,7 +47,7 @@ def _recent_entries(request):
         create_datetime = arrow.get(create_date_string)
 
         yield dict(
-            age=format_timedelta(now - create_datetime),
+            age = arrow.Arrow.fromdatetime(create_datetime).humanize (other=now),
             human_hash=item['human_hash'],
             short_url=request.route_url('lengthen',
                                         human_hash=item['human_hash']),
