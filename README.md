@@ -65,3 +65,12 @@ Steps:
     $ python3 -m pipenv run python setup.py develop
     $ python3 -m pipenv run pserve development.ini
 
+## Amazon Linux release 2018.03
+
+Not sure how I got python3; I suspect it just comes with
+
+    $ python3 -m pip install --user pipenv
+    $ python3 -m pip install --user --upgrade pip # probably not necessary but what the hell
+    $ python3 -m pipenv install
+    $ python3 -m pipenv run python setup.py develop
+    $ python3 -m pipenv run pserve development.ini
