@@ -115,16 +115,13 @@ Recaptcha</a>, you're a robot.  Don't blame me!""")
     human_hash = hashes.long_url_to_short_string(long_url, request.database)
     short_url = request.route_url('lengthen', human_hash=human_hash)
 
-    body, content_type = render(request, {
+    return render(request, {
         'human_hash': human_hash,
         'short_url': short_url,
         'recent_entries': _recent_entries(request),
         'truncate': truncate,
     })
 
-    return Response(body=body,
-                    content_type=content_type,
-                    status=200)
 
 
 @view_config(route_name='lengthen', request_method='GET')
