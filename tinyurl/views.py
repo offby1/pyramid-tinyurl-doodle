@@ -71,21 +71,24 @@ def _is_boss(request):
 
 
 def render(request, values):
-    accept_header = webob.acceptparse.AcceptValidHeader(str(request.accept))
+    try:
+        accept_header = webob.acceptparse.AcceptValidHeader(str(request.accept))
+    except ValueError as e:
+        logger.warn(f'{request.headers["Accept"]!r} is apparently not a valid Accept header: {e}')
+    else:
+        if accept_header.accepts_html:
+            git_info = request.registry.settings['git_info']
 
-    if accept_header.accepts_html:
-        git_info = request.registry.settings['git_info']
-
-        this_commit_url = git_info and '{}commit/{}'.format(
-            request.registry.settings['github_home_page'], git_info)
-        return render_to_response(
-            'templates/homepage.mak',
-            dict(
-                values,
-                github_home_page=request.registry.settings['github_home_page'],
-                this_commit_url=this_commit_url,
-                bossman=_is_boss(request)),
-            request=request)
+            this_commit_url = git_info and '{}commit/{}'.format(
+                request.registry.settings['github_home_page'], git_info)
+            return render_to_response(
+                'templates/homepage.mak',
+                dict(
+                    values,
+                    github_home_page=request.registry.settings['github_home_page'],
+                    this_commit_url=this_commit_url,
+                    bossman=_is_boss(request)),
+                request=request)
 
     r = Response(body=values.get('short_url', ''),
                  status='200 OK')
