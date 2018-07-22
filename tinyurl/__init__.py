@@ -60,6 +60,10 @@ def main(global_config, **settings):
     """ This function returns a Pyramid WSGI application.
     """
 
+    # fix logging to be more like RFC3339
+    logging.Formatter.default_time_format = '%FT%T'
+    logging.Formatter.default_msec_format = '%s.%03dZ'
+
     settings = expandvars_dict(settings)
 
     settings['git_info'] = _grab_git_info()
