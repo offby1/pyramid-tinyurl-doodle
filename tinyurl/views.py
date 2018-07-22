@@ -74,7 +74,7 @@ def render(request, values):
     try:
         accept_header = webob.acceptparse.AcceptValidHeader(str(request.accept))
     except ValueError as e:
-        logger.warn(f'{request.headers["Accept"]!r} is apparently not a valid Accept header: {e}')
+        logger.warn(f'{request.headers.get("Accept")!r} is apparently not a valid Accept header: {e}')
     else:
         if accept_header.accepts_html:
             git_info = request.registry.settings['git_info']
