@@ -80,7 +80,7 @@
         <div class="container">
           <div class="text-center">
             <p class="text-muted">
-              © 2015-2017 <a href="http://github.com/offby1/">This guy right here</a>
+              © 2015-2018 <a href="http://github.com/offby1/">This guy right here</a>
               |
               A shameless (but nicer-looking) ripoff of <a href="http://tinyurl.com/">tinyurl.com</a>
               %if this_commit_url:
