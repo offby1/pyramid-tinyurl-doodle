@@ -80,12 +80,12 @@ def render(request, values):
             git_info = request.registry.settings['git_info']
 
             this_commit_url = git_info and '{}commit/{}'.format(
-                request.registry.settings['github_home_page'], git_info)
+                request.registry.settings['gitlab_home_page'], git_info)
             return render_to_response(
                 'templates/homepage.mak',
                 dict(
                     values,
-                    github_home_page=request.registry.settings['github_home_page'],
+                    gitlab_home_page=request.registry.settings['gitlab_home_page'],
                     this_commit_url=this_commit_url,
                     bossman=_is_boss(request)),
                 request=request)
