@@ -56,7 +56,7 @@
 
         <div class="row">
           <div class="col-md-12">
-            <p>Some recent entries (out of ${request.database.table.item_count} total) :</p>
+            <p>Some recent entries (out of about ${approximate_table_size} total) :</p>
           </div>
         </div>
 

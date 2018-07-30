@@ -10,6 +10,7 @@ from pyramid.renderers import render_to_response
 from pyramid.response import Response
 from pyramid.view import view_config
 import six.moves.urllib.parse
+import to_precision
 import webob.acceptparse
 
 # Local
@@ -85,6 +86,7 @@ def render(request, values):
                 'templates/homepage.mak',
                 dict(
                     values,
+                    approximate_table_size=to_precision.std_notation(request.database.table.item_count, 2),
                     gitlab_home_page=request.registry.settings['gitlab_home_page'],
                     this_commit_url=this_commit_url,
                     bossman=_is_boss(request)),

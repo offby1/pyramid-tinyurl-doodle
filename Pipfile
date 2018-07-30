@@ -33,6 +33,7 @@ waitress = "*"
 WebOb = "*"
 "zope.deprecation" = "*"
 "zope.interface" = "*"
+to-precision = {git = "https://bitbucket.org/william_rusnack/to-precision.git"}
 
 [dev-packages]
 "autopep8" = "*"
