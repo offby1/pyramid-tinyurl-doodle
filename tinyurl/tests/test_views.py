@@ -2,11 +2,11 @@ import mock
 
 # 3rd-party
 from pyramid import testing
-import pyramid.request
 import pytest
 
 # Local
 from tinyurl import views
+
 
 @pytest.fixture
 def null_renderer(mocker):

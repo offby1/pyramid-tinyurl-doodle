@@ -1,6 +1,7 @@
 import datetime
 import operator
 
+
 def n_most_recent(most_recent_day, day_fetcher, num_items=10, days_back=10, later_than=None):
     """Returns the most recent entries in the hashes table, newest first.
 

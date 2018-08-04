@@ -1,7 +1,6 @@
 # Core
 from enum import Enum
 import logging
-import operator
 
 # 3rd-party
 import arrow
@@ -139,7 +138,6 @@ Recaptcha</a>, you're a robot.  Don't blame me!""")
         'recent_entries': _recent_entries(request),
         'truncate': truncate,
     })
-
 
 
 @view_config(route_name='lengthen', request_method='GET')

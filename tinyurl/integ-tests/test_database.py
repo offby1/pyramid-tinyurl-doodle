@@ -81,16 +81,17 @@ def test_get_one_days_hashes(ddb):
         {'human_hash': 'four' , 'long_url': 'meh', 'create_day': '2017-01-10', 'create_date': '2017-01-10T12:00:00Z'},
     ]
     for item in rows:
-        ddb.table.update_item(Key={'human_hash': item['human_hash']},
-                              TableName=ddb.table.name,
-                              UpdateExpression=('set long_url = :long_url'
-                                                ', create_day = :create_day'
-                                                ', create_date = :create_date'),
-                              ExpressionAttributeValues={
-                                  ':long_url': item['long_url'],
-                                  ':create_day': item['create_day'],
-                                  ':create_date': item['create_date']
-                              })
+        ddb.table.update_item(
+            Key={'human_hash': item['human_hash']},
+            TableName=ddb.table.name,
+            UpdateExpression=('set long_url = :long_url'
+                              ', create_day = :create_day'
+                              ', create_date = :create_date'),
+            ExpressionAttributeValues={
+                ':long_url': item['long_url'],
+                ':create_day': item['create_day'],
+                ':create_date': item['create_date']
+            })
 
     assert ddb.get_one_days_hashes(datetime.date(year=2017, month=1, day=12)) == rows[0:1]
     assert ddb.get_one_days_hashes(datetime.date(year=2017, month=1, day=11)) == rows[1:3]
