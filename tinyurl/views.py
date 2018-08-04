@@ -1,4 +1,5 @@
 # Core
+from enum import Enum
 import logging
 import operator
 
@@ -17,6 +18,11 @@ import webob.acceptparse
 from . import auth
 from . import helpers
 from .db import hashes
+
+
+class ResponseType(Enum):
+    HTML = 1
+    TEXT = 2
 
 
 logger = logging.getLogger('tinyurl')
@@ -61,9 +67,10 @@ def home_GET(request):
     logger.info("You %s already authenticated.", "are" if authed else "are not")
 
     return render(request, {
+        'approximate_table_size': to_precision.std_notation(request.database.table.item_count, 2),
+        'display_captcha': not authed,
         'recent_entries': _recent_entries(request),
         'truncate': truncate,
-        'display_captcha': not authed
     })
 
 
@@ -71,30 +78,39 @@ def _is_boss(request):
     return auth._is_from_whitelisted_IP(request)
 
 
+def _determine_response_type(request):
+    accept_header_string = request.headers.get('Accept')
+    if not accept_header_string:
+        return ResponseType.TEXT
+
+    parsed_accept_header = webob.acceptparse.AcceptValidHeader(accept_header_string)
+
+    if parsed_accept_header.accepts_html:
+        return ResponseType.HTML
+
+    return ResponseType.TEXT
+
+
 def render(request, values):
-    try:
-        accept_header = webob.acceptparse.AcceptValidHeader(str(request.accept))
-    except ValueError as e:
-        logger.warn(f'{request.headers.get("Accept")!r} is apparently not a valid Accept header: {e}')
+    if _determine_response_type(request) == ResponseType.TEXT:
+        r = Response(body=values.get('short_url', ''),
+                     status='200 OK')
+        r.content_type = 'text/plain'
     else:
-        if accept_header.accepts_html:
-            git_info = request.registry.settings['git_info']
+        git_info = request.registry.settings and request.registry.settings['git_info']
 
-            this_commit_url = git_info and '{}commit/{}'.format(
-                request.registry.settings['gitlab_home_page'], git_info)
-            return render_to_response(
-                'templates/homepage.mak',
-                dict(
-                    values,
-                    approximate_table_size=to_precision.std_notation(request.database.table.item_count, 2),
-                    gitlab_home_page=request.registry.settings['gitlab_home_page'],
-                    this_commit_url=this_commit_url,
-                    bossman=_is_boss(request)),
-                request=request)
+        this_commit_url = git_info and '{}commit/{}'.format(
+            request.registry.settings['gitlab_home_page'], git_info)
 
-    r = Response(body=values.get('short_url', ''),
-                 status='200 OK')
-    r.content_type = 'text/plain'
+        r = render_to_response(
+            'templates/homepage.mak',
+            dict(
+                values,
+                gitlab_home_page=request.registry.settings['gitlab_home_page'],
+                this_commit_url=this_commit_url,
+                bossman=_is_boss(request)),
+            request=request)
+
     return r
 
 
