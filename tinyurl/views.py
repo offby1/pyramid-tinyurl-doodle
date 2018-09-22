@@ -66,7 +66,6 @@ def home_GET(request):
     logger.info("You %s already authenticated.", "are" if authed else "are not")
 
     return render(request, {
-        'approximate_table_size': to_precision.std_notation(request.database.table.item_count, 2),
         'display_captcha': not authed,
         'recent_entries': _recent_entries(request),
         'truncate': truncate,
@@ -101,13 +100,14 @@ def render(request, values):
         this_commit_url = git_info and '{}commit/{}'.format(
             request.registry.settings['gitlab_home_page'], git_info)
 
+        values = dict(values)
+        values.setdefault('approximate_table_size', to_precision.std_notation(request.database.table.item_count, 2))
+        values.setdefault('bossman', _is_boss(request))
+        values.setdefault('gitlab_home_page', request.registry.settings['gitlab_home_page'])
+        values.setdefault('this_commit_url', this_commit_url)
         r = render_to_response(
             'templates/homepage.mak',
-            dict(
-                values,
-                gitlab_home_page=request.registry.settings['gitlab_home_page'],
-                this_commit_url=this_commit_url,
-                bossman=_is_boss(request)),
+            values,
             request=request)
 
     return r
