@@ -81,10 +81,13 @@ def _determine_response_type(request):
     if not accept_header_string:
         return ResponseType.TEXT
 
-    parsed_accept_header = webob.acceptparse.AcceptValidHeader(accept_header_string)
-
-    if parsed_accept_header.accepts_html:
-        return ResponseType.HTML
+    try:
+        parsed_accept_header = webob.acceptparse.AcceptValidHeader(accept_header_string)
+    except Exception as e:
+        logger.warning('{}; will return a text response'.format(e))
+    else:
+        if parsed_accept_header.accepts_html:
+            return ResponseType.HTML
 
     return ResponseType.TEXT
 

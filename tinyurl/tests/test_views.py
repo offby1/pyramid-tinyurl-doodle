@@ -43,7 +43,8 @@ def test_HTML_accept_header(null_renderer, dummy_request):
     assert views._determine_response_type(dummy_request) == views.ResponseType.HTML
 
 
-def test_doesnt_gack_on_invalid_accept_header(dummy_request):
-    dummy_request.headers.update({'Accept': None})
+@pytest.mark.parametrize('accept_value', (None, 'floogie hoogie'))
+def test_doesnt_gack_on_invalid_accept_header(dummy_request, accept_value):
+    dummy_request.headers.update({'Accept': accept_value})
 
     assert views._determine_response_type(dummy_request) == views.ResponseType.TEXT
