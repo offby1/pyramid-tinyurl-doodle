@@ -33,8 +33,8 @@ def test_no_captcha_when_authed(null_renderer, dummy_request):
     assert not resp['display_captcha']
 
 
-def test_response_type_defaults_to_text(dummy_request):
-    assert views._determine_response_type(dummy_request) == views.ResponseType.TEXT
+def test_response_type_defaults_to_HTML(dummy_request):
+    assert views._determine_response_type(dummy_request) == views.ResponseType.HTML
 
 
 def test_HTML_accept_header(null_renderer, dummy_request):
@@ -43,8 +43,10 @@ def test_HTML_accept_header(null_renderer, dummy_request):
     assert views._determine_response_type(dummy_request) == views.ResponseType.HTML
 
 
-@pytest.mark.parametrize('accept_value', (None, 'floogie hoogie'))
-def test_doesnt_gack_on_invalid_accept_header(dummy_request, accept_value):
+@pytest.mark.parametrize('accept_value, expected_response_type',
+                         ((None, views.ResponseType.HTML),
+                          ('floogie hoogie', views.ResponseType.TEXT)))
+def test_doesnt_gack_on_invalid_accept_header(dummy_request, accept_value, expected_response_type):
     dummy_request.headers.update({'Accept': accept_value})
 
-    assert views._determine_response_type(dummy_request) == views.ResponseType.TEXT
+    assert views._determine_response_type(dummy_request) == expected_response_type

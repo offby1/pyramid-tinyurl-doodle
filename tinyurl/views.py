@@ -79,7 +79,7 @@ def _is_boss(request):
 def _determine_response_type(request):
     accept_header_string = request.headers.get('Accept')
     if not accept_header_string:
-        return ResponseType.TEXT
+        return ResponseType.HTML
 
     try:
         parsed_accept_header = webob.acceptparse.AcceptValidHeader(accept_header_string)
