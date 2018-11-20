@@ -129,8 +129,9 @@ Recaptcha</a>, you're a robot.  Don't blame me!""")
     except KeyError as e:
         return pyramid.httpexceptions.HTTPBadRequest(e)
 
-    if six.moves.urllib.parse.urlparse(long_url).netloc == '':
-        long_url = u'http://' + long_url
+    parsed = six.moves.urllib.parse.urlparse(long_url)
+    if parsed.netloc == '':
+        long_url = parsed.scheme + long_url
 
     human_hash = hashes.long_url_to_short_string(long_url, request.database)
     short_url = request.route_url('lengthen', human_hash=human_hash)
