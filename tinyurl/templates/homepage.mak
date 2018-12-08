@@ -13,7 +13,7 @@
     <!-- Custom styles for this scaffold -->
     <link href="${request.static_path('tinyurl:static/theme.css')}" rel="stylesheet">
 
-    <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
 
     <script src='https://www.google.com/recaptcha/api.js'></script>
     </head>
@@ -86,7 +86,7 @@
         <div class="container">
           <div class="text-center">
             <p class="text-muted">
-              © 2015-2018 <a href="http://gitlab.com/offby1/">This guy right here</a>
+              © 2015-2018 <a href="https://gitlab.com/offby1/">This guy right here</a>
               |
               A shameless (but nicer-looking) ripoff of <a href="http://tinyurl.com/">tinyurl.com</a>
               %if this_commit_url:

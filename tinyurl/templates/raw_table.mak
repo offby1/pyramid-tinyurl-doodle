@@ -14,10 +14,10 @@
     <link href="${request.static_path('tinyurl:static/theme.css')}" rel="stylesheet">
 
     <!-- datatables -->
-    <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
     <style type="text/css" title="currentStyle">@import "//cdn.datatables.net/1.10.4/css/jquery.dataTables.min.css";</style>
     <style type="text/css" > table {font-family: Monospace;} </style>
-    <script type="text/javascript" src="//cdn.datatables.net/1.10.4/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.4/js/jquery.dataTables.min.js"></script>
 
     </head>
 
