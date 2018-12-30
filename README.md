@@ -31,6 +31,7 @@ expects to find them (tl;dr: mine are in `~/.aws/config` and
 ## MacOS with homebrew
 
     $ brew install python3 pipenv
+    $ export PIPENV_VENV_IN_PROJECT=1
     $ pipenv install
     $ pipenv run python3 setup.py develop
     $ pipenv run pserve development.ini
@@ -41,6 +42,7 @@ expects to find them (tl;dr: mine are in `~/.aws/config` and
     $ sudo yum install -y python34
     $ python3 -m ensurepip --user
     $ python3 -m pip install --user pipenv
+    $ export PIPENV_VENV_IN_PROJECT=1
     $ python3 -m pipenv install
     $ python3 -m pipenv run python setup.py develop
     $ python3 -m pipenv run pserve development.ini
@@ -51,6 +53,7 @@ expects to find them (tl;dr: mine are in `~/.aws/config` and
     $ sudo yum install -y python36
     $ python36 -m ensurepip --user
     $ python36 -m pip install --user pipenv
+    $ export PIPENV_VENV_IN_PROJECT=1
     $ python36 -m pipenv install
     $ python36 -m pipenv run python setup.py develop
     $ python36 -m pipenv run pserve development.ini
@@ -69,6 +72,7 @@ Steps:
     $ sudo apt-get update # oddly necessary on Ubuntu 16+
     $ sudo apt-get install python3-pip
     $ python3 -m pip install --user pipenv # scary but harmless syntax errors on trusty
+    $ export PIPENV_VENV_IN_PROJECT=1
     $ python3 -m pipenv install
     $ python3 -m pipenv run python setup.py develop
     $ python3 -m pipenv run pserve development.ini
@@ -81,6 +85,7 @@ it](https://app.vagrantup.com/mvbcoding/boxes/awslinux))
     $ sudo yum install git python35 python35-pip
     $ python3 -m pip install --user --upgrade pip
     $ python3 -m pip install --user pipenv
+    $ export PIPENV_VENV_IN_PROJECT=1
     $ python3 -m pipenv install
     $ python3 -m pipenv run python setup.py develop
     $ python3 -m pipenv run pserve development.ini
@@ -91,6 +96,7 @@ Not sure how I got python3; I suspect it just comes with Amazon Linux.
 
     $ python3 -m pip install --user --upgrade pip # probably not necessary but what the hell
     $ python3 -m pip install --user pipenv
+    $ export PIPENV_VENV_IN_PROJECT=1
     $ python3 -m pipenv install
     $ python3 -m pipenv run python setup.py develop
     $ python3 -m pipenv run pserve development.ini
@@ -99,5 +105,6 @@ Not sure how I got python3; I suspect it just comes with Amazon Linux.
 
 Run tests like this:
 
+    $ export PIPENV_VENV_IN_PROJECT=1
     $ python3 -m pipenv install --dev
     $ pipenv run py.test -s $(pipenv --where)/tinyurl/tests/

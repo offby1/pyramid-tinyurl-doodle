@@ -10,6 +10,7 @@
 /.git-post-checkout-info
 /.recaptcha_secret
 /.vagrant/
+/.venv/
 /tinyurl.egg-info/
 /venv/
 htmlcov/
