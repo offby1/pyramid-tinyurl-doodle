@@ -32,9 +32,9 @@ expects to find them (tl;dr: mine are in `~/.aws/config` and
 
     $ brew install python3 pipenv
     $ export PIPENV_VENV_IN_PROJECT=1
-    $ pipenv install
-    $ pipenv run python3 setup.py develop
-    $ pipenv run pserve development.ini
+    $ python3 -m pipenv install
+    $ python3 -m pipenv run python3 setup.py develop
+    $ python3 -m pipenv run pserve development.ini
 
 ## CentOS6
 
@@ -107,4 +107,4 @@ Run tests like this:
 
     $ export PIPENV_VENV_IN_PROJECT=1
     $ python3 -m pipenv install --dev
-    $ pipenv run py.test -s $(pipenv --where)/tinyurl/tests/
+    $ python3 -m pipenv run py.test -s $(pipenv --where)/tinyurl/tests/
