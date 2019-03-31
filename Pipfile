@@ -45,3 +45,4 @@ to-precision = {git = "https://bitbucket.org/william_rusnack/to-precision.git"}
 "pytest-mock" = "*"
 "rope_py3k" = "*"
 "yapf" = "*"
+pathlib2 = "*"
