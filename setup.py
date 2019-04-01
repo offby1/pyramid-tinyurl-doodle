@@ -38,6 +38,4 @@ setup(name='tinyurl',
       entry_points="""\
       [paste.app_factory]
       main = tinyurl:main
-      [console_scripts]
-      initialize_tinyurl_db = tinyurl.scripts.initializedb:main
       """, )
