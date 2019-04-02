@@ -4,10 +4,6 @@
 - Keep track of how many times we've lengthened each short URL.  Also
   a timestamp for the last such time.
 
-- Serve HTTPS with a cert from
-  https://letsencrypt.readthedocs.org/en/latest/intro.html
-  See `ssl-thoughts` in this directory.
-
 - Nix PasteDeploy; use
   [Montague](https://metaclassical.com/announcing-montague-the-new-way-to-configure-python-applications/)
   instead!
