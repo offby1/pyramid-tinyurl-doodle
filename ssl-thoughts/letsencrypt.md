@@ -32,3 +32,10 @@ In particular:
   python3 -m pipenv run prequest --header Accept:text/json --header X-Real-IP:1.2.3.4 development.ini /wat > /dev/null
 ...
   2019-04-01T16:44:10.081Z INFO  [request_id][MainThread] 7f87c89d-325e-4313-bb33-fa7def6cda55 127.0.0.1 404 GET    /wat
+
+However:
+  python3 -m pipenv run prequest --header Accept:text/json --header X-Forwarded-For:1.2.3.4 development.ini /
+...
+  2019-04-01T17:14:24.661Z INFO  [request_id][MainThread] 194326bc-fd6e-4d23-8c3b-caff336aa9fa 1.2.3.4 200 GET    /
+
+so maybe I just need to tweak nginx.conf to set X-Forwarded-For instead of X-Real-IP.
