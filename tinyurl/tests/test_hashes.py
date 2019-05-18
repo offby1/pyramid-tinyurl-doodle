@@ -4,7 +4,7 @@ import operator
 from tinyurl.db import hashes
 
 
-class DummyDatabase():
+class DummyDatabase:
     def __init__(self):
         self.stuff = {}
 
@@ -45,7 +45,7 @@ def test_round_trip():
     for i in inputs:
         output = hashes.long_url_to_short_string(i, database)
 
-        assert(hashes.lengthen_short_string(output, database) == i)
+        assert hashes.lengthen_short_string(output, database) == i
 
 
 def test_same_URL_saves_at_most_once():

@@ -10,8 +10,9 @@ from tinyurl import views
 
 @pytest.fixture
 def null_renderer(mocker):
-    return mocker.patch('tinyurl.views.render',
-                        side_effect=lambda request, values: values)
+    return mocker.patch(
+        'tinyurl.views.render', side_effect=lambda request, values: values
+    )
 
 
 @pytest.fixture
@@ -43,10 +44,13 @@ def test_HTML_accept_header(null_renderer, dummy_request):
     assert views._determine_response_type(dummy_request) == views.ResponseType.HTML
 
 
-@pytest.mark.parametrize('accept_value, expected_response_type',
-                         ((None, views.ResponseType.HTML),
-                          ('floogie hoogie', views.ResponseType.TEXT)))
-def test_doesnt_gack_on_invalid_accept_header(dummy_request, accept_value, expected_response_type):
+@pytest.mark.parametrize(
+    'accept_value, expected_response_type',
+    ((None, views.ResponseType.HTML), ('floogie hoogie', views.ResponseType.TEXT)),
+)
+def test_doesnt_gack_on_invalid_accept_header(
+    dummy_request, accept_value, expected_response_type
+):
     dummy_request.headers.update({'Accept': accept_value})
 
     assert views._determine_response_type(dummy_request) == expected_response_type

@@ -53,11 +53,11 @@ def _recent_entries(request):
         create_datetime = arrow.get(create_date_string)
 
         yield dict(
-            age = arrow.Arrow.fromdatetime(create_datetime).humanize (other=now),
+            age=arrow.Arrow.fromdatetime(create_datetime).humanize(other=now),
             human_hash=item['human_hash'],
-            short_url=request.route_url('lengthen',
-                                        human_hash=item['human_hash']),
-            long_url=item['long_url'])
+            short_url=request.route_url('lengthen', human_hash=item['human_hash']),
+            long_url=item['long_url'],
+        )
 
 
 @view_config(route_name='home', request_method='GET')
@@ -65,11 +65,14 @@ def home_GET(request):
     authed = request.session.get('authenticated')
     logger.info("You %s already authenticated.", "are" if authed else "are not")
 
-    return render(request, {
-        'display_captcha': not authed,
-        'recent_entries': _recent_entries(request),
-        'truncate': truncate,
-    })
+    return render(
+        request,
+        {
+            'display_captcha': not authed,
+            'recent_entries': _recent_entries(request),
+            'truncate': truncate,
+        },
+    )
 
 
 def _is_boss(request):
@@ -94,24 +97,26 @@ def _determine_response_type(request):
 
 def render(request, values):
     if _determine_response_type(request) == ResponseType.TEXT:
-        r = Response(body=values.get('short_url', ''),
-                     status='200 OK')
+        r = Response(body=values.get('short_url', ''), status='200 OK')
         r.content_type = 'text/plain'
     else:
         git_info = request.registry.settings and request.registry.settings['git_info']
 
         this_commit_url = git_info and '{}commit/{}'.format(
-            request.registry.settings['gitlab_home_page'], git_info)
+            request.registry.settings['gitlab_home_page'], git_info
+        )
 
         values = dict(values)
-        values.setdefault('approximate_table_size', to_precision.std_notation(request.database.table.item_count, 2))
+        values.setdefault(
+            'approximate_table_size',
+            to_precision.std_notation(request.database.table.item_count, 2),
+        )
         values.setdefault('bossman', _is_boss(request))
-        values.setdefault('gitlab_home_page', request.registry.settings['gitlab_home_page'])
+        values.setdefault(
+            'gitlab_home_page', request.registry.settings['gitlab_home_page']
+        )
         values.setdefault('this_commit_url', this_commit_url)
-        r = render_to_response(
-            'templates/homepage.mak',
-            values,
-            request=request)
+        r = render_to_response('templates/homepage.mak', values, request=request)
 
     return r
 
@@ -120,9 +125,9 @@ def render(request, values):
 def create_GET(request):
     if not auth.verify_request(request):
         return pyramid.httpexceptions.HTTPUnauthorized(
-            body=
-            """According to <a href="https://www.google.com/recaptcha/">Google
-Recaptcha</a>, you're a robot.  Don't blame me!""")
+            body="""According to <a href="https://www.google.com/recaptcha/">Google
+Recaptcha</a>, you're a robot.  Don't blame me!"""
+        )
 
     try:
         long_url = request.params['input_url']
@@ -136,12 +141,15 @@ Recaptcha</a>, you're a robot.  Don't blame me!""")
     human_hash = hashes.long_url_to_short_string(long_url, request.database)
     short_url = request.route_url('lengthen', human_hash=human_hash)
 
-    return render(request, {
-        'human_hash': human_hash,
-        'short_url': short_url,
-        'recent_entries': _recent_entries(request),
-        'truncate': truncate,
-    })
+    return render(
+        request,
+        {
+            'human_hash': human_hash,
+            'short_url': short_url,
+            'recent_entries': _recent_entries(request),
+            'truncate': truncate,
+        },
+    )
 
 
 @view_config(route_name='lengthen', request_method='GET')
@@ -165,9 +173,9 @@ def lengthen_GET(request):
     return pyramid.httpexceptions.HTTPSeeOther(location=long_url)
 
 
-@view_config(route_name='edit',
-             request_method='GET',
-             renderer='templates/raw_table.mak')
+@view_config(
+    route_name='edit', request_method='GET', renderer='templates/raw_table.mak'
+)
 def edit_GET(request):
     if not _is_boss(request):
         raise HTTPForbidden(detail="Hint: try connecting from a private IP address.")

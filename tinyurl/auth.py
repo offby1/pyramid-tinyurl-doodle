@@ -35,9 +35,12 @@ def _is_from_whitelisted_IP(request):
 def _do_the_google_thang(request):
     response = requests.post(
         url='https://www.google.com/recaptcha/api/siteverify',
-        data=dict(secret=request.registry.settings.get('recaptcha_secret'),
-                  response=request.params['g-recaptcha-response'],
-                  remoteip=request.client_addr)).json()
+        data=dict(
+            secret=request.registry.settings.get('recaptcha_secret'),
+            response=request.params['g-recaptcha-response'],
+            remoteip=request.client_addr,
+        ),
+    ).json()
     logger.debug("Google's pronouncement: %s", response)
     return response['success']
 
@@ -47,8 +50,7 @@ def _captcha_info_is_valid(request):
     if not g_captcha_response:
         return False
 
-    logger.debug("g-recaptcha-response from us: %s",
-                 g_captcha_response)
+    logger.debug("g-recaptcha-response from us: %s", g_captcha_response)
 
     return _do_the_google_thang(request)
 

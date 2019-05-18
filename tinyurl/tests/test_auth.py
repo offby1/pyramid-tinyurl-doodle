@@ -3,10 +3,7 @@ from pyramid import testing
 import pytest
 
 # Local
-from tinyurl.auth import (
-    _captcha_info_is_valid,
-    verify_request
-)
+from tinyurl.auth import _captcha_info_is_valid, verify_request
 
 
 @pytest.fixture

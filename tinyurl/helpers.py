@@ -2,7 +2,9 @@ import datetime
 import operator
 
 
-def n_most_recent(most_recent_day, day_fetcher, num_items=10, days_back=10, later_than=None):
+def n_most_recent(
+    most_recent_day, day_fetcher, num_items=10, days_back=10, later_than=None
+):
     """Returns the most recent entries in the hashes table, newest first.
 
     Makes multiple calls (no more than `days_back`) to day_fetcher, if
@@ -20,14 +22,14 @@ def n_most_recent(most_recent_day, day_fetcher, num_items=10, days_back=10, late
 
     most_recent_day = most_recent_day.date()
 
-    for day_offset in range (0, -days_back, -1):
+    for day_offset in range(0, -days_back, -1):
         day = most_recent_day + datetime.timedelta(days=day_offset)
         if later_than and (later_than.date() > day):
             return
         one_days_worth = day_fetcher(day, later_than=later_than)
-        one_days_worth = sorted(one_days_worth,
-                                key=operator.itemgetter('create_date'),
-                                reverse=True)
+        one_days_worth = sorted(
+            one_days_worth, key=operator.itemgetter('create_date'), reverse=True
+        )
 
         for item in one_days_worth:
             yield item

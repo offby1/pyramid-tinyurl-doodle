@@ -13,8 +13,7 @@ def long_url_to_short_string(long_url, database):
     hash_object = hashlib.sha256(long_url_bytes)
     binary_hash = hash_object.digest()
     human_hash_bytes = binascii.b2a_base64(binary_hash)
-    human_hash_bytes = human_hash_bytes.replace(b'+', b'').replace(b'/',
-                                                                   b'')[:10]
+    human_hash_bytes = human_hash_bytes.replace(b'+', b'').replace(b'/', b'')[:10]
     short = human_hash_bytes.decode('utf-8')
     database.add_if_not_present(short, long_url)
     return short

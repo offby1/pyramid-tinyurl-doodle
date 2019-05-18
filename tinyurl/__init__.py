@@ -18,8 +18,9 @@ logger = logging.getLogger(__name__)
 
 def expandvars_dict(settings):
     """Expands all environment variables in a settings dictionary."""
-    expanded = dict((key, os.path.expandvars(value))
-                    for key, value in six.iteritems(settings))
+    expanded = dict(
+        (key, os.path.expandvars(value)) for key, value in six.iteritems(settings)
+    )
 
     return expanded
 
@@ -36,7 +37,7 @@ def _grab_git_info():
 
 
 def _grab_secret(file_name, description):
-    file_name = os.path.abspath (file_name)
+    file_name = os.path.abspath(file_name)
     try:
         with open(file_name) as inf:
             logger.info("Read %s from %r", description, inf.name)
@@ -84,8 +85,9 @@ def main(global_config, **settings):
     config.add_route('lengthen', '/{human_hash}', request_method='GET')
     config.add_route('delete', '/{human_hash}', request_method='DELETE')
 
-    table = dynamo.DynamoDB(table_name='hashes',
-                            daily_index_name='create_day-create_date-index')
+    table = dynamo.DynamoDB(
+        table_name='hashes', daily_index_name='create_day-create_date-index'
+    )
     config.add_request_method(lambda request: table, name="database", reify=True)
 
     config.scan(ignore=[re.compile('test_').search])
