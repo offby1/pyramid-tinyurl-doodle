@@ -108,3 +108,7 @@ Run tests like this:
     $ export PIPENV_VENV_IN_PROJECT=1
     $ python3 -m pipenv install --dev
     $ python3 -m pipenv run py.test -s $(pipenv --where)/tinyurl/tests/
+
+# Normalize formatting with "black"
+
+    $ PIPENV_VENV_IN_PROJECT=1 python3 -m pipenv run black tinyurl/

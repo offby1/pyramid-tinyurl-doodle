@@ -46,3 +46,4 @@ to-precision = {git = "https://bitbucket.org/william_rusnack/to-precision.git"}
 "rope_py3k" = "*"
 "yapf" = "*"
 pathlib2 = "*"
+black = "==19.3b0"
