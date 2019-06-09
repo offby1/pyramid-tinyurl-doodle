@@ -13,7 +13,7 @@ It's one of about a bazillion options listed [here](https://letsencrypt.org/docs
 
 did what it's sposed to.
 
-I suspect I need to rerun that last command every few months, since the certs expire quickly: currently the cert looks like
+The certs expire quickly: currently the cert looks like
 
     Certificate:
         Data:
@@ -25,3 +25,9 @@ I suspect I need to rerun that last command every few months, since the certs ex
             Validity
                 Not Before: Mar 31 04:09:55 2019 GMT
                 Not After : Jun 29 04:09:55 2019 GMT
+
+To renew (I did this once) I think it's something like
+
+    $ sudo -s
+    # cd /etc/lego
+    # ./renew-certificate.sh
