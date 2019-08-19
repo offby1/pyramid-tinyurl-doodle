@@ -26,8 +26,10 @@ The certs expire quickly: currently the cert looks like
                 Not Before: Mar 31 04:09:55 2019 GMT
                 Not After : Jun 29 04:09:55 2019 GMT
 
-To renew (I did this once) I think it's something like
+To renew:
 
     $ sudo -s
     # cd /etc/lego
     # ./renew-certificate.sh
+
+It takes about 20 seconds.  Slick.
