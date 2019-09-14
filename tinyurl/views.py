@@ -28,7 +28,7 @@ logger = logging.getLogger('tinyurl')
 
 
 @view_config(route_name='robots', request_method='GET')
-def robots_GET(request):
+def robots_GET(_):
     r = Response(body="User-agent: *\nDisallow: /\n", status='200 OK')
     r.content_type = 'text/plain'
     return r
@@ -87,7 +87,7 @@ def _determine_response_type(request):
     try:
         parsed_accept_header = webob.acceptparse.AcceptValidHeader(accept_header_string)
     except Exception as e:
-        logger.warning('{}; will return a text response'.format(e))
+        logger.warning('%s; will return a text response', e)
     else:
         if parsed_accept_header.accepts_html:
             return ResponseType.HTML
