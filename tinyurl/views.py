@@ -76,7 +76,7 @@ def home_GET(request):
 
 
 def _is_boss(request):
-    return auth._is_from_whitelisted_IP(request)
+    return auth.is_from_whitelisted_IP(request)
 
 
 def _determine_response_type(request):

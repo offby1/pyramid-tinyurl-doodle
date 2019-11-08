@@ -19,7 +19,7 @@ def _authenticated_within_pyramid(request):
     return a
 
 
-def _is_from_whitelisted_IP(request):
+def is_from_whitelisted_IP(request):
     # TODO -- put the IP address(s) into config
 
     # the EC2 box on which rudybot runs
@@ -56,7 +56,7 @@ def _captcha_info_is_valid(request):
 
 
 def verify_request(request):
-    if _is_from_whitelisted_IP(request):
+    if is_from_whitelisted_IP(request):
         return True
 
     if _authenticated_within_pyramid(request):
