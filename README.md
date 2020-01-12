@@ -109,6 +109,10 @@ Run tests like this:
     $ python3 -m pipenv install --dev
     $ python3 -m pipenv run py.test -s $(pipenv --where)/tinyurl/tests/
 
+You can also run a random URL through it without having to start the server:
+
+    $ python3 -m pipenv run prequest development.ini  /sw97SVacIe
+
 # Normalize formatting with "black"
 
     $ PIPENV_VENV_IN_PROJECT=1 python3 -m pipenv run black tinyurl/
