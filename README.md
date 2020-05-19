@@ -107,7 +107,8 @@ Run tests like this:
 
     $ export PIPENV_VENV_IN_PROJECT=1
     $ python3 -m pipenv install --dev
-    $ python3 -m pipenv run py.test -s $(pipenv --where)/tinyurl/tests/
+    $ python3 -m pipenv run python3 setup.py develop
+    $ python3 -m pipenv run py.test -s $(python3 -m pipenv --where)/tinyurl/tests/
 
 You can also run a random URL through it without having to start the server:
 
