@@ -32,7 +32,7 @@ venusian = "*"
 waitress = ">=1.4.2"
 WebOb = "*"
 "zope.deprecation" = "*"
-"zope.interface" = "*"
+"zope.interface" = "<5.0"
 to-precision = {git = "https://bitbucket.org/william_rusnack/to-precision.git"}
 
 [dev-packages]
