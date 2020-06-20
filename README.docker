@@ -1,0 +1,15 @@
+Notes for someone who never uses docker!
+
+To build the docker thingy, type `docker build .`
+
+Note the blob of hex that it prints when its finished; let's say it was "deadbeef".
+
+To run a shell in the (image? container?), type
+
+    docker run --interactive --tty deadbeef bash
+
+Note that you always have to hit C-p _twice_ to look at your previous command-line history entry; dunno why.
+
+To start the thing up "normally":
+
+    docker run
