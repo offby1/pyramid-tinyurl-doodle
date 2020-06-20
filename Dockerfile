@@ -16,7 +16,7 @@ ENV LANG=C
 ENV LC_ALL=C
 ENV PIPENV_VENV_IN_PROJECT=true
 
-RUN python3 -m pipenv install
+RUN python3 -m pipenv sync
 RUN python3 -m pipenv run python3 setup.py install
 RUN cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 64 | head -n 1 > .cookie_secret
 
