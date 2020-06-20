@@ -11,9 +11,10 @@ COPY . /tinyurl/
 
 WORKDIR /tinyurl
 
-ENV PIPENV_VENV_IN_PROJECT=true
+ENV AWS_DEFAULT_REGION=us-west-1
 ENV LANG=C
 ENV LC_ALL=C
+ENV PIPENV_VENV_IN_PROJECT=true
 
 RUN python3 -m pipenv install
 RUN python3 -m pipenv run python3 setup.py install

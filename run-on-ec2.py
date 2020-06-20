@@ -19,8 +19,6 @@ server_args = [
     "run",
     "-p",
     "8080:8080",
-    "-v",
-    "{}:/root/.aws:ro".format(os.path.expanduser("~/.aws/")),
 ] + sys.argv[1:]
 
-subprocess.call(server_args)
+subprocess.run(server_args)
