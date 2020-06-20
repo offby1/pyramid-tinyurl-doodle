@@ -13,3 +13,11 @@ Note that you always have to hit C-p _twice_ to look at your previous command-li
 To start the thing up "normally":
 
     docker run
+
+To clean up _everything_ from docker, including stuff unrelated to this particular project -- because disk space is expensive but network bandwidth is cheap (which is the case on my puny EC2 instance):
+
+    # kill all docker processes
+    docker ps --quiet --all | while read i; do docker rm -f ${i}; done
+
+    # remove all docker images.
+    docker images --quiet | while read i; do docker rmi ${i}; done
