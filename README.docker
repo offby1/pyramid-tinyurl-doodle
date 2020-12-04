@@ -17,7 +17,13 @@ Note that you always have to hit C-p _twice_ to look at your previous command-li
 
 To start the thing up "normally":
 
-    docker run
+    docker run -p 8080:8080 deadbeef
+
+Point your web browser at http://localhost:8080.
+
+On my mac, the app crashes, because I haven't yet figured out how to get AWS credentials (safely) into the image.
+
+But it'll work if you are running docker on an EC2 instance with a role that has the right permissions.
 
 To clean up _everything_ from docker, including stuff unrelated to this particular project -- because disk space is expensive but network bandwidth is cheap (which is the case on my puny EC2 instance):
 
