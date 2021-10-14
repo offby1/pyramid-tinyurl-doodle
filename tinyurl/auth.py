@@ -7,7 +7,7 @@ https://www.google.com/recaptcha/
 import logging
 
 # Third-party
-from IPy import IP              # TODO -- perhaps the built-in ipaddress module will suffice
+from IPy import IP  # TODO -- perhaps the built-in ipaddress module will suffice
 import requests
 
 logger = logging.getLogger(__name__)
@@ -24,8 +24,8 @@ def is_from_whitelisted_IP(request):
 
     # the boxes on which rudybot might be running
     if request.client_addr in (
-            '52.8.12.207',
-            '144.217.82.212'    # solaria.tethera.net, rudybot's new home.
+        '52.8.12.207',
+        '144.217.82.212',  # solaria.tethera.net, rudybot's new home.
     ):
         return True
 

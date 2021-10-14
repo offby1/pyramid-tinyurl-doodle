@@ -56,8 +56,7 @@ def _grab_cookie_secret():
 
 
 def main(global_config, **settings):
-    """ This function returns a Pyramid WSGI application.
-    """
+    """This function returns a Pyramid WSGI application."""
 
     # fix logging to be more like RFC3339
     logging.Formatter.default_time_format = '%FT%T'
