@@ -22,9 +22,11 @@ def _authenticated_within_pyramid(request):
 def is_from_whitelisted_IP(request):
     # TODO -- put the IP address(s) into config
 
-    # the EC2 box on which rudybot runs
-    # TODO -- try running `ec2-metadata  --public-ipv4` to get this
-    if request.client_addr == '52.8.12.207':
+    # the boxes on which rudybot might be running
+    if request.client_addr in (
+            '52.8.12.207',
+            '144.217.82.212'    # solaria.tethera.net, rudybot's new home.
+    ):
         return True
 
     # If the client's address is private, that means it's probably me,
