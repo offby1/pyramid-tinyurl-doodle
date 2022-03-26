@@ -10,10 +10,8 @@ To generate the cookie secret (on OS X use `gtr` instead of `tr`; get it from `b
 
 To generate the recaptcha secret:
 
-Surprise!  It's already generated.  Just go to
-[google](https://www.google.com/recaptcha/admin#site/320420908), log
-in as me, scrape the "Secret Key" out of the "Keys" section, then save
-it into `.recaptcha_secret`.
+Surprise!  It's already generated.  Just go to [google](https://www.google.com/recaptcha/admin#site/320420908), log in
+as me, click the gear, click the "reCAPTCHA keys" thing, click "copy secret key", then save it into `.recaptcha_secret`.
 
 ## Git version info thingy
 
