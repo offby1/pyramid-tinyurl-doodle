@@ -67,6 +67,7 @@ Tested on:
 - Ubuntu 14.04 "Trusty"
 - Ubuntu 16.04 "Xenial"
 - Ubuntu 18.04 "Bionic"
+- Ubuntu 20.04 "Focal"
 
 Steps:
 
@@ -102,7 +103,7 @@ Not sure how I got python3; I suspect it just comes with Amazon Linux.
     $ python3 -m pipenv run python setup.py develop
     $ python3 -m pipenv run pserve development.ini
 
-As of 2022-03-26T10:01:44-0700 , my one Amazon Linux AMI release 2018.03 box is running python3.6, which is now end-of-life'd.
+As of 2022-03-26T10:01:44-0700, my one Amazon Linux AMI release 2018.03 box is running python3.6, which is now end-of-life'd.
 
 # Testing
 
