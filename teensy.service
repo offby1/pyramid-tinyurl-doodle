@@ -2,6 +2,7 @@
 # sudo systemctl start teensy
 # sudo systemctl status teensy
 # sudo systemctl stop teensy
+# journalctl -f -u teensy
 [Unit]
 Description=Teensy URL shortener
 After=network.target
