@@ -28,6 +28,11 @@ expects to find them (tl;dr: mine are in `~/.aws/config` and
 
     $ cd <directory containing this file>
 
+## Running as a service
+For systems that use "systemd" (like Ubuntu 20.05 "focal"), I should write a systemd service template thingy.
+http://manpages.ubuntu.com/manpages/focal/man5/systemd.service.5.html#examples
+
+For systems that use "upstart" (like Amazon Linux AMI release 2018.03), you can just drop `teensy.conf` into `/etc/init`.
 ## MacOS with homebrew
 
     $ brew install python3 pipenv
@@ -100,6 +105,8 @@ Not sure how I got python3; I suspect it just comes with Amazon Linux.
     $ python3 -m pipenv install
     $ python3 -m pipenv run python setup.py develop
     $ python3 -m pipenv run pserve development.ini
+
+As of 2022-03-26T10:01:44-0700 , my one Amazon Linux AMI release 2018.03 box is running python3.6, which is now end-of-life'd.
 
 # Testing
 
