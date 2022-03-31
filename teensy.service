@@ -8,7 +8,6 @@ Description=Teensy URL shortener
 After=network.target
 
 [Service]
-type=Simple
 User=teensy
 Restart=on-failure
 RestartSec=1
