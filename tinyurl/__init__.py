@@ -6,6 +6,7 @@ import re
 
 # 3rd-party
 from pyramid.config import Configurator
+from pyramid.response import Response
 from pyramid.session import SignedCookieSessionFactory
 import six
 
@@ -55,6 +56,15 @@ def _grab_cookie_secret():
     return _grab_secret('.cookie_secret', 'cookie secret')
 
 
+class NoRobotsResponse(Response):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        headers = {"X-Robots-Tag": "noindex"}
+        self.headers.update(headers)
+        logger.debug("Added %s to %s response", headers, self.status_code)
+
+
 def main(global_config, **settings):
     """This function returns a Pyramid WSGI application."""
 
@@ -67,13 +77,14 @@ def main(global_config, **settings):
     settings['git_info'] = _grab_git_info()
     settings['recaptcha_secret'] = _grab_recaptcha_secret()
 
-    config = Configurator(settings=settings)
+    config = Configurator(
+        settings=settings, response_factory=lambda r: NoRobotsResponse()
+    )
 
     my_session_factory = SignedCookieSessionFactory(_grab_cookie_secret())
     config.set_session_factory(my_session_factory)
 
     config.add_static_view('static', 'static', cache_max_age=3600)
-    config.add_route('robots', '/robots.txt')
     config.add_route('home', '/')
 
     # The trailing - ensures that no human_hash will be spelled the

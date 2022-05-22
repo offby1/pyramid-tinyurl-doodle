@@ -118,6 +118,13 @@ You can also run a random URL through it without having to start the server:
 
     $ python3 -m pipenv run prequest development.ini  /sw97SVacIe
 
+If you're gonna do this, you might as well choose URLs that exercise various views from views.py.  The one above hits route_name='lengthen'; so also try e.g.
+
+    python3 -m pipenv run prequest development.ini  /
+    python3 -m pipenv run prequest --header=Accept:text/plain development.ini  '/shorten-/?input_url=some-long-url'
+
+Note: that last one will add a new item to the database.
+
 # Normalize formatting with "black"
 
     $ PIPENV_VENV_IN_PROJECT=1 python3 -m pipenv run black tinyurl/

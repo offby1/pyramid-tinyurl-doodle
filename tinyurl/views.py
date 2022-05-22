@@ -1,6 +1,7 @@
 # Core
 from enum import Enum
 import logging
+import pprint
 
 # 3rd-party
 import arrow
@@ -25,13 +26,6 @@ class ResponseType(Enum):
 
 
 logger = logging.getLogger('tinyurl')
-
-
-@view_config(route_name='robots', request_method='GET')
-def robots_GET(_):
-    r = Response(body="User-agent: *\nDisallow: /\n", status='200 OK')
-    r.content_type = 'text/plain'
-    return r
 
 
 def truncate(string, maxlen):
