@@ -27,8 +27,16 @@ expects to find them (tl;dr: mine are in `~/.aws/config` and
     $ cd <directory containing this file>
 
 ## Running as a service
+### Systemd
+
 For systems that use "systemd" (like Ubuntu 20.05 "focal"), drop `teensy.service` into `/etc/systemd/system`.
+Then do `sudo sysctl enable teensy.service`; to actually start it, do `sudo systemctl start teensy` and to stop it do `sudo systemctl stop teensy`.
+
+Tail the logs via `journalctl -f  -u teensy | less +F --chop`.
+
+### Upstart
 For systems that use "upstart" (like Amazon Linux AMI release 2018.03), you can just drop `teensy.conf` into `/etc/init`.
+
 ## MacOS with homebrew
 
     $ brew install python3 pipenv
