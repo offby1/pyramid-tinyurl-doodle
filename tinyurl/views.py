@@ -1,7 +1,6 @@
 # Core
 from enum import Enum
 import logging
-import pprint
 
 # 3rd-party
 import arrow
