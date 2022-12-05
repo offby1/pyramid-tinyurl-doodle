@@ -10,6 +10,12 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.11"
+boto3 = "^1.26.22"
+pyramid = "^2.0"
+pyramid-debugtoolbar = "^4.9"
+pyramid-tm = "^2.5"
+transaction = "^3.0.1"
+waitress = "^2.1.2"
 
 
 [build-system]
