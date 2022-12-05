@@ -41,6 +41,19 @@ urllib3 = "^1.26.13"
 venusian = "^3.0.0"
 webob = "^1.8.7"
 
+[tool.poetry.group.dev.dependencies]
+autopep8 = "^2.0.0"
+flake8 = "^6.0.0"
+importmagic = "^0.1.7"
+mock = "^4.0.3"
+pytest = "^7.2.0"
+pytest-cov = "^4.0.0"
+pytest-mock = "^3.10.0"
+rope-py3k = "^0.9.4.post1"
+yapf = "^0.32.0"
+pathlib2 = "^2.3.7.post1"
+black = "^22.10.0"
+
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
