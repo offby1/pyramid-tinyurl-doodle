@@ -37,3 +37,14 @@ Tail the logs via `journalctl -f  -u teensy | less +F --chop`.
 ### Upstart
 For systems that use "upstart" (like Amazon Linux AMI release 2018.03), you can just drop `teensy.conf` into `/etc/init`.
 
+
+## Building via poetry
+Note: do `git clean -dxff`, with two `f`s, if you want to nuke the world.  That's because there's a git repo in .venv that won't go away without the second `f`, and the lingering presence of that mostly-empty `.venv` causes mysterious failures like
+
+    $ python3 -m poetry build
+    [OSError 2]: No such file or directory: python
+
+This seems to suffice:
+
+- `python3 -m poetry install`
+- `python3 -m poetry run prequest development.ini /`

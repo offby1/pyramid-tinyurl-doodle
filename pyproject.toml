@@ -2,7 +2,6 @@
 skip-string-normalization = true
 
 # https://gist.github.com/mmerickel/33bc8edc633da132a8f92dbcb03ec1da
-# doesn't seem to help
 [tool.poetry.plugins."paste.app_factory"]
 main = "tinyurl:main"
 
@@ -45,6 +44,7 @@ translationstring = "^1.4"
 urllib3 = "^1.26.13"
 venusian = "^3.0.0"
 webob = "^1.8.7"
+to-precision = {git = "https://bitbucket.org/william_rusnack/to-precision.git"}
 
 [tool.poetry.group.dev.dependencies]
 autopep8 = "^2.0.0"

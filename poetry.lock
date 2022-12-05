@@ -664,6 +664,21 @@ optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*"
 
 [[package]]
+name = "to-precision"
+version = "2.0.0"
+description = "Formatting floating point numbers to standard, scientific, or engineering notation with a specified number of significant digits."
+category = "main"
+optional = false
+python-versions = "*"
+develop = false
+
+[package.source]
+type = "git"
+url = "https://bitbucket.org/william_rusnack/to-precision.git"
+reference = "HEAD"
+resolved_reference = "15896194833c95c4c4cca640ab3a9be02568f7e9"
+
+[[package]]
 name = "tomli"
 version = "2.0.1"
 description = "A lil' TOML parser"
@@ -789,7 +804,7 @@ testing = ["coverage (>=5.0.3)", "zope.event", "zope.testing"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.11"
-content-hash = "5a3acee55563c77c2be586f710f9c841c16a9f435a379f80ede955d11f9abb1b"
+content-hash = "412567154cffd0fe59ce49bdf879fb55c7e2fd050d84fc4c19e0b8c2560292f0"
 
 [metadata.files]
 arrow = [
@@ -1112,6 +1127,7 @@ six = [
     {file = "six-1.16.0-py2.py3-none-any.whl", hash = "sha256:8abb2f1d86890a2dfb989f9a77cfcfd3e47c2a354b01111771326f8aa26e0254"},
     {file = "six-1.16.0.tar.gz", hash = "sha256:1e61c37477a1626458e36f7b1d82aa5c9b094fa4802892072e49de9c60c4c926"},
 ]
+to-precision = []
 tomli = [
     {file = "tomli-2.0.1-py3-none-any.whl", hash = "sha256:939de3e7a6161af0c887ef91b7d41a53e7c5a1ca976325f429cb46ea9bc30ecc"},
     {file = "tomli-2.0.1.tar.gz", hash = "sha256:de526c12914f0c550d15924c62d72abc48d6fe7364aa87328337a31007fe8a4f"},
