@@ -1,6 +1,11 @@
 [tool.black]
 skip-string-normalization = true
 
+# https://gist.github.com/mmerickel/33bc8edc633da132a8f92dbcb03ec1da
+# doesn't seem to help
+[tool.poetry.plugins."paste.app_factory"]
+main = "tinyurl:main"
+
 [tool.poetry]
 name = "tinyurl"
 version = "0.0"
