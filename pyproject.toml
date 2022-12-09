@@ -1,6 +1,11 @@
 [tool.black]
 skip-string-normalization = true
 
+[tool.pytest.ini_options]
+filterwarnings = [
+    "ignore:'cgi' is deprecated:DeprecationWarning",
+]
+
 # https://gist.github.com/mmerickel/33bc8edc633da132a8f92dbcb03ec1da
 [tool.poetry.plugins."paste.app_factory"]
 main = "tinyurl:main"

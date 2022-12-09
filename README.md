@@ -47,4 +47,5 @@ Note: do `git clean -dxff`, with two `f`s, if you want to nuke the world.  That'
 This seems to suffice:
 
 - `python3 -m poetry install`
-- `python3 -m poetry run prequest development.ini /`
+- `python3 -m poetry run pytest`
+- `python3 -m poetry run prequest development.ini /sw97SVacIe`
