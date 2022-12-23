@@ -18,7 +18,7 @@ authors = ["Eric Hanchrow <eric.hanchrow@gmail.com>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "^3.8"
+python = ">=3.8.1,<4.0"
 boto3 = "^1.26.22"
 pyramid = "^2.0"
 pyramid-debugtoolbar = "^4.9"
@@ -50,6 +50,7 @@ urllib3 = "^1.26.13"
 venusian = "^3.0.0"
 webob = "^1.8.7"
 to-precision = {git = "https://bitbucket.org/william_rusnack/to-precision.git"}
+flake8 = "^6.0.0"
 
 [tool.poetry.group.dev.dependencies]
 autopep8 = "^2.0.0"
