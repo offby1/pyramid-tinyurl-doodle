@@ -1,2 +1,68 @@
 [tool.black]
 skip-string-normalization = true
+
+[tool.pytest.ini_options]
+filterwarnings = [
+    "ignore:'cgi' is deprecated:DeprecationWarning",
+]
+
+# https://gist.github.com/mmerickel/33bc8edc633da132a8f92dbcb03ec1da
+[tool.poetry.plugins."paste.app_factory"]
+main = "tinyurl:main"
+
+[tool.poetry]
+name = "tinyurl"
+version = "0.0"
+description = "wat"
+authors = ["Eric Hanchrow <eric.hanchrow@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.8"
+boto3 = "^1.26.22"
+pyramid = "^2.0"
+pyramid-debugtoolbar = "^4.9"
+pyramid-tm = "^2.5"
+transaction = "^3.0.1"
+waitress = "^2.1.2"
+pyramid-chameleon = "^0.3"
+pyramid-mako = "^1.1.0"
+python-dateutil = "^2.8.2"
+repoze-lru = "^0.7"
+request-id = "^1.0.1"
+zope-deprecation = "^4.4.0"
+zope-interface = "^5.5.2"
+arrow = "^1.2.3"
+botocore = "^1.29.22"
+chameleon = "^3.10.1"
+docutils = "^0.19"
+ipy = "^1.1"
+jmespath = "^1.0.1"
+mako = "^1.2.4"
+markupsafe = "^2.1.1"
+paste = "^3.5.2"
+pastedeploy = "^3.0.1"
+pygments = "^2.13.0"
+pytz = "^2022.6"
+requests = "^2.28.1"
+translationstring = "^1.4"
+urllib3 = "^1.26.13"
+venusian = "^3.0.0"
+webob = "^1.8.7"
+to-precision = {git = "https://bitbucket.org/william_rusnack/to-precision.git"}
+
+[tool.poetry.group.dev.dependencies]
+autopep8 = "^2.0.0"
+importmagic = "^0.1.7"
+mock = "^4.0.3"
+pytest = "^7.2.0"
+pytest-cov = "^4.0.0"
+pytest-mock = "^3.10.0"
+rope-py3k = "^0.9.4.post1"
+yapf = "^0.32.0"
+pathlib2 = "^2.3.7.post1"
+black = "^22.10.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
