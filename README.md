@@ -16,6 +16,7 @@ as me, click the gear, click the "reCAPTCHA keys" thing, click "copy secret key"
 ## Git version info thingy
 
     $ cp git/post-checkout .git/hooks
+    $ git branch --show-current | xargs git checkout
 
 ## AWS credentials
 
