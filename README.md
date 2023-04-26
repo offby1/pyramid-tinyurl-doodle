@@ -50,4 +50,4 @@ This seems to suffice:
 - `export POETRY_VIRTUALENVS_IN_PROJECT=true`
 - `python3 -m poetry install`
 - `python3 -m poetry run pytest`
-- `python3 -m poetry run prequest development.ini /sw97SVacIe`
+- `python3 -m poetry run prequest -d development.ini /sw97SVacIe`
