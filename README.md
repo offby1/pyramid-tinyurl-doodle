@@ -45,9 +45,4 @@ Note: do `git clean -dxff`, with two `f`s, if you want to nuke the world.  That'
     $ python3 -m poetry build
     [OSError 2]: No such file or directory: python
 
-This seems to suffice:
-
-- `export POETRY_VIRTUALENVS_IN_PROJECT=true`
-- `python3 -m poetry install`
-- `python3 -m poetry run pytest`
-- `python3 -m poetry run prequest -d development.ini /sw97SVacIe`
+`./runme.sh` suffices.
