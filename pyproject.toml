@@ -46,7 +46,7 @@ pygments = "^2.13.0"
 pytz = "^2022.6"
 requests = "^2.28.1"
 translationstring = "^1.4"
-urllib3 = "^1.26.13"
+urllib3 = "^1.26.17"
 venusian = "^3.0.0"
 webob = "^1.8.7"
 to-precision = {git = "https://bitbucket.org/william_rusnack/to-precision.git"}
