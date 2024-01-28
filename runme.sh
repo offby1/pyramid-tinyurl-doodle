@@ -5,17 +5,9 @@ set -x
 
 cd "${here}"
 
-if ! python3 -c 'import poetry'
-then
-    echo "You don't have \`poetry\`, so I'll install it for you"
-    python3 -m pip install --user --no-input poetry
-fi
-
-if ! [ -x $here/.venv/bin/python3 ]
-then
-   python3 -m poetry install
-fi
+poetry install
 
 set -e
-./.venv/bin/pytest tinyurl/tests
-./.venv/bin/prequest -d development.ini /sw97SVacIe
+poetry run pytest tinyurl/tests
+poetry run prequest -d development.ini /sw97SVacIe
+poetry run pserve development.ini
