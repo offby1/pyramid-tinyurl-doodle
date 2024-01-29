@@ -14,3 +14,5 @@
   <goodwill> . add docstrings with parameter and return docs to all the functions
 
 - Consider [chalice](https://github.com/awslabs/chalice).  Of course then I'd have to change the name of this project, since it'd no longer be using pyramid.
+
+- Consider [caddy](https://caddyserver.com/docs/getting-started) instead of nginx.  I know basically nothing about it, but at first glance, the docs seem readable.
