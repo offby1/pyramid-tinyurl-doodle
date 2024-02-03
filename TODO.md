@@ -16,3 +16,4 @@
 - Consider [chalice](https://github.com/awslabs/chalice).  Of course then I'd have to change the name of this project, since it'd no longer be using pyramid.
 
 - Consider [caddy](https://caddyserver.com/docs/getting-started) instead of nginx.  I know basically nothing about it, but at first glance, the docs seem readable.
+- Also [traefik](https://doc.traefik.io/traefik/); it's what <https://github.com/cookiecutter/cookiecutter-django> uses
