@@ -17,3 +17,4 @@
 
 - Consider [caddy](https://caddyserver.com/docs/getting-started) instead of nginx.  I know basically nothing about it, but at first glance, the docs seem readable.
 - Also [traefik](https://doc.traefik.io/traefik/); it's what <https://github.com/cookiecutter/cookiecutter-django> uses
+- I've heard <https://certbot.eff.org/> is easy but I suspect I already tried it and gave up on it
