@@ -62,7 +62,7 @@ pytest-mock = "^3.10.0"
 rope-py3k = "^0.9.4.post1"
 yapf = "^0.32.0"
 pathlib2 = "^2.3.7.post1"
-black = "^22.10.0"
+black = "^24.3.0"
 
 [build-system]
 requires = ["poetry-core"]
