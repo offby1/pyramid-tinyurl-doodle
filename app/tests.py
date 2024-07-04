@@ -24,7 +24,7 @@ def test_snot():
     # Create one entry via web
     c = Client()
     some_url = "https://my.what.a.long.url/you/have/grandma"
-    response = c.post(f"/shorten/{some_url}")
+    response = c.post("/shorten/", data={"original": some_url})
     # fetch entry
     assert response.status_code in (200, 201)
     short = response.content.decode()

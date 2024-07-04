@@ -1,9 +1,11 @@
 import binascii
 import hashlib
 
+from app.forms import ShortenForm
 from app.models import ShortenedURL
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
+from django.views.decorators.http import require_http_methods
 
 
 def lengthen(request, short=None):
@@ -26,7 +28,14 @@ def _enhashify(long_url):
     return human_hash_bytes.decode("utf-8")
 
 
-def shorten(request, original):
+@require_http_methods(["POST"])
+def shorten(request):
+    form = ShortenForm(request.POST)
+    if not form.is_valid():
+        return HttpResponseRedirect("/")
+
+    original = form.cleaned_data["original"]
+
     short = _enhashify(original)
     obj, created = ShortenedURL.objects.get_or_create(
         short=short,
@@ -39,4 +48,5 @@ def homepage(request):
     context = {}
     context["approximate_table_size"] = ShortenedURL.objects.count()
     context["recent_entries"] = ShortenedURL.objects.order_by("-created_at")[:10]
+    context["form"] = ShortenForm()
     return render(request, "homepage.html", context=context)

@@ -25,5 +25,5 @@ urlpatterns = [
     path("", app.views.homepage),
     path("admin/", admin.site.urls),
     path("lengthen/<short>", app.views.lengthen),
-    path("shorten/<path:original>", app.views.shorten),
+    path("shorten/", app.views.shorten, name="shorten"),
 ]
