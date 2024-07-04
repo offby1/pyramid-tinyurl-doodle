@@ -24,4 +24,5 @@ from django.urls import path
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("lengthen/<short>", app.views.lengthen),
+    path("shorten/<path:original>", app.views.shorten),
 ]
