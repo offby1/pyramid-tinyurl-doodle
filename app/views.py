@@ -9,4 +9,9 @@ def lengthen(request, short=None):
 
 
 def shorten(request, original):
-    return HttpResponse("xyzzy")
+    short = f"xyzzy{len(original)}"
+    obj, created = ShortenedURL.objects.get_or_create(
+        short=short,
+        original=original,
+    )
+    return HttpResponse(short)
