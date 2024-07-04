@@ -8,6 +8,13 @@ package-mode = false
 [tool.poetry.dependencies]
 python = "^3.12"
 django = "^5.0.6"
+pytest-django = "^4.8.0"
+
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "project.settings"
+# -- recommended but optional:
+python_files = ["tests.py", "test_*.py", "*_test.py", "testing/python/*.py"]
 
 
 [build-system]
