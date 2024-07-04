@@ -36,4 +36,7 @@ def shorten(request, original):
 
 
 def homepage(request):
-    return render(request, "homepage.html")
+    context = {}
+    context["approximate_table_size"] = ShortenedURL.objects.count()
+    context["recent_entries"] = ShortenedURL.objects.order_by("-created_at")[:10]
+    return render(request, "homepage.html", context=context)
