@@ -3,7 +3,7 @@ import hashlib
 
 from app.models import ShortenedURL
 from django.http import HttpResponse
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, render
 
 
 def lengthen(request, short=None):
@@ -36,4 +36,4 @@ def shorten(request, original):
 
 
 def homepage(request):
-    return HttpResponse("Imagine I'm a form where you could enter a URL")
+    return render(request, "homepage.html")
