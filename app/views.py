@@ -33,3 +33,7 @@ def shorten(request, original):
         original=original,
     )
     return HttpResponse(short)
+
+
+def homepage(request):
+    return HttpResponse("Imagine I'm a form where you could enter a URL")
