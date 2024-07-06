@@ -30,7 +30,7 @@
         <div class="row" style="margin-bottom: 5rem;">
           <div class="col-md-12">
             <div class="text-center">
-        <form action="{% url 'shorten' %}" method="post" style="margin-bottom: 2rem;">
+        <form action="{% url 'shorten' %}" method="get" style="margin-bottom: 2rem;">
           {% csrf_token %}
           {{ form }}
           <input type="submit" value="Tiny-ify it"/>

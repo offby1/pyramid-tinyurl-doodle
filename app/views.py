@@ -31,9 +31,9 @@ def _enhashify(long_url):
     return human_hash_bytes.decode("utf-8")
 
 
-@require_http_methods(["POST"])
+@require_http_methods(["GET"])
 def shorten(request):
-    form = ShortenForm(request.POST)
+    form = ShortenForm(request.GET)
     if not form.is_valid():
         return HttpResponseRedirect("/")
 
