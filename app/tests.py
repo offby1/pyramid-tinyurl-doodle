@@ -8,7 +8,7 @@ pytestmark = pytest.mark.django_db
 def test_short_link_on_homepage_goes_to_lengthen_url():
     c = Client()
     some_url = "https://my.what.a.long.url/you/have/grandma"
-    c.post("/shorten/", data={"original": some_url})
+    c.post("/shorten-/", data={"original": some_url})
     short = ShortenedURL.objects.get(original=some_url).short
 
     homepage_response = c.get("/").content.decode()
