@@ -10,7 +10,7 @@ from django.views.decorators.http import require_http_methods
 
 def lengthen(request, short=None):
     obj = get_object_or_404(ShortenedURL, short=short)
-    return HttpResponse(obj.original)
+    return HttpResponseRedirect(obj.original)
 
 
 def _enhashify(long_url):
