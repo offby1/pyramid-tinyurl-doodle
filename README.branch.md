@@ -38,3 +38,10 @@ I guess, in django-y terms, the routing looks like
 
     path("shorten-/", app.views.shorten, name="shorten"),
     path("<short>", app.views.lengthen, name="lengthen"),
+
+# TODO
+
+- [ ] Do what the "master" branch does: just have every view render the homepage template
+
+- [ ] Or maybe use [fetch](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch) to make the thing a single-page app
+  Clicking the "Submit" button calls this "fetch" thing, then updates the page accordingly with the new short URL

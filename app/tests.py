@@ -18,3 +18,8 @@ def test_short_link_on_homepage_redirects_to_original_url():
     lengthen_response = c.get(lengthen_url)
     assert lengthen_response.status_code in (302, 303)
     assert lengthen_response.url == original
+
+
+@pytest.mark.skip(reason="I haven't figured out how to write i")
+def test_clicking_submit_button_leaves_you_on_updated_homepage():
+    assert False, "this would be failing if I knew how to write it :-)"
