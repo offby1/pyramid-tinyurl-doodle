@@ -5,11 +5,11 @@ from django.test import Client
 pytestmark = pytest.mark.django_db
 
 
-def test_short_link_on_homepage_goes_to_lengthen_url():
+def test_short_link_on_homepage_redirects_to_original_url():
     c = Client()
-    some_url = "https://my.what.a.long.url/you/have/grandma"
-    c.get("/shorten-/", data={"original": some_url})
-    short = ShortenedURL.objects.get(original=some_url).short
+    original = "https://my.what.a.long.url/you/have/grandma"
+    c.get("/shorten-/", data={"original": original})
+    short = ShortenedURL.objects.get(original=original).short
 
     homepage_response = c.get("/").content.decode()
     lengthen_url = f"/lengthen/{short}"
@@ -17,4 +17,4 @@ def test_short_link_on_homepage_goes_to_lengthen_url():
 
     lengthen_response = c.get(lengthen_url)
     assert lengthen_response.status_code in (302, 303)
-    assert lengthen_response.url == some_url
+    assert lengthen_response.url == original
