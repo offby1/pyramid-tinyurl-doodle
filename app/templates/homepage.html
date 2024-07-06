@@ -72,7 +72,7 @@
                 <tr>
                   <td>{{ e.created_at|timesince }}</td>
                   <td><a href="{{ e.original }}">{{ e.original|truncatechars:100 }}</a></td>
-                  <td style="font-family: monospace;" ><a href="{{ e.short }}">{{ e.short }}</a></td>
+                  <td style="font-family: monospace;" ><a href="{% url 'lengthen'   e.short  %}">{{ e.short }}</a></td>
                 </tr>
                 {% endfor %}
               </table>

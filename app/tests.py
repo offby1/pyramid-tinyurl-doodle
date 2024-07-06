@@ -32,3 +32,13 @@ def test_snot():
     response = c.get(f"/lengthen/{short}")
     assert response.status_code == 200
     assert some_url in response.content.decode()
+
+
+def test_short_link_on_homepage_gets_properly_expanded():
+    c = Client()
+    some_url = "https://my.what.a.long.url/you/have/grandma"
+    c.post("/shorten/", data={"original": some_url})
+    short = ShortenedURL.objects.get(original=some_url).short
+
+    homepage_response = c.get("/").content.decode()
+    assert f"""<a href="/lengthen/{short}">{short}</a>""" in homepage_response
