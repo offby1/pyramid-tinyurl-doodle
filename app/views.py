@@ -3,6 +3,7 @@ import hashlib
 
 from app.forms import ShortenForm
 from app.models import ShortenedURL
+from django.conf import settings
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
 from django.views.decorators.http import require_http_methods
@@ -24,7 +25,9 @@ def _enhashify(long_url):
     hash_object = hashlib.sha256(long_url_bytes)
     binary_hash = hash_object.digest()
     human_hash_bytes = binascii.b2a_base64(binary_hash)
-    human_hash_bytes = human_hash_bytes.replace(b"+", b"").replace(b"/", b"")[:10]
+    human_hash_bytes = human_hash_bytes.replace(b"+", b"").replace(b"/", b"")[
+        : settings.HASH_LENGTH
+    ]
     return human_hash_bytes.decode("utf-8")
 
 
