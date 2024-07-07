@@ -16,11 +16,7 @@ Uses sqlite instead of dynamodb:
     204.17 bytes
     ```
 
-  We could back up sqlite by pushing it to dynamodb.  We could easily teach the existing `sync-ddb-data` management command to do that.
-
-  (Have "cron" or "systemd" or whatever run it every now and then)
-
-  Even easier: run `python manage.py dumpdata`, and send that to an S3 bucket.
+  We will back up sqlite by having "cron" or "systemd" or whatever run `python manage.py backup-db-to-s3` every now and then.
 
 TODO:
 
