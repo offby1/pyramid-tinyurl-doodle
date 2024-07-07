@@ -1,11 +1,9 @@
-import app.views
+import app.urls
 from debug_toolbar.toolbar import debug_toolbar_urls
 from django.contrib import admin
-from django.urls import path
+from django.urls import include, path
 
 urlpatterns = [
-    path("", app.views.homepage),
+    path("", include(app.urls)),
     path("admin/", admin.site.urls),
-    path("lengthen/<short>", app.views.lengthen, name="lengthen"),
-    path("shorten-/", app.views.shorten, name="shorten"),
 ] + debug_toolbar_urls()
