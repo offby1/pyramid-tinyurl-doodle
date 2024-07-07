@@ -1,10 +1,11 @@
 from django.conf import settings
 from django.contrib import admin
 from django.db import models
+from django.utils import timezone
 
 
 class ShortenedURL(models.Model):
-    created_at = models.DateTimeField(auto_now_add=True)
+    created_at = models.DateTimeField(default=timezone.now)
     original = models.CharField(max_length=1024)
     short = models.CharField(max_length=settings.HASH_LENGTH, primary_key=True)
 
