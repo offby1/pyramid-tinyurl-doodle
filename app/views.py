@@ -1,5 +1,6 @@
 import binascii
 import hashlib
+import urllib.parse
 
 from app.forms import ShortenForm
 from app.models import ShortenedURL
@@ -9,9 +10,21 @@ from django.shortcuts import get_object_or_404, render
 from django.views.decorators.http import require_http_methods
 
 
+def _fill_in_missing_url_components(url_string):
+    parsed = urllib.parse.urlparse(url_string)
+
+    if not parsed.scheme:
+        parsed = parsed._replace(scheme="https")
+
+    if not parsed.netloc:
+        parsed = parsed._replace(netloc="example.com")
+
+    return urllib.parse.urlunparse(parsed)
+
+
 def lengthen(request, short=None):
     obj = get_object_or_404(ShortenedURL, short=short)
-    return HttpResponseRedirect(obj.original)
+    return HttpResponseRedirect(_fill_in_missing_url_components(obj.original))
 
 
 def _enhashify(long_url):
