@@ -11,6 +11,9 @@ django = "^5.0.6"
 pytest-django = "^4.8.0"
 
 
+[tool.poetry.group.dev.dependencies]
+django-debug-toolbar = "^4.4.5"
+
 [tool.pytest.ini_options]
 DJANGO_SETTINGS_MODULE = "project.settings"
 # -- recommended but optional:
