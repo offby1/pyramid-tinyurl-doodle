@@ -55,7 +55,7 @@ def maybe_render(request, context=None):
     context["approximate_table_size"] = ShortenedURL.objects.count()
     context["recent_entries"] = ShortenedURL.objects.order_by("-created_at")[:10]
     context["form"] = ShortenForm()
-    context["this_commit_url"] = f"{gitlab_home_page}commit/TODO-git-commit"
+    context["this_commit_url"] = f"{gitlab_home_page}commit/{settings.GIT_INFO}"
 
     return render(request, "homepage.html", context=context)
 

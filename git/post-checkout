@@ -1,0 +1,9 @@
+#!/bin/bash
+
+top=$(git rev-parse --show-toplevel)
+
+(
+    echo $1
+    echo $2
+    echo $3
+) > ${top}/.git-post-checkout-info

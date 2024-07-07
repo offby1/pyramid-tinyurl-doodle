@@ -9,7 +9,10 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
+import logging
 from pathlib import Path
+
+logger = logging.getLogger(__name__)
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -127,3 +130,15 @@ STATIC_URL = "static/"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 HASH_LENGTH = 10
+
+
+GIT_INFO = None
+
+try:
+    with open(BASE_DIR / ".git-post-checkout-info") as inf:
+        for index, line in enumerate(inf):
+            if index == 1:
+                GIT_INFO = line.rstrip()
+                break
+except OSError as e:
+    logger.warning("%s -- ignoring", e)
