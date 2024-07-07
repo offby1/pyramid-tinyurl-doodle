@@ -50,7 +50,7 @@ def maybe_render(request, context=None):
             status_code=200,
         )
 
-    gitlab_home_page = "TODO pretend I am a gitlab home page"
+    gitlab_home_page = "https://gitlab.com/offby1/teensy/-/"
 
     context["approximate_table_size"] = ShortenedURL.objects.count()
     context["recent_entries"] = ShortenedURL.objects.order_by("-created_at")[:10]
