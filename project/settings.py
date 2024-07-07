@@ -126,4 +126,4 @@ STATIC_URL = "static/"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-HASH_LENGTH = 12
+HASH_LENGTH = 10

@@ -38,7 +38,10 @@ def _response_content_type(request):
     return "text/plain"
 
 
-def maybe_render(request, context):
+def maybe_render(request, context=None):
+    if context is None:
+        context = {}
+
     content_type = _response_content_type(request)
     if content_type is not None:
         return HttpResponse(
@@ -49,6 +52,9 @@ def maybe_render(request, context):
 
     gitlab_home_page = "TODO pretend I am a gitlab home page"
 
+    context["approximate_table_size"] = ShortenedURL.objects.count()
+    context["recent_entries"] = ShortenedURL.objects.order_by("-created_at")[:10]
+    context["form"] = ShortenForm()
     context["this_commit_url"] = f"{gitlab_home_page}commit/TODO-git-commit"
 
     return render(request, "homepage.html", context=context)
@@ -67,12 +73,14 @@ def shorten(request):
         short=short,
         original=original,
     )
-    return maybe_render(request, {"short": short})
+    return maybe_render(
+        request,
+        context={
+            "short": short,
+            "heebie": "jeebie",
+        },
+    )
 
 
 def homepage(request):
-    context = {}
-    context["approximate_table_size"] = ShortenedURL.objects.count()
-    context["recent_entries"] = ShortenedURL.objects.order_by("-created_at")[:10]
-    context["form"] = ShortenForm()
-    return maybe_render(request, context=context)
+    return maybe_render(request)
