@@ -31,6 +31,29 @@ def _enhashify(long_url):
     return human_hash_bytes.decode("utf-8")
 
 
+def _response_content_type(request):
+    if request.accepts("text/html"):
+        return None
+
+    return "text/plain"
+
+
+def maybe_render(request, context):
+    content_type = _response_content_type(request)
+    if content_type is not None:
+        return HttpResponse(
+            context.get("short_url", ""),
+            content_type=content_type,
+            status_code=200,
+        )
+
+    gitlab_home_page = "TODO pretend I am a gitlab home page"
+
+    context["this_commit_url"] = f"{gitlab_home_page}commit/TODO-git-commit"
+
+    return render(request, "homepage.html", context=context)
+
+
 @require_http_methods(["GET"])
 def shorten(request):
     form = ShortenForm(request.GET)
@@ -40,11 +63,11 @@ def shorten(request):
     original = form.cleaned_data["original"]
 
     short = _enhashify(original)
-    obj, created = ShortenedURL.objects.get_or_create(
+    ShortenedURL.objects.get_or_create(
         short=short,
         original=original,
     )
-    return HttpResponse(short)
+    return maybe_render(request, {"short": short})
 
 
 def homepage(request):
@@ -52,4 +75,4 @@ def homepage(request):
     context["approximate_table_size"] = ShortenedURL.objects.count()
     context["recent_entries"] = ShortenedURL.objects.order_by("-created_at")[:10]
     context["form"] = ShortenForm()
-    return render(request, "homepage.html", context=context)
+    return maybe_render(request, context=context)
