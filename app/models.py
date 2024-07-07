@@ -12,4 +12,7 @@ class ShortenedURL(models.Model):
         return f"{self.short} => {self.original[0:100]}"
 
 
-admin.site.register(ShortenedURL)
+@admin.register(ShortenedURL)
+class ShortenedURLAdmin(admin.ModelAdmin):
+    list_display = ["short", "original", "created_at"]
+    list_filter = ["created_at"]
