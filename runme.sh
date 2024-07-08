@@ -19,6 +19,13 @@ fi
 cd "$(dirname "$0")"
 
 main() {
+    # Use a python with sqlite support :-(
+    # This is needed on my ec2 box
+    if [ -x ~/.pyenv/versions/3.12.0a3/bin/python ]
+    then
+        poetry env use ~/.pyenv/versions/3.12.0a3/bin/python
+    fi
+
     poetry install
 
     poetry run python manage.py makemigrations
