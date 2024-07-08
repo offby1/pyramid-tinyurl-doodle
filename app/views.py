@@ -46,7 +46,7 @@ def _enhashify(long_url):
 
 def _response_content_type(request):
     if request.accepts("text/html"):
-        return None
+        return "text/html"
 
     return "text/plain"
 
@@ -56,7 +56,7 @@ def maybe_render(request, context=None):
         context = {}
 
     content_type = _response_content_type(request)
-    if content_type is not None:
+    if content_type != "text/html":
         return HttpResponse(
             context.get("short_url", ""),
             content_type=content_type,
