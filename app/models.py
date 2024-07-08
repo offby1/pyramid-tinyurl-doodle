@@ -7,7 +7,7 @@ from django.utils.html import format_html
 
 class ShortenedURL(models.Model):
     created_at = models.DateTimeField(default=timezone.now)
-    original = models.CharField(max_length=1024)
+    original = models.URLField(max_length=1024)
     short = models.CharField(max_length=settings.HASH_LENGTH, primary_key=True)
 
     @admin.display(description="short", ordering="short")
