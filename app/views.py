@@ -3,6 +3,7 @@ import hashlib
 import logging
 import urllib.parse
 
+import requests
 from app.forms import ShortenForm
 from app.models import ShortenedURL
 from django.conf import settings
@@ -81,7 +82,21 @@ def maybe_render(request, context=None, status=None):
     return render(request, "homepage.html", context=context, status=status)
 
 
-def _check_recaptcha_response(post_data):
+def _do_the_google_thang(request, g_captcha_response):
+    response = requests.post(
+        url="https://www.google.com/recaptcha/api/siteverify",
+        data=dict(
+            secret=settings.RECAPTCHA_SECRET,
+            response=g_captcha_response,
+            remoteip=request.META["REMOTE_ADDR"],
+        ),
+    ).json()
+    logger.debug("Google's pronouncement: %s", response)
+    return response["success"]
+
+
+def _check_recaptcha_response(request):
+    post_data = request.POST
     if settings.RECAPTCHA_BACKDOOR:
         logger.debug(f"{settings.RECAPTCHA_BACKDOOR=} so returning True")
         return True
@@ -90,18 +105,17 @@ def _check_recaptcha_response(post_data):
         logger.debug(f"{post_data=} has no g-recaptcha-response, returning False")
         return False
 
-    resp = post_data["g-recaptcha-response"]
-    if not resp:
-        logger.debug(f"{resp=} is false-y; returning False")
+    g_captcha_response = post_data["g-recaptcha-response"]
+    if not g_captcha_response:
+        logger.debug(f"{g_captcha_response=} is false-y; returning False")
 
-    logger.debug(f"{resp=}; returning False just because")
-    return False
+    return _do_the_google_thang(request, g_captcha_response)
 
 
 @require_http_methods(["GET", "POST"])
 def shorten(request):
     if request.method == "POST":
-        if not _check_recaptcha_response(request.POST):
+        if not _check_recaptcha_response(request):
             return TemplateResponse(
                 request,
                 status=401,
