@@ -10,12 +10,15 @@ logger = logging.getLogger(__name__)
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+APP_NAME = "info.teensy.teensy-django"
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
+dotenv_path = platformdirs.user_config_dir(appname=APP_NAME) + "/.env"
+dotenv.load_dotenv(
+    dotenv_path=dotenv_path,
+)
+del dotenv_path
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-h+fr1vy^im*wk@#9_qb1(eytat2xz94lmkoq$5gbl=@-j4alpa"
+SECRET_KEY = os.environ["SECRET_KEY"]
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -147,14 +150,6 @@ FORMS_URLFIELD_ASSUME_HTTPS = True
 # False means "really check recaptchas with google"
 # True means "we're running unit tests or something so just pretend all recaptcha responses are valid"
 RECAPTCHA_BACKDOOR = False
-
-APP_NAME = "info.teensy.teensy-django"
-
-dotenv_path = platformdirs.user_config_dir(appname=APP_NAME) + "/.env"
-dotenv.load_dotenv(
-    dotenv_path=dotenv_path,
-)
-del dotenv_path
 
 RECAPTCHA_SECRET = os.environ.get("RECAPTCHA_SECRET")
 if RECAPTCHA_SECRET is None:
