@@ -66,34 +66,36 @@ def maybe_render(request, context=None):
     gitlab_home_page = "https://gitlab.com/offby1/teensy/-/"
 
     context["approximate_table_size"] = ShortenedURL.objects.count()
-    context["display_captcha"] = True  # why not
-    context["form"] = ShortenForm()
+    context["display_captcha"] = "short" not in context
+    context["form"] = (
+        ShortenForm(request.POST) if request.method == "POST" else ShortenForm()
+    )
     context["recent_entries"] = ShortenedURL.objects.order_by("-created_at")[:10]
     context["this_commit_url"] = f"{gitlab_home_page}commit/{settings.GIT_INFO}"
 
     return render(request, "homepage.html", context=context)
 
 
-@require_http_methods(["GET"])
+@require_http_methods(["GET", "POST"])
 def shorten(request):
-    form = ShortenForm(request.GET)
-    if not form.is_valid():
-        return HttpResponseRedirect("/")
+    if request.method == "POST":
+        form = ShortenForm(request.POST)
+        if form.is_valid():
+            original = form.cleaned_data["original"]
+            short = _enhashify(original)
+            ShortenedURL.objects.get_or_create(
+                short=short,
+                original=original,
+            )
 
-    original = form.cleaned_data["original"]
+            return maybe_render(
+                request,
+                context={
+                    "short": short,
+                },
+            )
 
-    short = _enhashify(original)
-    ShortenedURL.objects.get_or_create(
-        short=short,
-        original=original,
-    )
-    return maybe_render(
-        request,
-        context={
-            "short": short,
-            "heebie": "jeebie",
-        },
-    )
+    return maybe_render(request)
 
 
 def homepage(request):

@@ -9,7 +9,7 @@ pytestmark = pytest.mark.django_db
 def test_short_link_on_homepage_redirects_to_original_url():
     c = Client()
     original = "https://my.what.a.long.url/you/have/grandma"
-    c.get("/shorten-/", data={"original": original})
+    c.post("/shorten-/", data={"original": original})
     short = ShortenedURL.objects.get(original=original).short
 
     homepage_response = c.get("/").content.decode()

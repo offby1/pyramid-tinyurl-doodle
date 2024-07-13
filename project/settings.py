@@ -146,3 +146,7 @@ try:
                 break
 except OSError as e:
     logger.warning("%s -- ignoring", e)
+
+# I don't really understand this, but it shaddaps a warning
+# (and replaces it with a deprecation warning :-( )
+FORMS_URLFIELD_ASSUME_HTTPS = True
