@@ -16,7 +16,9 @@ Uses sqlite instead of dynamodb:
     204.17 bytes
     ```
 
-  We will back up sqlite by having "cron" or "systemd" or whatever run `python manage.py backup-db-to-s3` every now and then.
+  We will back up sqlite by having "cron" or "systemd" or whatever run `python manage.py sync-ddb-data` every now and then.
+
+  I have another management command, `backup-db-to-s3`, that isn't needed any more, but I feel like keeping it around for some reason.
 
 TODO:
 
