@@ -34,7 +34,10 @@ main() {
     DJANGO_SUPERUSER_PASSWORD=admin poetry run python3 manage.py createsuperuser --no-input --username=$USER --email=eric.hanchrow@gmail.com || true # "|| true" lets us get past "That username is already taken"
     ln --symbolic --verbose --force $(pwd)/git/post-checkout .git/hooks
     git checkout
-    poetry run python manage.py runserver 0.0.0.0:8000
+    #poetry run python manage.py runserver 0.0.0.0:8000
+    poetry run python manage.py collectstatic --no-input
+    # TODO -- run nginx to handle the static files.
+    poetry run gunicorn project.wsgi
 }
 
 main "$@"
