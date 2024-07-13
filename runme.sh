@@ -19,6 +19,9 @@ fi
 cd "$(dirname "$0")"
 
 main() {
+    ln --symbolic --verbose --force $(pwd)/git/post-checkout .git/hooks
+    git checkout                # this causes the post-checkout hook to run
+
     # Use a python with sqlite support :-(
     # This is needed on my ec2 box
     if [ -x ~/.pyenv/versions/3.12.0a3/bin/python ]
@@ -28,16 +31,26 @@ main() {
 
     poetry install
 
+    export DJANGO_SETTINGS_MODULE=${DJANGO_SETTINGS_MODULE:-project.dev_settings}
+
     poetry run python manage.py makemigrations
     poetry run python manage.py migrate
     poetry run pytest
     DJANGO_SUPERUSER_PASSWORD=admin poetry run python3 manage.py createsuperuser --no-input --username=$USER --email=eric.hanchrow@gmail.com || true # "|| true" lets us get past "That username is already taken"
-    ln --symbolic --verbose --force $(pwd)/git/post-checkout .git/hooks
-    git checkout
-    #poetry run python manage.py runserver 0.0.0.0:8000
-    poetry run python manage.py collectstatic --no-input
-    # TODO -- run nginx to handle the static files.
-    poetry run gunicorn project.wsgi
+
+    case $DJANGO_SETTINGS_MODULE in
+        *dev_*)
+            poetry run python manage.py runserver 0.0.0.0:8000
+            ;;
+        *prod_*)
+            # TODO -- run nginx to handle the static files.
+            poetry run python manage.py collectstatic --no-input
+            poetry run gunicorn --log-level=DEBUG project.wsgi
+            ;;
+        *)
+            echo Dunno how to interpret $DJANGO_SETTINGS_MODULE
+    esac
+
 }
 
 main "$@"
