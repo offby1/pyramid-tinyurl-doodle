@@ -8,6 +8,7 @@ from app.models import ShortenedURL
 from django.conf import settings
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
+from django.template.response import TemplateResponse
 from django.urls import reverse
 from django.views.decorators.http import require_http_methods
 
@@ -101,10 +102,10 @@ def _check_recaptcha_response(post_data):
 def shorten(request):
     if request.method == "POST":
         if not _check_recaptcha_response(request.POST):
-            return HttpResponse(
+            return TemplateResponse(
+                request,
                 status=401,
-                content="""According to <a href="https://www.google.com/recaptcha/">Google
-                Recaptcha</a>, you're a robot.  Don't blame me!""",
+                template="recaptcha_fail.html",
             )
 
         form = ShortenForm(request.POST)
