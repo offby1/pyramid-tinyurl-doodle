@@ -28,7 +28,8 @@ SECRET_KEY = "django-insecure-h+fr1vy^im*wk@#9_qb1(eytat2xz94lmkoq$5gbl=@-j4alpa
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    "teensy.info",
+    "localhost",
+    "teensy.info",  # TODO -- disable before deploying For Realz
 ]
 
 
