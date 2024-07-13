@@ -1,5 +1,6 @@
 import binascii
 import hashlib
+import logging
 import urllib.parse
 
 from app.forms import ShortenForm
@@ -7,7 +8,10 @@ from app.models import ShortenedURL
 from django.conf import settings
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
+from django.urls import reverse
 from django.views.decorators.http import require_http_methods
+
+logger = logging.getLogger(__name__)
 
 
 def _fill_in_missing_url_components(url_string):
@@ -51,7 +55,7 @@ def _response_content_type(request):
     return "text/plain"
 
 
-def maybe_render(request, context=None):
+def maybe_render(request, context=None, status=None):
     if context is None:
         context = {}
 
@@ -73,12 +77,35 @@ def maybe_render(request, context=None):
     context["recent_entries"] = ShortenedURL.objects.order_by("-created_at")[:10]
     context["this_commit_url"] = f"{gitlab_home_page}commit/{settings.GIT_INFO}"
 
-    return render(request, "homepage.html", context=context)
+    return render(request, "homepage.html", context=context, status=status)
+
+
+def _check_recaptcha_response(post_data):
+    if "g-recaptcha-response" not in post_data:
+        logger.debug(f"{post_data=} has no g-recaptcha-response, returning False")
+        return False
+    resp = post_data["g-recaptcha-response"]
+    if not resp:
+        logger.debug(f"{resp=} is false-y; returning False")
+    if resp == "GIANT FREAKING BACKDOOR FOR TESTING":
+        logger.warning(
+            f"Assuming {resp=} is valid but TODO I should really check with Google!",
+        )
+        return True
+    logger.debug(f"{resp=}; returning False just because")
+    return False
 
 
 @require_http_methods(["GET", "POST"])
 def shorten(request):
     if request.method == "POST":
+        if not _check_recaptcha_response(request.POST):
+            return HttpResponse(
+                status=401,
+                content="""According to <a href="https://www.google.com/recaptcha/">Google
+                Recaptcha</a>, you're a robot.  Don't blame me!""",
+            )
+
         form = ShortenForm(request.POST)
         if form.is_valid():
             original = form.cleaned_data["original"]
@@ -88,12 +115,15 @@ def shorten(request):
                 original=original,
             )
 
-            return maybe_render(
+            response = maybe_render(
                 request,
                 context={
                     "short": short,
                 },
+                status=201,
             )
+            response.headers["Location"] = reverse("lengthen", kwargs=dict(short=short))
+            return response
 
     return maybe_render(request)
 
