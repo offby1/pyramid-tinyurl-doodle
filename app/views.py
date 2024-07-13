@@ -43,10 +43,13 @@ def _enhashify(long_url):
 
     hash_object = hashlib.sha256(long_url_bytes)
     binary_hash = hash_object.digest()
+
+    # This conversion must be kept in sync with .converters.HashConverter
     human_hash_bytes = binascii.b2a_base64(binary_hash)
     human_hash_bytes = human_hash_bytes.replace(b"+", b"").replace(b"/", b"")[
         : settings.HASH_LENGTH
     ]
+
     return human_hash_bytes.decode("utf-8")
 
 
@@ -88,7 +91,10 @@ def _do_the_google_thang(request, g_captcha_response):
         data=dict(
             secret=settings.RECAPTCHA_SECRET,
             response=g_captcha_response,
-            remoteip=request.META["REMOTE_ADDR"],
+            remoteip=request.META[
+                "REMOTE_ADDR"  # request.headers["X-Forwarded-For"] might work too, if we're behind nginx and I've
+                # configured it to add that header
+            ],
         ),
     ).json()
     logger.debug("Google's pronouncement: %s", response)

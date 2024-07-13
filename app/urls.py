@@ -1,8 +1,11 @@
-import app.views
-from django.urls import path
+from django.urls import path, register_converter
+
+from . import converters, views
+
+register_converter(converters.HashConverter, "hh")
 
 urlpatterns = [
-    path("", app.views.homepage),
-    path("lengthen/<short>", app.views.lengthen, name="lengthen"),
-    path("shorten-/", app.views.shorten, name="shorten"),
+    path("", views.homepage),
+    path("<hh:short>/", views.lengthen, name="lengthen"),
+    path("shorten-/", views.shorten, name="shorten"),
 ]
