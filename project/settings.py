@@ -150,3 +150,7 @@ except OSError as e:
 # I don't really understand this, but it shaddaps a warning
 # (and replaces it with a deprecation warning :-( )
 FORMS_URLFIELD_ASSUME_HTTPS = True
+
+# False means "really check recaptchas with google"
+# True means "we're running unit tests or something so just pretend all recaptcha responses are valid"
+RECAPTCHA_BACKDOOR = False

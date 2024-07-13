@@ -8,13 +8,13 @@ from django.test import Client
 pytestmark = pytest.mark.django_db
 
 
-def test_short_link_on_homepage_redirects_to_original_url():
+def test_short_link_on_homepage_redirects_to_original_url(settings):
     c = Client()
     original = "https://my.what.a.long.url/you/have/grandma"
+    settings.RECAPTCHA_BACKDOOR = True
     post_response = c.post(
         "/shorten-/",
         data={
-            "g-recaptcha-response": "GIANT FREAKING BACKDOOR FOR TESTING",
             "original": original,
         },
     )

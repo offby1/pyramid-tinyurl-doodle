@@ -81,17 +81,18 @@ def maybe_render(request, context=None, status=None):
 
 
 def _check_recaptcha_response(post_data):
+    if settings.RECAPTCHA_BACKDOOR:
+        logger.debug(f"{settings.RECAPTCHA_BACKDOOR=} so returning True")
+        return True
+
     if "g-recaptcha-response" not in post_data:
         logger.debug(f"{post_data=} has no g-recaptcha-response, returning False")
         return False
+
     resp = post_data["g-recaptcha-response"]
     if not resp:
         logger.debug(f"{resp=} is false-y; returning False")
-    if resp == "GIANT FREAKING BACKDOOR FOR TESTING":
-        logger.warning(
-            f"Assuming {resp=} is valid but TODO I should really check with Google!",
-        )
-        return True
+
     logger.debug(f"{resp=}; returning False just because")
     return False
 
