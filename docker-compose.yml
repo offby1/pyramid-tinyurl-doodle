@@ -7,7 +7,7 @@ services:
     secrets:
       - django_secret
 
-  web:
+  nginx:
     image: nginx
     ports:
      - "8080:80"
