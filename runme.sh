@@ -19,6 +19,8 @@ fi
 cd "$(dirname "$0")"
 
 main() {
+    local flavor=${1:-dev}      # "dev" or "prod"
+
     ln --symbolic --verbose --force $(pwd)/git/post-checkout .git/hooks
     git checkout                # this causes the post-checkout hook to run
 
@@ -31,22 +33,22 @@ main() {
 
     poetry install
 
-    export DJANGO_SETTINGS_MODULE=${DJANGO_SETTINGS_MODULE:-project.dev_settings}
+    export DJANGO_SETTINGS_MODULE=${DJANGO_SETTINGS_MODULE:-project.${flavor}_settings}
 
     poetry run python manage.py makemigrations
     poetry run python manage.py migrate
     poetry run pytest
     DJANGO_SUPERUSER_PASSWORD=admin poetry run python3 manage.py createsuperuser --no-input --username=$USER --email=eric.hanchrow@gmail.com || true # "|| true" lets us get past "That username is already taken"
 
-    case $DJANGO_SETTINGS_MODULE in
-        *dev_*)
+    case ${flavor} in
+        dev)
             poetry run python manage.py runserver 0.0.0.0:8000
             ;;
-        *prod_*)
+        prod)
             docker-compose up
             ;;
         *)
-            echo Dunno how to interpret $DJANGO_SETTINGS_MODULE
+            echo Dunno how to interpret flavor ${flavor}
     esac
 
 }
