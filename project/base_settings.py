@@ -167,3 +167,7 @@ RECAPTCHA_BACKDOOR = False
 RECAPTCHA_SECRET = os.environ.get("RECAPTCHA_SECRET")
 if RECAPTCHA_SECRET is None:
     del RECAPTCHA_SECRET
+
+RUDYBOT_IP_ADDRESSES = {
+    "144.217.82.212",  # solaria.tethera.net, rudybot's new home.
+}

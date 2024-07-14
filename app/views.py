@@ -148,8 +148,17 @@ def _shorten_POST(request):
     return response
 
 
+def _check_authorized_rudybot_IP(request):
+    return request.META["REMOTE_ADDR"] in settings.RUDYBOT_IP_ADDRESSES
+
+
 # Backwards compatibility for rudybot
 def _shorten_GET(request):
+    if not _check_authorized_rudybot_IP(request):
+        return HttpResponse(
+            status=401,
+        )
+
     original = request.GET["input_url"]
 
     short = _enhashify(original)
@@ -158,6 +167,7 @@ def _shorten_GET(request):
         original=original,
     )
 
+    # TODO -- [ancient texts](https://github.com/offby1/rudybot/blob/master/tinyurl.rkt#L30) portend that rudybot sends "Accept: text/json", but then just dumps it into the channel as plain text
     response = HttpResponse(
         original,
         headers={"Content-Type": "text/plain"},

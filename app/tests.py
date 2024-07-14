@@ -3,6 +3,7 @@ import urllib
 import pytest
 from app import views
 from app.models import ShortenedURL
+from django.conf import settings
 from django.test import Client
 
 pytestmark = pytest.mark.django_db
@@ -50,15 +51,14 @@ def test_fills_in_missing_url_components():
     )
 
 
-def test_rudybot_compatibility():
+def test_rudybot_compatibility(rf):
     assert ShortenedURL.objects.count() == 0
 
-    c = Client()
     original = urllib.parse.unquote(
         "https%3A%2F%2Fmy.what.a.long.url%2Fyou%2Fhave%2Fgrandma%2Fmy.what.a.long.url%2Fyou%2Fhave%2Fgrandma%2Fmy.what.a.long.url%2Fyou%2Fhave%2Fgrandma%2Fmy.what.a.long.url%2Fyou%2Fhave%2Fgrandma%2F",
         errors="strict",
     )
-    response = c.get(
+    request = rf.get(
         "/shorten-/",
         data={
             "input_url": original,
@@ -66,8 +66,35 @@ def test_rudybot_compatibility():
         headers={
             "accept": "text/plain",
         },
+        REMOTE_ADDR=next(iter(settings.RUDYBOT_IP_ADDRESSES)),
     )
+    response = views.shorten(request)
+
     assert response.status_code == 200
     assert ShortenedURL.objects.count() == 1
     shorty = ShortenedURL.objects.first().short
     assert shorty == "kKc31g9Var"
+
+
+@pytest.mark.parametrize(
+    "client_ip,expected_status",
+    [
+        (next(iter(settings.RUDYBOT_IP_ADDRESSES)), 200),
+        ("127.0.0.1", 401),
+    ],
+)
+def test_tells_rudybot_to_go_piss_up_a_rope_if_IP_address_is_wrong(
+    rf,
+    client_ip,
+    expected_status,
+):
+    request = rf.get(
+        "/shorten-/",
+        data={
+            "input_url": "original",
+        },
+        REMOTE_ADDR=client_ip,
+    )
+    response = views.shorten(request)
+
+    assert response.status_code == expected_status
