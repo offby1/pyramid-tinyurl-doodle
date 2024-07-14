@@ -3,7 +3,9 @@ services:
     build:
       context: .
     environment:
-      SECRET_KEY: not-really-secret
+      DJANGO_SECRET_FILE: /run/secrets/django_secret
+    secrets:
+      - django_secret
 
   web:
     image: nginx
@@ -13,3 +15,7 @@ services:
       - type: bind
         source: default.conf
         target: /etc/nginx/conf.d/default.conf
+
+secrets:
+  django_secret:
+    environment: "DJANGO_SECRET"

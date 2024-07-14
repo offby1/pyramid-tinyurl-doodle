@@ -18,8 +18,13 @@ dotenv.load_dotenv(
 )
 del dotenv_path
 
-# This won't be available when we're running `manage.py makemigrations` (when building the Docker image) but that's OK.
-SECRET_KEY = os.environ.get("SECRET_KEY")
+if (skf := os.environ.get("DJANGO_SECRET_FILE")) is not None:
+    with open(skf) as inf:
+        SECRET_KEY = inf.read()
+else:
+    # This won't be available when we're running `manage.py makemigrations` (when building the Docker image) but that's OK.
+    SECRET_KEY = os.environ.get("SECRET_KEY")
+
 if SECRET_KEY is None:
     del SECRET_KEY
 
