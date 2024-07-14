@@ -22,7 +22,7 @@ pytest-django = "^4.8.0"
 tqdm = "^4.66.4"
 
 [tool.pytest.ini_options]
-DJANGO_SETTINGS_MODULE = "project.settings"
+DJANGO_SETTINGS_MODULE = "project.dev_settings"
 # -- recommended but optional:
 python_files = ["tests.py", "test_*.py", "*_test.py", "testing/python/*.py"]
 
