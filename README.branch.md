@@ -32,8 +32,7 @@ If I'm lucky and clever, I'll be able to run the master branch *and* this branch
 
 ## TODO
 
-* [ ] plop it on an actual EC2 box and test it in "production" mode.
-  In particular: the recaptcha
+* [ ] Come up with a better django admin password, and a better mechanism for getting it onto the prod host
 * [ ] Again look into replacing `runme.sh` with ["just"](https://just.systems/man/en/)
 
 ## DONE
@@ -43,3 +42,5 @@ If I'm lucky and clever, I'll be able to run the master branch *and* this branch
   <https://docs.docker.com/engine/swarm/secrets/#build-support-for-docker-secrets-into-your-images> suggests it's straightforward—and in fact I've done something similar in the `docker-take-three` branch.  It's confusing, though, since much of the documentation around docker secrets refers to "docker swarm", which is ... I dunno? An alternative to docker-compose?
 * [x] Go through [the nginx beginner's guide](http://nginx.org/en/docs/beginners_guide.html) slowly and carefully
   Not very informative, as it happens :-|
+* [x] plop it on an actual EC2 box and test it in "production" mode.
+  In particular: the recaptcha
