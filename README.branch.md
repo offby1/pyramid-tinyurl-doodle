@@ -24,3 +24,5 @@ TODO:
 
 - [ ] plop it on an actual EC2 box and test it in "production" mode.
   In particular: the recaptcha
+- [ ] figure out how to deal with secrets
+  https://docs.docker.com/engine/swarm/secrets/#build-support-for-docker-secrets-into-your-images suggests it's straightforward -- and in fact I've done something similar in the `docker-take-three` branch.  It's confusing, though, since much of the documentation around docker secrets refers to "docker swarm", which is ... I dunno? An alternative to docker-compose?

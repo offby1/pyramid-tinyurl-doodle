@@ -43,9 +43,7 @@ main() {
             poetry run python manage.py runserver 0.0.0.0:8000
             ;;
         *prod_*)
-            # TODO -- run nginx to handle the static files.
-            poetry run python manage.py collectstatic --no-input
-            poetry run gunicorn --log-level=DEBUG project.wsgi
+            docker-compose up
             ;;
         *)
             echo Dunno how to interpret $DJANGO_SETTINGS_MODULE

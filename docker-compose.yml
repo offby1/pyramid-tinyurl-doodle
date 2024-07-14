@@ -1,0 +1,13 @@
+services:
+  django:
+    build:
+      context: .
+
+  web:
+    image: nginx
+    ports:
+     - "8080:80"
+    volumes:
+      - type: bind
+        source: default.conf
+        target: /etc/nginx/conf.d/default.conf
