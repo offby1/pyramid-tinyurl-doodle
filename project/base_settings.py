@@ -33,6 +33,7 @@ DEBUG = False
 
 ALLOWED_HOSTS = [
     "localhost",
+    "offby1.info",
     "teensy.info",
 ]
 
