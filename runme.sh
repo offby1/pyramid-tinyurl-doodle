@@ -46,7 +46,7 @@ main() {
             ;;
         prod)
             poetry run python manage.py collectstatic --no-input
-            poetry run gunicorn --log-level=DEBUG project.wsgi
+            poetry run gunicorn --log-level=DEBUG --access-logfile=- --capture-output project.wsgi
             ;;
         *)
             echo Dunno how to interpret flavor ${flavor}
