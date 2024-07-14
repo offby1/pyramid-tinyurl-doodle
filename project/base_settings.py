@@ -54,6 +54,9 @@ MIDDLEWARE = [
     "debug_toolbar.middleware.DebugToolbarMiddleware",
 ]
 
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
+
 INTERNAL_IPS = ["127.0.0.1"]
 
 ROOT_URLCONF = "project.urls"
