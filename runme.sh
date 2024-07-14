@@ -46,7 +46,7 @@ main() {
             ;;
         prod)
             poetry run python manage.py collectstatic --no-input
-            DJANGO_SECRET=$(python3  -c 'import secrets; print(secrets.token_urlsafe(100))') docker-compose up --build
+            poetry run gunicorn --log-level=DEBUG project.wsgi
             ;;
         *)
             echo Dunno how to interpret flavor ${flavor}
