@@ -45,6 +45,7 @@ main() {
             poetry run python manage.py runserver 0.0.0.0:8000
             ;;
         prod)
+            poetry run python manage.py collectstatic
             DJANGO_SECRET=$(python3  -c 'import secrets; print(secrets.token_urlsafe(100))') docker-compose up --build
             ;;
         *)

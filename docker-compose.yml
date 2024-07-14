@@ -15,6 +15,9 @@ services:
       - type: bind
         source: default.conf
         target: /etc/nginx/conf.d/default.conf
+      - type: bind
+        source: static_root
+        target: /django-project/static_root
 
 secrets:
   django_secret:
