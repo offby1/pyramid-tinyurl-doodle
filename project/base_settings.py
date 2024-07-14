@@ -18,7 +18,10 @@ dotenv.load_dotenv(
 )
 del dotenv_path
 
-SECRET_KEY = os.environ["SECRET_KEY"]
+# This won't be available when we're running `manage.py makemigrations` (when building the Docker image) but that's OK.
+SECRET_KEY = os.environ.get("SECRET_KEY")
+if SECRET_KEY is None:
+    del SECRET_KEY
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False

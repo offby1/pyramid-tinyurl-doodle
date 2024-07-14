@@ -7,7 +7,7 @@ ENV DJANGO_SETTINGS_MODULE=project.prod_settings
 RUN poetry install
 RUN poetry run python3 manage.py makemigrations
 RUN poetry run python3 manage.py migrate
-RUN DJANGO_SUPERUSER_PASSWORD=admin poetry run python3 manage.py createsuperuser --no-input --username=admin
+RUN DJANGO_SUPERUSER_PASSWORD=admin poetry run python3 manage.py createsuperuser --no-input --username=admin --email=admin@admin.com
 RUN poetry run python3 manage.py collectstatic --no-input
-CMD poetry run gunicorn --log-level=DEBUG project.wsgi
+CMD poetry run gunicorn --bind 0.0.0.0:8000  --log-level=DEBUG project.wsgi
 # run with docker run  --publish 8000:8000  -it deadbeef
