@@ -1,4 +1,4 @@
-import logging
+import urllib
 
 import pytest
 from app import views
@@ -48,3 +48,26 @@ def test_fills_in_missing_url_components():
         views._fill_in_missing_url_components("hot/or/not")
         == "https://example.com/hot/or/not"
     )
+
+
+def test_rudybot_compatibility():
+    assert ShortenedURL.objects.count() == 0
+
+    c = Client()
+    original = urllib.parse.unquote(
+        "https%3A%2F%2Fmy.what.a.long.url%2Fyou%2Fhave%2Fgrandma%2Fmy.what.a.long.url%2Fyou%2Fhave%2Fgrandma%2Fmy.what.a.long.url%2Fyou%2Fhave%2Fgrandma%2Fmy.what.a.long.url%2Fyou%2Fhave%2Fgrandma%2F",
+        errors="strict",
+    )
+    response = c.get(
+        "/shorten-/",
+        data={
+            "input_url": original,
+        },
+        headers={
+            "accept": "text/plain",
+        },
+    )
+    assert response.status_code == 200
+    assert ShortenedURL.objects.count() == 1
+    shorty = ShortenedURL.objects.first().short
+    assert shorty == "kKc31g9Var"

@@ -69,7 +69,7 @@ def maybe_render(request, context=None, status=None):
         return HttpResponse(
             context.get("short_url", ""),
             content_type=content_type,
-            status_code=200,
+            status=200,
         )
 
     gitlab_home_page = "https://gitlab.com/offby1/teensy/-/"
@@ -118,36 +118,61 @@ def _check_recaptcha_response(request):
     return _do_the_google_thang(request, g_captcha_response)
 
 
+def _shorten_POST(request):
+    if not _check_recaptcha_response(request):
+        return TemplateResponse(
+            request,
+            status=401,
+            template="recaptcha_fail.html",
+        )
+
+    form = ShortenForm(request.POST)
+    if not form.is_valid():
+        return maybe_render(request)
+
+    original = form.cleaned_data["original"]
+    short = _enhashify(original)
+    ShortenedURL.objects.get_or_create(
+        short=short,
+        original=original,
+    )
+
+    response = maybe_render(
+        request,
+        context={
+            "short": short,
+        },
+        status=201,
+    )
+    response.headers["Location"] = reverse("lengthen", kwargs=dict(short=short))
+    return response
+
+
+# Backwards compatibility for rudybot
+def _shorten_GET(request):
+    original = request.GET["input_url"]
+
+    short = _enhashify(original)
+    ShortenedURL.objects.get_or_create(
+        short=short,
+        original=original,
+    )
+
+    response = HttpResponse(
+        original,
+        headers={"Content-Type": "text/plain"},
+        status=200,
+    )
+
+    return response
+
+
 @require_http_methods(["GET", "POST"])
 def shorten(request):
     if request.method == "POST":
-        if not _check_recaptcha_response(request):
-            return TemplateResponse(
-                request,
-                status=401,
-                template="recaptcha_fail.html",
-            )
+        return _shorten_POST(request)
 
-        form = ShortenForm(request.POST)
-        if form.is_valid():
-            original = form.cleaned_data["original"]
-            short = _enhashify(original)
-            ShortenedURL.objects.get_or_create(
-                short=short,
-                original=original,
-            )
-
-            response = maybe_render(
-                request,
-                context={
-                    "short": short,
-                },
-                status=201,
-            )
-            response.headers["Location"] = reverse("lengthen", kwargs=dict(short=short))
-            return response
-
-    return maybe_render(request)
+    return _shorten_GET(request)
 
 
 def homepage(request):
