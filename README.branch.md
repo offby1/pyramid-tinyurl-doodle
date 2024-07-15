@@ -36,6 +36,7 @@ If I'm lucky and clever, I'll be able to run the master branch *and* this branch
   Pretty sure I need to whitelist its IP address.
   A recent log against the pyramid server looks like `144.217.82.212 - - [14/Jul/2024:19:09:16 +0000] "GET /shorten-/?input_url=https%3A%2F%2Fmy.what.a.long.url%2Fyou%2Fhave%2Fgrandma%2Fmy.what.a.long.url%2Fyou%2Fhave%2Fgrandma%2Fmy.what.a.long.url%2Fyou%2Fhave%2Fgrandma%2Fmy.what.a.long.url%2Fyou%2Fhave%2Fgrandma%2F HTTP/1.1" 200 30 "-" "Racket/7.9 (net/http-client)"` fwiw
 * [ ] Update the upstart, or systemd, or init.d, or whatever-the-hell-it-is, if needed.
+* [ ] Update the nginx.conf again, to have just one server
 * [ ] Set up cron job to run `sync-ddb-data`, as above
 * [ ] Again look into replacing `runme.sh` with ["just"](https://just.systems/man/en/)
 
