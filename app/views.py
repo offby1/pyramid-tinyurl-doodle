@@ -149,7 +149,10 @@ def _shorten_POST(request):
 
 
 def _check_authorized_rudybot_IP(request):
-    return request.META["REMOTE_ADDR"] in settings.RUDYBOT_IP_ADDRESSES
+    # If this works at all, it's because I've got `proxy_set_header X-Forwarded-For $remote_addr;` in my nginx config
+    # and [the annoyingly-terse nginx docs](http://nginx.org/en/docs/http/ngx_http_core_module.html#var_remote_addr)
+    # *suggest* that $remote_addr can be trusted
+    return request.META.get("X-Forwarded-For") in settings.RUDYBOT_IP_ADDRESSES
 
 
 # Backwards compatibility for rudybot

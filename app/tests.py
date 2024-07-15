@@ -77,15 +77,18 @@ def test_rudybot_compatibility(rf):
 
 
 @pytest.mark.parametrize(
-    "client_ip,expected_status",
+    "header_name,header_value,expected_status",
     [
-        (next(iter(settings.RUDYBOT_IP_ADDRESSES)), 200),
-        ("127.0.0.1", 401),
+        ("X-Forwarded-For", next(iter(settings.RUDYBOT_IP_ADDRESSES)), 200),
+        ("X-Forwarded-For", "127.0.0.1", 401),
+        ("REMOTE_ADDR", next(iter(settings.RUDYBOT_IP_ADDRESSES)), 401),
+        ("REMOTE_ADDR", "127.0.0.1", 401),
     ],
 )
 def test_tells_rudybot_to_go_piss_up_a_rope_if_IP_address_is_wrong(
     rf,
-    client_ip,
+    header_name,
+    header_value,
     expected_status,
 ):
     request = rf.get(
@@ -93,7 +96,7 @@ def test_tells_rudybot_to_go_piss_up_a_rope_if_IP_address_is_wrong(
         data={
             "input_url": "original",
         },
-        REMOTE_ADDR=client_ip,
+        **{header_name: header_value},
     )
     response = views.shorten(request)
 
