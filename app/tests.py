@@ -98,3 +98,17 @@ def test_tells_rudybot_to_go_piss_up_a_rope_if_IP_address_is_wrong(
     response = views.shorten(request)
 
     assert response.status_code == expected_status
+
+
+@pytest.mark.parametrize(
+    "url",
+    [
+        ("/",),
+        ("/some-random-404",),
+        ("/admin"),
+    ],
+)
+def test_adds_noindex_header(url):
+    c = Client()
+    response = c.get(url)
+    assert response.headers["X-Robots-Tag"] == "noindex"

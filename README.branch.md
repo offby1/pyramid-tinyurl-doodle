@@ -50,3 +50,4 @@ If I'm lucky and clever, I'll be able to run the master branch *and* this branch
   In particular: the recaptcha
 * [x] Come up with a better django admin password, and a better mechanism for getting it onto the prod host
   The password is now in bitwarden and Firefox.  The "better mechanism" is just running `DJANGO_SETTINGS_MODULE=project.prod_settings poetry run python manage.py changepassword ubuntu` at the command line.
+* [x] Tell Google not to index the site
