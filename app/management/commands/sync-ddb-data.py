@@ -43,6 +43,9 @@ class Command(BaseCommand):
             desc="down",
         )
         while True:
+            # TODO -- see for sure if querying might be better than scanning.  Given the absurdly small amount of data,
+            # scanning is probably fine; also, iirc, the only way I can query is for one specific day, so I'd have to do
+            # multiple queries, one of each recent day.
             scan_args = dict(TableName="hashes")
 
             if LastEvaluatedKey is not None:
