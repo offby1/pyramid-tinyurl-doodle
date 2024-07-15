@@ -41,7 +41,7 @@ If I'm lucky and clever, I'll be able to run the master branch *and* this branch
 
 ## DONE
 
-* [x] figure out how to deal with secrets
+* [x] figure out how to deal with Docker secrets
 
   <https://docs.docker.com/engine/swarm/secrets/#build-support-for-docker-secrets-into-your-images> suggests it's straightforward—and in fact I've done something similar in the `docker-take-three` branch.  It's confusing, though, since much of the documentation around docker secrets refers to "docker swarm", which is ... I dunno? An alternative to docker-compose?
 * [x] Go through [the nginx beginner's guide](http://nginx.org/en/docs/beginners_guide.html) slowly and carefully
