@@ -108,7 +108,7 @@ def test_tells_rudybot_to_go_piss_up_a_rope_if_IP_address_is_wrong(
         ("/admin"),
     ],
 )
-def test_adds_noindex_header(url):
+def test_adds_x_robots_tag_header(url):
     c = Client()
     response = c.get(url)
-    assert response.headers["X-Robots-Tag"] == "noindex"
+    assert response.headers["X-Robots-Tag"] == "none"
