@@ -46,7 +46,12 @@ main() {
             ;;
         prod)
             poetry run python manage.py collectstatic --no-input
-            poetry run gunicorn --log-level=DEBUG --access-logfile=- --capture-output project.wsgi
+            poetry run gunicorn                                                                                         \
+                   --access-logfile=-                                                                                   \
+                   --access-logformat '%({x-forwarded-for}i)s %(l)s %(u)s %(t)s "%(r)s" %(s)s %(b)s "%(f)s" "%(a)s"'    \
+                   --capture-output                                                                                     \
+                   --log-level=DEBUG                                                                                    \
+                   project.wsgi
             ;;
         *)
             echo Dunno how to interpret flavor ${flavor}

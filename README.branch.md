@@ -38,7 +38,6 @@ If I'm lucky and clever, I'll be able to run the master branch *and* this branch
 * [ ] Update the upstart, or systemd, or init.d, or whatever-the-hell-it-is, if needed.
 * [ ] Set up cron job to run `sync-ddb-data`, as above
 * [ ] Again look into replacing `runme.sh` with ["just"](https://just.systems/man/en/)
-* [ ] Tweak gunicorn logging so it puts the actual IP address in the log, not `127.0.0.1`
 
 ## DONE
 
@@ -52,3 +51,4 @@ If I'm lucky and clever, I'll be able to run the master branch *and* this branch
 * [x] Come up with a better django admin password, and a better mechanism for getting it onto the prod host
   The password is now in bitwarden and Firefox.  The "better mechanism" is just running `DJANGO_SETTINGS_MODULE=project.prod_settings poetry run python manage.py changepassword ubuntu` at the command line.
 * [x] Tell Google not to index the site
+* [x] Tweak gunicorn logging so it puts the actual IP address in the log, not `127.0.0.1`
