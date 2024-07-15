@@ -38,6 +38,7 @@ If I'm lucky and clever, I'll be able to run the master branch *and* this branch
 * [ ] Update the upstart, or systemd, or init.d, or whatever-the-hell-it-is, if needed.
 * [ ] Set up cron job to run `sync-ddb-data`, as above
 * [ ] Again look into replacing `runme.sh` with ["just"](https://just.systems/man/en/)
+* [ ] Tweak gunicorn logging so it puts the actual IP address in the log, not `127.0.0.1`
 
 ## DONE
 
