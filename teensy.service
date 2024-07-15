@@ -1,0 +1,21 @@
+# This script is for "systemd" (found on, e.g., Ubuntu 20.04 "focal")
+# sudo systemctl start teensy
+# sudo systemctl status teensy
+# sudo systemctl stop teensy
+# journalctl -f -u teensy
+[Unit]
+Description=Teensy URL shortener
+After=network.target
+
+[Service]
+User=teensy
+Restart=on-failure
+RestartSec=1
+StartLimitBurst=5
+StartLimitAction=reboot
+Environment=DJANGO_SETTINGS_MODULE=project.prod_settings LANG=en_US.UTF-8
+WorkingDirectory=/home/teensy/teensy
+ExecStart=/home/teensy/teensy/.venv/bin/gunicorn project.wsgi --bind 127.0.0.1:8080
+
+[Install]
+WantedBy=multi-user.target
