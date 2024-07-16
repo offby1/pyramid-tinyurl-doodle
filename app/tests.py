@@ -65,8 +65,8 @@ def test_rudybot_compatibility(rf):
         },
         headers={
             "accept": "text/plain",
+            "X-Forwarded-For": next(iter(settings.RUDYBOT_IP_ADDRESSES)),
         },
-        REMOTE_ADDR=next(iter(settings.RUDYBOT_IP_ADDRESSES)),
     )
     response = views.shorten(request)
 
@@ -96,7 +96,9 @@ def test_tells_rudybot_to_go_piss_up_a_rope_if_IP_address_is_wrong(
         data={
             "input_url": "original",
         },
-        **{header_name: header_value},
+        headers={
+            header_name: header_value,
+        },
     )
     response = views.shorten(request)
 
