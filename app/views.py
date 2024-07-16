@@ -190,3 +190,12 @@ def shorten(request):
 
 def homepage(request):
     return maybe_render(request)
+
+
+# https://developers.google.com/search/docs/crawling-indexing/robots/intro
+def robots_dot_txt(request):
+    return HttpResponse(
+        "User-agent: *\nDisallow: /\n",
+        headers={"Content-Type": "text/plain"},
+        status=200,
+    )
