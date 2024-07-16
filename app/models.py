@@ -30,5 +30,14 @@ class ShortenedURL(models.Model):
 
 @admin.register(ShortenedURL)
 class ShortenedURLAdmin(admin.ModelAdmin):
-    list_display = ["fixed_font_short", "original", "iso_timestamp_created_at"]
+    @admin.display(description="Original")
+    def truncated_original(self, obj):
+        return obj.original[0:100]
+
+    list_display = [
+        "fixed_font_short",
+        "truncated_original",
+        "iso_timestamp_created_at",
+    ]
     list_filter = ["created_at"]
+    ordering = ["-created_at"]
