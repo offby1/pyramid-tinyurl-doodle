@@ -29,6 +29,12 @@ main() {
     if [ -x ~/.pyenv/versions/3.12.0a3/bin/python ]
     then
         poetry env use ~/.pyenv/versions/3.12.0a3/bin/python
+
+    # ... *sigh* and this is for MacOS.  It's first on my PATH, but other branches of this repo require that we "poetry
+    # env use" an older version of python
+    elif [ -x /Library/Frameworks/Python.framework/Versions/3.12/bin/python3 ]
+    then
+        poetry env use /Library/Frameworks/Python.framework/Versions/3.12/bin/python3
     fi
 
     poetry install
