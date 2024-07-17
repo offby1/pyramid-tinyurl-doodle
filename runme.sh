@@ -24,8 +24,9 @@ main() {
     ln --symbolic --verbose --force $(pwd)/git/post-checkout .git/hooks
     git checkout                # this causes the post-checkout hook to run
 
-    # Use a python with sqlite support :-(
-    # This is needed on my ec2 box
+    # This is needed on my ec2 box ("20.04.6 LTS (Focal Fossa)").  I used to think it was because the python that came
+    # preinstalled (3.8.10) didn't have sqlite support, but it does.  On the other hand, python3.8 simply seems too old
+    # for the various packages on which this project depends, so we might as well use a new one.
     if [ -x ~/.pyenv/versions/3.12.0a3/bin/python ]
     then
         poetry env use ~/.pyenv/versions/3.12.0a3/bin/python
