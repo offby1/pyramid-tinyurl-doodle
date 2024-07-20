@@ -58,7 +58,7 @@ migrate *options: makemigrations (manage "migrate " + options)
 runme *options: git-prep django-prep test
     set -eu
 
-    if [ "{{ flavor }}" == "prod" ]
+    if [ "{{ flavor }}" = "prod" ]
     then
        poetry run python manage.py collectstatic --no-input
        poetry run gunicorn                                                                                         \
