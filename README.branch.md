@@ -30,13 +30,27 @@ I'm already using nginx in production, to do SSL termination (I know of no bette
 
 If I'm lucky and clever, I'll be able to run the master branch *and* this branch in production at the same time, with the same nginx instance, but with two different sets of config.  Ideally, I'd eventually decide this branch is awesome, and will just shut down the other branch and remove its config.
 
+## How to get it all going
+
+- On ubuntu, anyway, put stuff into `/home/ubuntu/.config/info.teensy.teensy-django/.env`:
+  ```
+  RECAPTCHA_SECRET=...
+  SECRET_KEY=...
+  ```
+  fill in the values thus
+  - grab the `RECAPTCHA_SECRET` from <https://www.google.com/recaptcha/admin#site/320420908>, log in as me, click the gear, click the "reCAPTCHA keys" thing, click "copy secret key"
+  - generate `SECRET_KEY` with `python3  -c 'import secrets; print(secrets.token_urlsafe(100))'`
+  In a perfect world, if you're moving the site from one host to another, you'd use the same SECRET_KEY on both, since I think that means that auth tokens would then transfer over.  But on the other hand, the only person who needs to authenticate is me, so ... 🤷
+
+- Also on ubuntu: (see <https://go-acme.github.io/lego/installation/>)
+  - `sudo snap install lego`
+  - `sudo lego --email="eric.hanchrow@gmail.com" --domains="teensy.com" --http run`
+  - scrape generated cert and key outta wherever they wound up, and plop 'em in `/etc/pki/nginx`, where the config looks for it
+  - yeah this should probably all be a recipe (or recipes) in the justfile
+
 ## TODO
 
-* [ ] Test with rudybot!
-  Pretty sure I need to whitelist its IP address.
-  A recent log against the pyramid server looks like `144.217.82.212 - - [14/Jul/2024:19:09:16 +0000] "GET /shorten-/?input_url=https%3A%2F%2Fmy.what.a.long.url%2Fyou%2Fhave%2Fgrandma%2Fmy.what.a.long.url%2Fyou%2Fhave%2Fgrandma%2Fmy.what.a.long.url%2Fyou%2Fhave%2Fgrandma%2Fmy.what.a.long.url%2Fyou%2Fhave%2Fgrandma%2F HTTP/1.1" 200 30 "-" "Racket/7.9 (net/http-client)"` fwiw
 * [ ] Update the upstart, or systemd, or init.d, or whatever-the-hell-it-is, if needed.
-* [ ] Update the nginx.conf again, to have just one server
 * [ ] Set up cron job to run `sync-ddb-data`, as above.
    `DJANGO_SETTINGS_MODULE=project.prod_settings nice  ~/git-repos/me/teensy-django/.venv/bin/python manage.py sync-ddb-data` will probably do it.
 ## DONE
@@ -54,3 +68,7 @@ If I'm lucky and clever, I'll be able to run the master branch *and* this branch
 * [x] Tweak gunicorn logging so it puts the actual IP address in the log, not `127.0.0.1`
 * [x] Again look into replacing `runme.sh` with ["just"](https://just.systems/man/en/)
 * [x] Consider [whitenoise](https://whitenoise.readthedocs.io/en/latest/) instead of a special section for nginx
+* [x] Test with rudybot!
+  Pretty sure I need to whitelist its IP address.
+  A recent log against the pyramid server looks like `144.217.82.212 - - [14/Jul/2024:19:09:16 +0000] "GET /shorten-/?input_url=https%3A%2F%2Fmy.what.a.long.url%2Fyou%2Fhave%2Fgrandma%2Fmy.what.a.long.url%2Fyou%2Fhave%2Fgrandma%2Fmy.what.a.long.url%2Fyou%2Fhave%2Fgrandma%2Fmy.what.a.long.url%2Fyou%2Fhave%2Fgrandma%2F HTTP/1.1" 200 30 "-" "Racket/7.9 (net/http-client)"` fwiw
+* [x] Update the nginx.conf again, to have just one server
