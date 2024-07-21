@@ -1,3 +1,4 @@
+import logging
 import urllib
 
 import pytest
@@ -78,33 +79,37 @@ def test_rudybot_compatibility(rf):
     assert shorty == "kKc31g9Var"
 
 
-@pytest.mark.parametrize(
-    "header_name,header_value,expected_status",
-    [
-        ("X-Forwarded-For", next(iter(settings.RUDYBOT_IP_ADDRESSES)), 200),
-        ("X-Forwarded-For", "127.0.0.1", 401),
-        ("REMOTE_ADDR", next(iter(settings.RUDYBOT_IP_ADDRESSES)), 401),
-        ("REMOTE_ADDR", "127.0.0.1", 401),
-    ],
-)
 def test_tells_rudybot_to_go_piss_up_a_rope_if_IP_address_is_wrong(
     rf,
-    header_name,
-    header_value,
-    expected_status,
 ):
-    request = rf.get(
-        "/shorten-/",
-        data={
-            "input_url": "original",
-        },
-        headers={
-            header_name: header_value,
-        },
-    )
-    response = views.shorten(request)
+    rudybot_ip_str = str(next(iter(settings.RUDYBOT_IP_ADDRESSES)))
 
-    assert response.status_code == expected_status
+    for header_dict, expected_status in (
+        (
+            {"X-Forwarded-For": rudybot_ip_str, "REMOTE_ADDR": "127.0.0.1"},
+            200,
+        ),  # typical case in prod
+        ({"REMOTE_ADDR": "127.0.0.1"}, 200),  # me testing stuff, bypassing nginx
+        ({"X-Forwarded-For": "66.249.66.13"}, 401),  # random person on Internet
+        (
+            {"X-Forwarded-For": "66.249.66.13", "REMOTE_ADDR": "127.0.0.1"},
+            401,
+        ),  # random person on Internet who somehow managed to forge the REMOTE_ADDR header
+        (
+            {"X-Forwarded-For": "66.249.66.13", "REMOTE_ADDR": rudybot_ip_str},
+            401,
+        ),  # similar
+    ):
+        request = rf.get(
+            "/shorten-/",
+            data={
+                "input_url": "original",
+            },
+            headers=header_dict,
+        )
+        response = views.shorten(request)
+
+        assert response.status_code == expected_status
 
 
 @pytest.mark.parametrize(

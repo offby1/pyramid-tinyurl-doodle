@@ -1,5 +1,6 @@
 import binascii
 import hashlib
+import ipaddress
 import logging
 import urllib.parse
 
@@ -147,16 +148,50 @@ def _shorten_POST(request):
     return response
 
 
-def _check_authorized_rudybot_IP(request):
-    # If this works at all, it's because I've got `proxy_set_header X-Forwarded-For $remote_addr;` in my nginx config
-    # and [the annoyingly-terse nginx docs](http://nginx.org/en/docs/http/ngx_http_core_module.html#var_remote_addr)
-    # *suggest* that $remote_addr can be trusted
-    return request.headers.get("X-Forwarded-For") in settings.RUDYBOT_IP_ADDRESSES
+# This mimics pyramid's "client_addr" attribute
+# https://docs.pylonsproject.org/projects/pyramid/en/latest/api/request.html#pyramid.request.Request.client_addr
+def _get_client_address(request):
+    # This works because I've got `proxy_set_header X-Forwarded-For $remote_addr;` in my nginx config and [the
+    # annoyingly-terse nginx docs](http://nginx.org/en/docs/http/ngx_http_core_module.html#var_remote_addr) *suggest*
+    # that $remote_addr can be trusted
+    forwarded_for = request.headers.get("X-Forwarded-For")
+    if forwarded_for is not None:
+        logger.debug(f"{forwarded_for=}")
+        return ipaddress.IPv4Address(forwarded_for)
+
+    remote_addr = request.META.get("REMOTE_ADDR")
+    if remote_addr is not None:
+        logger.debug(f"{remote_addr=}")
+        return ipaddress.IPv4Address(remote_addr)
+
+
+def _is_from_whitelisted_IP(request):
+    remote_addr = _get_client_address(request)
+    if remote_addr in settings.RUDYBOT_IP_ADDRESSES:
+        logger.debug(f"{remote_addr=} is in {settings.RUDYBOT_IP_ADDRESSES=}, so True")
+        return True
+
+    logger.debug(f"{remote_addr=} is not in {settings.RUDYBOT_IP_ADDRESSES=} ...")
+
+    if remote_addr.is_private:
+        logger.debug(f"{remote_addr=} is private, so True")
+        return True
+
+    logger.debug(f"{remote_addr=} is not private ...")
+
+    if remote_addr.is_loopback:
+        logger.debug(f"{remote_addr=} is loopback, so True")
+        return True
+
+    logger.debug(f"{remote_addr=} is not loopback ...")
+
+    logger.debug("... so nah")
+    return False
 
 
 # Backwards compatibility for rudybot
 def _shorten_GET(request):
-    if not _check_authorized_rudybot_IP(request):
+    if not (_is_from_whitelisted_IP(request)):
         return HttpResponse(
             status=401,
         )

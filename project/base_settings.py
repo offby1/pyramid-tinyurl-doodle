@@ -1,3 +1,4 @@
+import ipaddress
 import logging
 import os
 from pathlib import Path
@@ -171,5 +172,5 @@ if RECAPTCHA_SECRET is None:
     del RECAPTCHA_SECRET
 
 RUDYBOT_IP_ADDRESSES = {
-    "144.217.82.212",  # solaria.tethera.net, rudybot's new home.
+    ipaddress.IPv4Address("144.217.82.212"),  # solaria.tethera.net, rudybot's new home.
 }

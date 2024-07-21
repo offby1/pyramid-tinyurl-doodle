@@ -77,7 +77,7 @@ runme *options: git-prep django-superuser test
 
 [group('teensy')]
 test *options: django-superuser
-    poetry run pytest --exitfirst --create-db {{ options }}
+    poetry run pytest --exitfirst --failed-first --create-db {{ options }}
 
 #  Nix the virtualenv and anything not checked in to git.
 clean:
