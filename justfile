@@ -52,6 +52,10 @@ makemigrations *options: (manage "makemigrations " + options)
 [group('django')]
 migrate *options: makemigrations (manage "migrate " + options)
 
+# Ensure that our local db holds a complete copy of dynamodb, and vice-versa
+[group('teensy')]
+sync: (manage "sync-ddb-data")
+
 # Do all preparations, then run.  `just flavor=prod runme` for production.
 [group('teensy')]
 [script('sh')]
