@@ -18,7 +18,7 @@ Uses sqlite instead of dynamodb:
     204.17 bytes
     ```
 
-  We will back up sqlite by having "cron" or "systemd" or whatever run `python manage.py sync-ddb-data` every now and then.
+  We will back up sqlite by having "cron" or "systemd" or whatever run `python manage.py sync-ddb-data` every now and then.  Or, you know, I'll just run that when I think of it :-)
 
   I have another management command, `backup-db-to-s3`, that isn't needed any more, but I feel like keeping it around for some reason.
 
@@ -26,7 +26,7 @@ Uses sqlite instead of dynamodb:
 
 Despite all my recent hackage around Docker, I'm *really* trying to understand Nginx. I don't expect to use Docker in production; rather, it's a convenient way to run nginx locally while I figure out how to configure it.
 
-I'm already using nginx in production, to do SSL termination (I know of no better way).
+I'm already using nginx in production, to do SSL termination (I know of no better way (although I've heard good things about [traefik](https://doc.traefik.io/traefik/))).
 
 If I'm lucky and clever, I'll be able to run the master branch *and* this branch in production at the same time, with the same nginx instance, but with two different sets of config.  Ideally, I'd eventually decide this branch is awesome, and will just shut down the other branch and remove its config.
 
@@ -39,7 +39,6 @@ If I'm lucky and clever, I'll be able to run the master branch *and* this branch
 * [ ] Update the nginx.conf again, to have just one server
 * [ ] Set up cron job to run `sync-ddb-data`, as above.
    `DJANGO_SETTINGS_MODULE=project.prod_settings nice  ~/git-repos/me/teensy-django/.venv/bin/python manage.py sync-ddb-data` will probably do it.
-* [ ] Again look into replacing `runme.sh` with ["just"](https://just.systems/man/en/)
 ## DONE
 
 * [x] figure out how to deal with Docker secrets
@@ -53,4 +52,5 @@ If I'm lucky and clever, I'll be able to run the master branch *and* this branch
   The password is now in bitwarden and Firefox.  The "better mechanism" is just running `DJANGO_SETTINGS_MODULE=project.prod_settings poetry run python manage.py changepassword ubuntu` at the command line.
 * [x] Tell Google not to index the site
 * [x] Tweak gunicorn logging so it puts the actual IP address in the log, not `127.0.0.1`
+* [x] Again look into replacing `runme.sh` with ["just"](https://just.systems/man/en/)
 * [x] Consider [whitenoise](https://whitenoise.readthedocs.io/en/latest/) instead of a special section for nginx
