@@ -38,8 +38,9 @@ all-but-django-prep: poetry-env-prep poetry-install git-prep
 
 [group('django')]
 [private]
-django-prep: all-but-django-prep makemigrations migrate
-    if ! DJANGO_SUPERUSER_PASSWORD=admin poetry run python3 deckgen2/manage.py createsuperuser --no-input --username=$USER --email=eric.hanchrow@gmail.com;  then echo "$(tput setaf 2)'That username is already taken' is OK! ctfo$(tput sgr0)"; fi
+[no-quiet]
+django-superuser: all-but-django-prep makemigrations migrate
+    if ! DJANGO_SUPERUSER_PASSWORD=admin poetry run python3 manage.py createsuperuser --no-input --username=$USER --email=eric.hanchrow@gmail.com;  then echo "$(tput setaf 2)'That username is already taken' is OK! ctfo$(tput sgr0)"; fi
 
 [group('django')]
 [private]
@@ -54,12 +55,12 @@ migrate *options: makemigrations (manage "migrate " + options)
 
 # Ensure that our local db holds a complete copy of dynamodb, and vice-versa
 [group('teensy')]
-sync: django-prep (manage "sync-ddb-data")
+sync: django-superuser (manage "sync-ddb-data")
 
 # Do all preparations, then run.  `just flavor=prod runme` for production.
 [group('teensy')]
 [script('sh')]
-runme *options: git-prep django-prep test
+runme *options: git-prep django-superuser test
     set -eu
 
     if [ "{{ flavor }}" = "prod" ]
@@ -76,7 +77,7 @@ runme *options: git-prep django-prep test
     fi
 
 [group('teensy')]
-test *options: django-prep
+test *options: django-superuser
     poetry run pytest --exitfirst --create-db {{ options }}
 
 #  Nix the virtualenv and anything not checked in to git.
