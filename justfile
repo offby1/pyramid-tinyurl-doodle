@@ -34,7 +34,7 @@ poetry-install: poetry-env-prep
 
 [group('django')]
 [private]
-all-but-django-prep: poetry-env-prep poetry-install
+all-but-django-prep: poetry-env-prep poetry-install git-prep
 
 [group('django')]
 [private]
@@ -54,7 +54,7 @@ migrate *options: makemigrations (manage "migrate " + options)
 
 # Ensure that our local db holds a complete copy of dynamodb, and vice-versa
 [group('teensy')]
-sync: (manage "sync-ddb-data")
+sync: django-prep (manage "sync-ddb-data")
 
 # Do all preparations, then run.  `just flavor=prod runme` for production.
 [group('teensy')]
