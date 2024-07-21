@@ -9,6 +9,11 @@ from django.test import Client
 pytestmark = pytest.mark.django_db
 
 
+@pytest.fixture(autouse=True)
+def set_debug_to_true(settings):
+    settings.DEBUG = True
+
+
 def test_short_link_on_homepage_redirects_to_original_url(settings):
     c = Client()
     original = "https://my.what.a.long.url/you/have/grandma"
@@ -45,10 +50,7 @@ def test_failed_recaptcha_gets_us_a_401():
 
 def test_fills_in_missing_url_components():
     assert views._fill_in_missing_url_components("wat") == "https://example.com/wat"
-    assert (
-        views._fill_in_missing_url_components("hot/or/not")
-        == "https://example.com/hot/or/not"
-    )
+    assert views._fill_in_missing_url_components("hot/or/not") == "https://example.com/hot/or/not"
 
 
 def test_rudybot_compatibility(rf):

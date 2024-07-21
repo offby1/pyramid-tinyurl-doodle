@@ -40,8 +40,6 @@ If I'm lucky and clever, I'll be able to run the master branch *and* this branch
 * [ ] Set up cron job to run `sync-ddb-data`, as above.
    `DJANGO_SETTINGS_MODULE=project.prod_settings nice  ~/git-repos/me/teensy-django/.venv/bin/python manage.py sync-ddb-data` will probably do it.
 * [ ] Again look into replacing `runme.sh` with ["just"](https://just.systems/man/en/)
-* [ ] Consider [whitenoise](https://whitenoise.readthedocs.io/en/latest/) instead of a special section for nginx
-
 ## DONE
 
 * [x] figure out how to deal with Docker secrets
@@ -55,3 +53,4 @@ If I'm lucky and clever, I'll be able to run the master branch *and* this branch
   The password is now in bitwarden and Firefox.  The "better mechanism" is just running `DJANGO_SETTINGS_MODULE=project.prod_settings poetry run python manage.py changepassword ubuntu` at the command line.
 * [x] Tell Google not to index the site
 * [x] Tweak gunicorn logging so it puts the actual IP address in the log, not `127.0.0.1`
+* [x] Consider [whitenoise](https://whitenoise.readthedocs.io/en/latest/) instead of a special section for nginx

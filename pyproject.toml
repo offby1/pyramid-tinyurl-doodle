@@ -12,6 +12,7 @@ requests = "^2.32.3"
 platformdirs = "^4.2.2"
 python-dotenv = "^1.0.1"
 gunicorn = "^22.0.0"
+whitenoise = "^6.7.0"
 
 
 [tool.poetry.group.dev.dependencies]
