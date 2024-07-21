@@ -36,10 +36,12 @@ poetry-install: poetry-env-prep
 [private]
 all-but-django-prep: poetry-env-prep poetry-install git-prep
 
+# To prevent the password from being hard-coded in this file, be sure to invoke this like
+# `DJANGO_SUPERUSER_PASSWORD=SEKRIT just django-superuser`
 [group('django')]
 [private]
 django-superuser: all-but-django-prep makemigrations migrate
-    if ! DJANGO_SUPERUSER_PASSWORD=admin poetry run python3 manage.py createsuperuser --no-input --username=$USER --email=eric.hanchrow@gmail.com;  then echo "$(tput setaf 2)'That username is already taken' is OK! ctfo$(tput sgr0)"; fi
+    if ! poetry run python3 manage.py createsuperuser --no-input --username=$USER --email=eric.hanchrow@gmail.com;  then echo "$(tput setaf 2)'That username is already taken' is OK! ctfo$(tput sgr0)"; fi
 
 [group('django')]
 [private]
