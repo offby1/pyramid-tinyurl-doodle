@@ -61,9 +61,10 @@ runme *options: git-prep django-prep test
     if [ "{{ flavor }}" = "prod" ]
     then
        poetry run python manage.py collectstatic --no-input
-       poetry run gunicorn                                                                                         \
-              --access-logfile=-                                                                                   \
-              --access-logformat '%({x-forwarded-for}i)s %(l)s %(u)s %(t)s "%(r)s" %(s)s %(b)s "%(f)s" "%(a)s"'    \
+       poetry run gunicorn                                                                                      \
+              --access-logfile=-                                                                                \
+              --access-logformat '%({x-forwarded-for}i)s %(l)s %(u)s %(t)s "%(r)s" %(s)s %(b)s "%(f)s" "%(a)s"' \
+              --logger-class project.wsgi.TolerableLogger                                                       \
               project.wsgi
 
     else
