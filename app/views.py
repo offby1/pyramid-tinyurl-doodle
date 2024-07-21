@@ -206,7 +206,7 @@ def _shorten_GET(request):
 
     # TODO -- [ancient texts](https://github.com/offby1/rudybot/blob/master/tinyurl.rkt#L30) portend that rudybot sends "Accept: text/json", but then just dumps it into the channel as plain text
     response = HttpResponse(
-        short,
+        request.build_absolute_uri(reverse("lengthen", kwargs=dict(short=short))),
         headers={"Content-Type": "text/plain"},
         status=200,
     )
