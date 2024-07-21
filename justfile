@@ -83,3 +83,8 @@ test *options: django-prep
 clean:
     poetry env info --path | xargs --no-run-if-empty rm -rf
     git clean -dx --interactive --exclude='*.sqlite3'
+
+[group('prod')]
+monitor:
+    tmux new-window -n "nginx"   "setterm -linewrap off; tail --follow=name --retry /var/log/nginx/{access,error}.log"
+    tmux new-window -n "pyramid" "setterm -linewrap off; journalctl --unit=teensy.service --follow --output=cat"
