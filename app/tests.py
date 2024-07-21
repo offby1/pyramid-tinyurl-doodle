@@ -77,6 +77,7 @@ def test_rudybot_compatibility(rf):
     assert ShortenedURL.objects.count() == 1
     shorty = ShortenedURL.objects.first().short
     assert shorty == "kKc31g9Var"
+    assert response.content == shorty.encode()
 
 
 def test_tells_rudybot_to_go_piss_up_a_rope_if_IP_address_is_wrong(
