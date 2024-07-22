@@ -41,3 +41,4 @@ class ShortenedURLAdmin(admin.ModelAdmin):
     ]
     list_filter = ["created_at"]
     ordering = ["-created_at"]
+    search_fields = ["original", "short"]
