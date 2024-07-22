@@ -61,15 +61,19 @@ migrate *options: makemigrations (manage "migrate " + options)
 [group('teensy')]
 sync: django-superuser (manage "sync-ddb-data")
 
+[private]
+[no-quiet]
+collectstatic: all-but-django-prep
+    if [ "{{ flavor }}" = "prod" ]; then poetry run python manage.py collectstatic --no-input; fi
+
 # Do all preparations, then run.  `just flavor=prod runme` for production.
 [group('teensy')]
 [script('sh')]
-runme *options: git-prep django-superuser test
+runme *options: git-prep django-superuser test collectstatic
     set -eu
 
     if [ "{{ flavor }}" = "prod" ]
     then
-       poetry run python manage.py collectstatic --no-input
        poetry run gunicorn                                                                                      \
               --access-logfile=-                                                                                \
               --access-logformat '%({x-forwarded-for}i)s %(l)s %(u)s %(t)s "%(r)s" %(s)s %(b)s "%(f)s" "%(a)s"' \
@@ -88,8 +92,16 @@ test *options: django-superuser
 clean:
     poetry env info --path | xargs --no-run-if-empty rm -rf
     git clean -dx --interactive --exclude='*.sqlite3'
+    docker rm -f teensy-django-1
+    docker rm -f  teensy-nginx-1
+    docker rmi -f teensy-django
 
 # See "systemctl status nginx.service" and "journalctl -xeu nginx.service" for details about nginx
 [group('prod')]
 monitor:
     tmux new-window -n "nginx"   "setterm -linewrap off; tail --follow=name --retry /var/log/nginx/{access,error}.log"
+
+[group('docker')]
+up *options: git-prep collectstatic
+    export $(xargs < "{{ config_directory() }}/info.teensy.teensy-django/.env")
+    docker compose up {{ options }}

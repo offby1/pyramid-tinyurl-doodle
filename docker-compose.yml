@@ -1,5 +1,6 @@
 services:
   django:
+    # TODO -- put the sqlite database someplace outside the container!
     build:
       context: .
     environment:
@@ -21,4 +22,4 @@ services:
 
 secrets:
   django_secret:
-    environment: "DJANGO_SECRET"
+    environment: "SECRET_KEY"
