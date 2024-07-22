@@ -4,6 +4,7 @@ set unstable
 # The `tput` mumbo-jumbo just colors the text green; see https://stackoverflow.com/a/20983251
 
 flavor := "dev"
+export AWS_DEFAULT_REGION := "us-west-1"
 export DJANGO_SETTINGS_MODULE := env("DJANGO_SETTINGS_MODULE", "project." + flavor + "_settings")
 
 [private]
@@ -38,6 +39,7 @@ all-but-django-prep: poetry-env-prep poetry-install git-prep
 
 # To prevent the password from being hard-coded in this file, be sure to invoke this like
 # `DJANGO_SUPERUSER_PASSWORD=SEKRIT just django-superuser`
+# `just manage changepassword` if you forget it.
 [group('django')]
 [private]
 django-superuser: all-but-django-prep makemigrations migrate
@@ -86,7 +88,7 @@ clean:
     poetry env info --path | xargs --no-run-if-empty rm -rf
     git clean -dx --interactive --exclude='*.sqlite3'
 
+# See "systemctl status nginx.service" and "journalctl -xeu nginx.service" for details about nginx
 [group('prod')]
 monitor:
     tmux new-window -n "nginx"   "setterm -linewrap off; tail --follow=name --retry /var/log/nginx/{access,error}.log"
-    tmux new-window -n "pyramid" "setterm -linewrap off; journalctl --unit=teensy.service --follow --output=cat"
