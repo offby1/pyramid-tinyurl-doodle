@@ -1,5 +1,13 @@
-#!/bin/sh
+#!/usr/bin/env bash
+
+set -o errexit
+set -o nounset
+set -o pipefail
+
+# https://go-acme.github.io/lego/usage/cli/renew-a-certificate/
 
 /etc/init.d/nginx stop
-/usr/local/bin/lego --tls --email="eric.hanchrow@gmail.com" --domains="teensy.info" --domains="www.teensy.info" --domains="tanya-brixton.name" --domains="cheyenne.demuir.name" --domains="offby1.info" --path="/etc/lego" renew
+
+lego --email="eric.hanchrow@gmail.com" --domains="teensy.info" --http renew
+
 /etc/init.d/nginx start
