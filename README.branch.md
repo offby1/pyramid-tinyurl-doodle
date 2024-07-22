@@ -50,6 +50,12 @@ If I'm lucky and clever, I'll be able to run the master branch *and* this branch
 
 ## TODO
 
+* [ ] Figure out why my old "teensy-2022" host died :-|
+  All I remember:
+  - I was fiddling the `teensy.service` file, and did something like `sudo systemctl start teensy` to start it
+  - systemctl said something like "golly I noticed some config files have changed; please do `systemctl daemon-reload the world` or something
+  - from that point on it was weirdly unresponsive -- CPU usage went to about 60%, and I couldn't ssh in
+  - perhaps attach that old root disk to the new host, and poke around in the logs
 * [ ] Update the upstart, or systemd, or init.d, or whatever-the-hell-it-is, if needed.
 * [ ] Set up cron job to run `sync-ddb-data`, as above.
    `DJANGO_SETTINGS_MODULE=project.prod_settings nice  ~/git-repos/me/teensy-django/.venv/bin/python manage.py sync-ddb-data` will probably do it.
