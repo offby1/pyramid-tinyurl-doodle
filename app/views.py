@@ -73,7 +73,7 @@ def maybe_render(request, context=None, status=None):
             status=200,
         )
 
-    gitlab_home_page = "https://gitlab.com/offby1/teensy/-/"
+    gitlab_home_page = "https://gitlab.com/offby1/teensy/"
 
     context["approximate_table_size"] = ShortenedURL.objects.count()
     context["display_captcha"] = "short" not in context
