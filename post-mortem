@@ -19,3 +19,5 @@ Scraped from /var/log/syslog on `teensy-2022`:
 &c &c
 
 So it was flapping, but only about once per second; that doesn't explain why I couldn't ssh in, or why the CPU usage had gone up to 67%.
+
+I'm guessing it's because I had `StartLimitAction=reboot` in the service file! Yow.
