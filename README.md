@@ -32,19 +32,38 @@ If I'm lucky and clever, I'll be able to run the master branch *and* this branch
 
 ## How to get it all going
 
-- On ubuntu, anyway, put stuff into `/home/ubuntu/.config/info.teensy.teensy-django/.env`:
-  ```
-  RECAPTCHA_SECRET=...
-  SECRET_KEY=...
-  ```
-  fill in the values thus
+### prod
+
+I did these on Ubuntu "24.04 LTS (Noble Numbat)"
+
+As root:
+
+```shell
+yes '' | adduser --disabled-password --quiet teensy
+DEBIAN_FRONTEND=noninteractive apt install -y git nginx snapd
+```
+
+- `su - teensy`
+
+```shell
+mkdir ~/shorty`
+cd ~/shorty`
+git clone https://gitlab.com/offby1/teensy.git`
+mkdir -vp ~/.config/info.teensy.teensy-django
+cat > ~/.config/info.teensy.teensy-django/.env
+exit # back to root
+```
+
+- Now paste the env file:
   - grab the `RECAPTCHA_SECRET` from <https://www.google.com/recaptcha/admin#site/320420908>, log in as me, click the gear, click the "reCAPTCHA keys" thing, click "copy secret key"
   - generate `SECRET_KEY` with `python3  -c 'import secrets; print(secrets.token_urlsafe(100))'`
   In a perfect world, if you're moving the site from one host to another, you'd use the same SECRET_KEY on both, since I think that means that auth tokens would then transfer over.  But on the other hand, the only person who needs to authenticate is me, so ... 🤷
 
 - Also on ubuntu: (see <https://go-acme.github.io/lego/installation/>)
-  - `sudo snap install lego`
-  - `sudo lego --email="eric.hanchrow@gmail.com" --domains="teensy.com" --http run`
+```shell
+snap install lego
+lego --email="eric.hanchrow@gmail.com" --domains="teensy.com" --http run
+```
   - scrape generated cert and key outta wherever they wound up, and plop 'em in `/etc/pki/nginx`, where the config looks for it
   - yeah this should probably all be a recipe (or recipes) in the justfile
 
