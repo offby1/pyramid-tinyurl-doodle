@@ -40,15 +40,15 @@ As root:
 
 ```shell
 yes '' | adduser --disabled-password --quiet teensy
-DEBIAN_FRONTEND=noninteractive apt install -y git nginx snapd
+DEBIAN_FRONTEND=noninteractive apt install -y git nginx snapd python3-poetry
 ```
 
 - `su - teensy`
 
 ```shell
-mkdir ~/shorty`
-cd ~/shorty`
-git clone https://gitlab.com/offby1/teensy.git`
+mkdir ~/shorty
+cd ~/shorty
+git clone https://gitlab.com/offby1/teensy.git .
 mkdir -vp ~/.config/info.teensy.teensy-django
 cat > ~/.config/info.teensy.teensy-django/.env
 exit # back to root
@@ -59,7 +59,10 @@ exit # back to root
   - generate `SECRET_KEY` with `python3  -c 'import secrets; print(secrets.token_urlsafe(100))'`
   In a perfect world, if you're moving the site from one host to another, you'd use the same SECRET_KEY on both, since I think that means that auth tokens would then transfer over.  But on the other hand, the only person who needs to authenticate is me, so ... 🤷
 
-- Also on ubuntu: (see <https://go-acme.github.io/lego/installation/>)
+- `cat > /etc/systemd/system/teensy.service`
+
+Then paste the file of that name from this directory
+
 ```shell
 snap install lego
 lego --email="eric.hanchrow@gmail.com" --domains="teensy.com" --http run
@@ -69,13 +72,6 @@ lego --email="eric.hanchrow@gmail.com" --domains="teensy.com" --http run
 
 ## TODO
 
-* [ ] Figure out why my old "teensy-2022" host died :-|
-  All I remember:
-  - I was fiddling the `teensy.service` file, and did something like `sudo systemctl start teensy` to start it
-  - systemctl said something like "golly I noticed some config files have changed; please do `systemctl daemon-reload the world` or something
-  - from that point on it was weirdly unresponsive -- CPU usage went to about 60%, and I couldn't ssh in
-  - perhaps attach that old root disk to the new host, and poke around in the logs
-* [ ] Update the upstart, or systemd, or init.d, or whatever-the-hell-it-is, if needed.
 * [ ] Set up cron job to run `sync-ddb-data`, as above.
    `DJANGO_SETTINGS_MODULE=project.prod_settings nice  ~/git-repos/me/teensy-django/.venv/bin/python manage.py sync-ddb-data` will probably do it.
 ## DONE
@@ -97,3 +93,11 @@ lego --email="eric.hanchrow@gmail.com" --domains="teensy.com" --http run
   Pretty sure I need to whitelist its IP address.
   A recent log against the pyramid server looks like `144.217.82.212 - - [14/Jul/2024:19:09:16 +0000] "GET /shorten-/?input_url=https%3A%2F%2Fmy.what.a.long.url%2Fyou%2Fhave%2Fgrandma%2Fmy.what.a.long.url%2Fyou%2Fhave%2Fgrandma%2Fmy.what.a.long.url%2Fyou%2Fhave%2Fgrandma%2Fmy.what.a.long.url%2Fyou%2Fhave%2Fgrandma%2F HTTP/1.1" 200 30 "-" "Racket/7.9 (net/http-client)"` fwiw
 * [x] Update the nginx.conf again, to have just one server
+* [x] Figure out why my old "teensy-2022" host died :-|
+  tl;dr: `StartLimitAction=reboot` 🤢
+  All I remember:
+  - I was fiddling the `teensy.service` file, and did something like `sudo systemctl start teensy` to start it
+  - systemctl said something like "golly I noticed some config files have changed; please do `systemctl daemon-reload the world` or something
+  - from that point on it was weirdly unresponsive -- CPU usage went to about 60%, and I couldn't ssh in
+  - perhaps attach that old root disk to the new host, and poke around in the logs
+* [x] Update the systemd file.
