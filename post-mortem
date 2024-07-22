@@ -1,0 +1,21 @@
+Scraped from /var/log/syslog on `teensy-2022`:
+
+    Jul 21 22:31:55 teensy systemd[1]: teensy.service: Scheduled restart job, restart counter is at 2.
+    Jul 21 22:31:55 teensy systemd[872]: teensy.service: Failed to execute command: No such file or directory
+    Jul 21 22:31:55 teensy systemd[872]: teensy.service: Failed at step EXEC spawning /home/teensy/teensy/.venv/bin/gunicorn: No such file or directory
+    Jul 21 22:31:55 teensy systemd[1]: teensy.service: Main process exited, code=exited, status=203/EXEC
+    Jul 21 22:31:55 teensy systemd[1]: teensy.service: Failed with result 'exit-code'.
+    Jul 21 22:31:56 teensy systemd[1]: teensy.service: Scheduled restart job, restart counter is at 3.
+    Jul 21 22:31:56 teensy systemd[914]: teensy.service: Failed to execute command: No such file or directory
+    Jul 21 22:31:56 teensy systemd[914]: teensy.service: Failed at step EXEC spawning /home/teensy/teensy/.venv/bin/gunicorn: No such file or directory
+    Jul 21 22:31:56 teensy systemd[1]: teensy.service: Main process exited, code=exited, status=203/EXEC
+    Jul 21 22:31:56 teensy systemd[1]: teensy.service: Failed with result 'exit-code'.
+    Jul 21 22:31:57 teensy systemd[1]: teensy.service: Scheduled restart job, restart counter is at 4.
+    Jul 21 22:31:57 teensy systemd[915]: teensy.service: Failed to execute command: No such file or directory
+    Jul 21 22:31:57 teensy systemd[915]: teensy.service: Failed at step EXEC spawning /home/teensy/teensy/.venv/bin/gunicorn: No such file or directory
+    Jul 21 22:31:57 teensy systemd[1]: teensy.service: Main process exited, code=exited, status=203/EXEC
+    Jul 21 22:31:57 teensy systemd[1]: teensy.service: Failed with result 'exit-code'.
+
+&c &c
+
+So it was flapping, but only about once per second; that doesn't explain why I couldn't ssh in, or why the CPU usage had gone up to 67%.
