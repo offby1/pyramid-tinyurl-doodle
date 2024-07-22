@@ -62,9 +62,8 @@ migrate *options: makemigrations (manage "migrate " + options)
 sync: django-superuser (manage "sync-ddb-data")
 
 [private]
-[no-quiet]
 collectstatic: all-but-django-prep
-    if [ "{{ flavor }}" = "prod" ]; then poetry run python manage.py collectstatic --no-input; fi
+    poetry run python manage.py collectstatic --no-input
 
 # Do all preparations, then run.  `just flavor=prod runme` for production.
 [group('teensy')]
@@ -103,5 +102,8 @@ monitor:
 
 [group('docker')]
 up *options: git-prep collectstatic
-    export $(xargs < "{{ config_directory() }}/info.teensy.teensy-django/.env")
-    docker compose up {{ options }}
+    # It'd be nice if I could use one of the `dotenv-` settings
+    # https://just.systems/man/en/chapter_27.html#table-of-settings instead of this mysterious xargs thing, but those
+    # settings are only available when this justfile is "load"ed, but config_directory() is only available inside a
+    # recipe!
+    export $(xargs < "{{ config_directory() }}/info.teensy.teensy-django/.env") ; docker compose up {{ options }}

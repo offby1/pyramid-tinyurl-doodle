@@ -174,3 +174,10 @@ if RECAPTCHA_SECRET is None:
 RUDYBOT_IP_ADDRESSES = {
     ipaddress.IPv4Address("144.217.82.212"),  # solaria.tethera.net, rudybot's new home.
 }
+
+# This is needed for dev when we run via docker, which is why it's here and not in prod_settings.
+STORAGES = {
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
+}
