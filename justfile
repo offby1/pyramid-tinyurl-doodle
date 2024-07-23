@@ -106,4 +106,5 @@ up *options: git-prep collectstatic
     # https://just.systems/man/en/chapter_27.html#table-of-settings instead of this mysterious xargs thing, but those
     # settings are only available when this justfile is "load"ed, but config_directory() is only available inside a
     # recipe!
+    # https://discord.com/channels/695580069837406228/695580069837406231/1265126046588600322
     export $(xargs < "{{ config_directory() }}/info.teensy.teensy-django/.env") ; docker compose up {{ options }}
