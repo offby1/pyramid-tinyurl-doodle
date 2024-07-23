@@ -6,7 +6,7 @@ set unstable
 flavor := "dev"
 export AWS_DEFAULT_REGION := "us-west-1"
 export DJANGO_SETTINGS_MODULE := env("DJANGO_SETTINGS_MODULE", "project." + flavor + "_settings")
-export POETRY_VIRTUALENVS_IN_PROJECT := "true"
+export POETRY_VIRTUALENVS_IN_PROJECT := "false"
 
 [private]
 default:
