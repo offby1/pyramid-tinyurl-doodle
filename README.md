@@ -74,6 +74,7 @@ lego --email="eric.hanchrow@gmail.com" --domains="teensy.com" --http run
 
 * [ ] Set up cron job to run `sync-ddb-data`, as above.
    `DJANGO_SETTINGS_MODULE=project.prod_settings nice  ~/git-repos/me/teensy-django/.venv/bin/python manage.py sync-ddb-data` will probably do it.
+* [ ] Consider <https://github.com/NginxProxyManager/nginx-proxy-manager> instead of lego &c
 ## DONE
 
 * [x] figure out how to deal with Docker secrets
