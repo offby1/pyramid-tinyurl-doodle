@@ -99,6 +99,7 @@ clean:
 [group('prod')]
 monitor:
     tmux new-window -n "nginx"   "setterm -linewrap off; tail --follow=name --retry /var/log/nginx/{access,error}.log"
+    tmux new-window htop
 
 [group('docker')]
 up *options: git-prep collectstatic
