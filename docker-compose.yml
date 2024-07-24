@@ -23,5 +23,6 @@ services:
       - ./letsencrypt:/etc/letsencrypt
 
 secrets:
+  # TODO -- recaptcha secret too
   django_secret:
     environment: "SECRET_KEY"

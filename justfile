@@ -15,20 +15,20 @@ default:
 # Set up the post-checkout hook so that the server knows its git commit hash.
 [group('git')]
 git-prep:
-    ln --symbolic --verbose --force  {{justfile_directory()}}/git/post-checkout .git/hooks
+    ln --symbolic --force  {{justfile_directory()}}/git/post-checkout .git/hooks
     git checkout
 
 # install into the virtualenv a recent python (if we can find one)
 [group('virtualenv')]
 [macos]
 poetry-env-prep:
-    p=/Library/Frameworks/Python.framework/Versions/3.12/bin/python3; if [ -x $p ] ; then poetry env use $p ; fi
+    -poetry env use /Library/Frameworks/Python.framework/Versions/3.12/bin/python3
 
 # install into the virtualenv a recent python (if we can find one)
 [group('virtualenv')]
 [linux]
 poetry-env-prep:
-    p=$HOME/.pyenv/versions/3.12.0a3/bin/python; if [ -x $p ] ; then poetry env use $p ; fi
+    -poetry env use $HOME/.pyenv/versions/3.12.0a3/bin/python
 
 [group('virtualenv')]
 poetry-install: poetry-env-prep
