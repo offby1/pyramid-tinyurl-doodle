@@ -6,7 +6,7 @@ authors = ["Eric Hanchrow <eric.hanchrow@gmail.com>"]
 package-mode = false
 
 [tool.poetry.dependencies]
-python = "^3.12"
+python = ">=3.10"
 django = "^5.0.7"
 requests = "^2.32.3"
 platformdirs = "^4.2.2"
