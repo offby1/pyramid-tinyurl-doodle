@@ -8,6 +8,10 @@ export AWS_DEFAULT_REGION := "us-west-1"
 export DJANGO_SETTINGS_MODULE := env("DJANGO_SETTINGS_MODULE", "project." + flavor + "_settings")
 export POETRY_VIRTUALENVS_IN_PROJECT := "false"
 
+# Relative to {{ config_dir() }}, that is.  We cannot make this absolute because the function {{ config_dir() }} isn't
+# available now.
+dotenv_relative := "info.teensy.teensy-django/.env"
+
 [private]
 default:
     just --list
@@ -33,6 +37,19 @@ poetry-env-prep:
 [group('virtualenv')]
 poetry-install: poetry-env-prep
     poetry install
+
+[group('django')]
+[private]
+[script('sh')]
+secret-key:
+    set -eu
+
+    f="{{ config_dir() }}/{{ dotenv_relative }}"
+    if ! [ -r  "$f" ]
+    then
+       mkdir -vp $(dirname "$f")
+       echo SECRET_KEY={{ choose('64', HEX)}} > "$f"
+    fi
 
 [group('django')]
 [private]
@@ -84,7 +101,7 @@ runme *options: git-prep django-superuser test collectstatic
     fi
 
 [group('teensy')]
-test *options: django-superuser
+test *options: django-superuser secret-key
     poetry run pytest --exitfirst --failed-first --create-db {{ options }}
 
 #  Nix the virtualenv and anything not checked in to git.
@@ -107,4 +124,4 @@ up *options: git-prep collectstatic
     # settings](https://just.systems/man/en/chapter_27.html#table-of-settings) instead of this mysterious xargs thing,
     # but those settings are only available *outside* of recipes; when this, but config_directory() is only available
     # *inside* a recipe!  https://discord.com/channels/695580069837406228/695580069837406231/1265126046588600322
-    env $(cat "{{ config_directory() }}/info.teensy.teensy-django/.env")  docker compose up {{ options }}
+    env $(cat "{{ config_directory() }}/{{ dotenv_relative }}")  docker compose up {{ options }}
