@@ -108,9 +108,7 @@ test *options: django-superuser secret-key
 clean:
     poetry env info --path | xargs --no-run-if-empty rm -rf
     git clean -dx --interactive --exclude='*.sqlite3'
-    docker rm -f teensy-django-1
-    docker rm -f  teensy-nginx-1
-    docker rmi -f teensy-django
+    -docker compose down --volumes
 
 # See "systemctl status nginx.service" and "journalctl -xeu nginx.service" for details about nginx
 [group('prod')]
