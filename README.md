@@ -1,36 +1,9 @@
 # WASSUP HOMIES
 
-Rewrote it in Django.
-
-Uses sqlite instead of dynamodb:
-
-* django doesn't work well with dynamodb (or any nosql database);
-* sqlite otta be fine given how little data we have
-
-    As of 2024-07-01T08:09:41-0700:
-
-    ```text
-    Item count
-    10,689
-    Table size
-    2.2 megabytes
-    Average item size
-    204.17 bytes
-    ```
-
-  We will back up sqlite by having "cron" or "systemd" or whatever run `python manage.py sync-ddb-data` every now and then.  Or, you know, I'll just run that when I think of it :-)
-
-  I have another management command, `backup-db-to-s3`, that isn't needed any more, but I feel like keeping it around for some reason.
-
-## No, really; wassup
-
-Despite all my recent hackage around Docker, I'm *really* trying to understand Nginx. I don't expect to use Docker in production; rather, it's a convenient way to run nginx locally while I figure out how to configure it.
-
-I'm already using nginx in production, to do SSL termination (I know of no better way (although I've heard good things about [traefik](https://doc.traefik.io/traefik/))).
-
-If I'm lucky and clever, I'll be able to run the master branch *and* this branch in production at the same time, with the same nginx instance, but with two different sets of config.  Ideally, I'd eventually decide this branch is awesome, and will just shut down the other branch and remove its config.
-
 ## How to get it all going
+### Run it locally
+
+`just runme` # https://just.systems/
 
 ### prod
 
@@ -51,7 +24,6 @@ cd ~/shorty
 git clone https://gitlab.com/offby1/teensy.git .
 mkdir -vp ~/.config/info.teensy.teensy-django
 cat > ~/.config/info.teensy.teensy-django/.env
-exit # back to root
 ```
 
 - Now paste the env file:
@@ -59,6 +31,7 @@ exit # back to root
   - generate `SECRET_KEY` with `python3  -c 'import secrets; print(secrets.token_urlsafe(100))'`
   In a perfect world, if you're moving the site from one host to another, you'd use the same SECRET_KEY on both, since I think that means that auth tokens would then transfer over.  But on the other hand, the only person who needs to authenticate is me, so ... 🤷
 
+- `exit` # back to root
 - `cat > /etc/systemd/system/teensy.service`
 
 Then paste the file of that name from this directory
@@ -67,7 +40,7 @@ Then paste the file of that name from this directory
 snap install lego
 lego --email="eric.hanchrow@gmail.com" --domains="teensy.com" --http run
 ```
-  - scrape generated cert and key outta wherever they wound up, and plop 'em in `/etc/pki/nginx`, where the config looks for it
+  - scrape generated cert and key outta wherever they wound up -- [/var/snap/lego/common/ iirc](https://github.com/go-acme/lego/issues/2236#issue-2430848155) -- , and plop 'em in `/etc/pki/nginx`, where the config looks for it
   - yeah this should probably all be a recipe (or recipes) in the justfile
 
 ## TODO
@@ -104,3 +77,25 @@ lego --email="eric.hanchrow@gmail.com" --domains="teensy.com" --http run
   - from that point on it was weirdly unresponsive -- CPU usage went to about 60%, and I couldn't ssh in
   - perhaps attach that old root disk to the new host, and poke around in the logs
 * [x] Update the systemd file.
+## Rewrite notes
+Rewrote it in Django -- it used to use Pyramid.
+
+Uses sqlite instead of dynamodb:
+
+* django doesn't work well with dynamodb (or any nosql database);
+* sqlite otta be fine given how little data we have
+
+    As of 2024-07-01T08:09:41-0700:
+
+    ```text
+    Item count
+    10,689
+    Table size
+    2.2 megabytes
+    Average item size
+    204.17 bytes
+    ```
+
+  We will back up sqlite by having "cron" or "systemd" or whatever run `python manage.py sync-ddb-data` every now and then.  Or, you know, I'll just run that when I think of it :-)
+
+  I have another management command, `backup-db-to-s3`, that isn't needed any more, but I feel like keeping it around for some reason.
