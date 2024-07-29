@@ -125,3 +125,10 @@ def test_adds_x_robots_tag_header(url):
     c = Client()
     response = c.get(url)
     assert response.headers["X-Robots-Tag"] == "none"
+
+
+def test_serves_robots_dot_txt():
+    c = Client()
+    response = c.get("/robots.txt")
+    assert response.status_code == 200
+    assert b"Disallow:" in response.content
