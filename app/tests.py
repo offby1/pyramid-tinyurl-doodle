@@ -33,7 +33,12 @@ def test_short_link_on_homepage_redirects_to_original_url(settings):
     assert f"""<a href="{lengthen_url}">{short}</a>""" in homepage_response
 
     lengthen_response = c.get(lengthen_url)
-    assert lengthen_response.status_code in (302, 303)
+
+    # It's not clear which of 301 or 302 are strictly correct, so I'm using 302 because
+    # * that's how I've always done it
+    # * it's how tinyurl.com does it
+    assert lengthen_response.status_code == 302
+
     assert lengthen_response.url == original
 
 
