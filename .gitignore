@@ -1,2 +1,3 @@
 /db.sqlite3
 /.git-post-checkout-info
+__pycache__/
