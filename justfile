@@ -26,7 +26,7 @@ git-prep:
 [group('virtualenv')]
 [macos]
 poetry-env-prep:
-    -poetry env use /Library/Frameworks/Python.framework/Versions/3.12/bin/python3
+    -poetry env use /Library/Frameworks/Python.framework/Versions/3.13/bin/python3
 
 # install into the virtualenv a recent python (if we can find one)
 [group('virtualenv')]
