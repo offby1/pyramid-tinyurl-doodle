@@ -43,6 +43,8 @@ lego --email="eric.hanchrow@gmail.com" --domains="teensy.com" --http run
   - scrape generated cert and key outta wherever they wound up -- [/var/snap/lego/common/ iirc](https://github.com/go-acme/lego/issues/2236#issue-2430848155) -- , and plop 'em in `/etc/pki/nginx`, where the config looks for it
   - yeah this should probably all be a recipe (or recipes) in the justfile
 
+To start & stop, do `sudo systemctl start teensy` and `sudo systemctl stop teensy`.
+
 ## TODO
 
 * [ ] Set up cron job to run `sync-ddb-data`, as above.
