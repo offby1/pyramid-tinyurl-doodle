@@ -6,21 +6,9 @@ services:
       context: .
     environment:
       DJANGO_SECRET_FILE: /run/secrets/django_secret
+    init: true                  # https://docs.docker.com/reference/compose-file/services/#init
     secrets:
       - django_secret
-
-  nginx:
-    image: 'jc21/nginx-proxy-manager:latest'
-    restart: unless-stopped
-    ports:
-      # host:container
-      - '8080:80' # Public HTTP Port
-      - '4430:443' # Public HTTPS Port
-      - '8100:81' # Admin Web Port
-
-    volumes:
-      - ./data:/data
-      - ./letsencrypt:/etc/letsencrypt
 
 secrets:
   # TODO -- recaptcha secret too

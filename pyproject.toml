@@ -11,8 +11,8 @@ django = "^5.1.7"
 requests = "^2.32.3"
 platformdirs = "^4.2.2"
 python-dotenv = "^1.0.1"
-gunicorn = "^23.0.0"
 whitenoise = "^6.7.0"
+daphne = "^4.1.2"
 
 
 [tool.poetry.group.dev.dependencies]

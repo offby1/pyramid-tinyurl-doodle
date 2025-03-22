@@ -33,8 +33,10 @@ if SECRET_KEY is None:
 DEBUG = False
 
 ALLOWED_HOSTS = [
+    ".offby1.info",
+    ".orb.local",
+    "127.0.0.1",
     "localhost",
-    "offby1.info",
     "teensy.info",
 ]
 
@@ -89,7 +91,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = "project.wsgi.application"
+ASGI_APPLICATION = "project.asgi.application"
 
 
 # Database

@@ -8,4 +8,8 @@ RUN poetry install
 RUN poetry run python3 manage.py makemigrations
 RUN poetry run python3 manage.py migrate
 RUN poetry run python3 manage.py collectstatic --no-input
-CMD poetry run gunicorn --bind 0.0.0.0:8000  --log-level=DEBUG project.wsgi --access-logfile=-
+
+# https://github.com/django/daphne/pull/520
+env PYTHONUNBUFFERED=t
+
+CMD poetry run  daphne --verbosity  3 --bind 0.0.0.0 --port 8000  --log-fmt="%(asctime)sZ %(levelname)s %(name)s %(filename)s %(funcName)s %(message)s" project.asgi:application
