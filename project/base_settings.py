@@ -98,6 +98,7 @@ ASGI_APPLICATION = "project.asgi.application"
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
 SQLITE_DATA_DIR = Path(os.environ.get("SQLITE_DATA_DIR", BASE_DIR))
+print(f"{BASE_DIR=} {SQLITE_DATA_DIR=}")
 
 DATABASES = {
     "default": {
