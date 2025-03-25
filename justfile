@@ -6,11 +6,8 @@ set unstable
 flavor := "dev"
 export AWS_DEFAULT_REGION := "us-west-1"
 export DJANGO_SETTINGS_MODULE := env("DJANGO_SETTINGS_MODULE", "project." + flavor + "_settings")
+export DOTENV := config_directory() / "info.teensy.teensy-django/.env"
 export POETRY_VIRTUALENVS_IN_PROJECT := "false"
-
-# Relative to {{ config_dir() }}, that is.  We cannot make this absolute because the function {{ config_dir() }} isn't
-# available now.
-dotenv_relative := "info.teensy.teensy-django/.env"
 
 [private]
 default:
@@ -41,14 +38,14 @@ poetry-install: poetry-env-prep
 [group('django')]
 [private]
 [script('sh')]
-secret-key:
+dotenv-file:
     set -eu
 
-    f="{{ config_dir() }}/{{ dotenv_relative }}"
+    f="{{ DOTENV }}"
     if ! [ -r  "$f" ]
     then
        mkdir -vp $(dirname "$f")
-       echo SECRET_KEY={{ choose('64', HEX)}} > "$f"
+       echo SECRET_KEY={{ choose('64', HEX)}} >> "$f"
     fi
 
 [group('django')]
@@ -101,7 +98,7 @@ runme *options: git-prep django-superuser test collectstatic
     fi
 
 [group('teensy')]
-test *options: django-superuser secret-key
+test *options: django-superuser dotenv-file
     poetry run pytest --exitfirst --failed-first --create-db {{ options }}
 
 #  Nix the virtualenv and most stuff not checked in to git, but leave the database.
@@ -121,11 +118,7 @@ monitor:
 
 [group('docker')]
 up *options: git-prep collectstatic
-    # It'd be nice if I could use one of the `dotenv-`
-    # settings](https://just.systems/man/en/chapter_27.html#table-of-settings) instead of this mysterious xargs thing,
-    # but those settings are only available *outside* of recipes; but config_directory() is only available *inside* a
-    # recipe!  https://discord.com/channels/695580069837406228/695580069837406231/1265126046588600322
-    env $(cat "{{ config_directory() }}/{{ dotenv_relative }}")  docker compose up {{ options }}
+    env $(cat "{{ DOTENV }}")  docker compose up --build {{ options }}
 
 [group('docker')]
 hetz *options:
