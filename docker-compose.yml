@@ -1,14 +1,39 @@
+volumes:
+  caddy_data: {}
+  sqlite_data: {}
+
 # https://docs.docker.com/compose/compose-file/05-services/
 services:
+  caddy:
+    # Unlike the official caddy image, this is falling-down-easy to configure as a lets-encrypt-certificate-fetching
+    # reverse proxy.
+    image: lucaslorentz/caddy-docker-proxy:ci-alpine
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - caddy_data:/data
+    restart: unless-stopped
+    profiles:
+      - prod
+
   django:
-    # TODO -- put the sqlite database someplace outside the container!
     build:
       context: .
     environment:
       DJANGO_SECRET_FILE: /run/secrets/django_secret
+      SQLITE_DATA_DIR: /data
     init: true                  # https://docs.docker.com/reference/compose-file/services/#init
+    labels:
+      caddy: ${CADDY_HOSTNAME:-}
+      caddy.reverse_proxy: "{{upstreams 8000}}"
+    ports:
+      - "127.0.0.1:8000:8000"
     secrets:
       - django_secret
+    volumes:
+      - sqlite_data:/data
 
 secrets:
   # TODO -- recaptcha secret too

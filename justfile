@@ -126,3 +126,8 @@ up *options: git-prep collectstatic
     # but those settings are only available *outside* of recipes; but config_directory() is only available *inside* a
     # recipe!  https://discord.com/channels/695580069837406228/695580069837406231/1265126046588600322
     env $(cat "{{ config_directory() }}/{{ dotenv_relative }}")  docker compose up {{ options }}
+
+[group('docker')]
+hetz *options:
+    CADDY_HOSTNAME=beta.teensy.info COMPOSE_PROFILES=prod DOCKER_CONTEXT=hetz just dcu {{ options }} --detach
+    COMPOSE_PROFILES=prod                                 DOCKER_CONTEXT=hetz docker compose logs django --follow

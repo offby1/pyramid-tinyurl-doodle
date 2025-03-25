@@ -97,10 +97,12 @@ ASGI_APPLICATION = "project.asgi.application"
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
+SQLITE_DATA_DIR = os.environ.get("SQLITE_DATA_DIR", BASE_DIR)
+
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+        "NAME": SQLITE_DATA_DIR / "db.sqlite3",
     },
 }
 
