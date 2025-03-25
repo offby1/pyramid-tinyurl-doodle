@@ -104,11 +104,14 @@ runme *options: git-prep django-superuser test collectstatic
 test *options: django-superuser secret-key
     poetry run pytest --exitfirst --failed-first --create-db {{ options }}
 
-#  Nix the virtualenv and anything not checked in to git.
+#  Nix the virtualenv and most stuff not checked in to git, but leave the database.
 clean:
     poetry env info --path | xargs --no-run-if-empty rm -rf
     git clean -dx --interactive --exclude='*.sqlite3'
     -docker compose down --volumes
+
+nuke: clean
+    -rm -v *.sqlite3
 
 # See "systemctl status nginx.service" and "journalctl -xeu nginx.service" for details about nginx
 [group('prod')]
