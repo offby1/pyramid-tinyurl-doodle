@@ -47,7 +47,7 @@ secret-key:
     f="{{ config_dir() }}/{{ dotenv_relative }}"
     if ! [ -r  "$f" ]
     then
-       mkdir -vp $(dirname "$f")
+       mkdir -vp "$(dirname "$f")"
        echo SECRET_KEY={{ choose('64', HEX)}} > "$f"
     fi
 
