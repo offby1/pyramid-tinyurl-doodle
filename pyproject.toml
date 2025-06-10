@@ -8,7 +8,7 @@ package-mode = false
 [tool.poetry.dependencies]
 python = ">=3.10"
 django = "^5.1.9"
-requests = "^2.32.3"
+requests = "^2.32.4"
 platformdirs = "^4.2.2"
 python-dotenv = "^1.0.1"
 gunicorn = "^23.0.0"
