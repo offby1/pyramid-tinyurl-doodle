@@ -7,16 +7,20 @@ ENV PYTHONUNBUFFERED=t \
 
 RUN pip install --upgrade pip
 RUN pip install poetry
-COPY . /django-project
+
+COPY /.git-post-checkout-info /django-project/
+COPY /app/                    /django-project/app/
+COPY /manage.py               /django-project/
+COPY /poetry.lock             /django-project/
+COPY /project/                /django-project/project/
+COPY /pyproject.toml          /django-project/
+COPY /start-daphne.sh         /django-project/
+
 WORKDIR /django-project
 RUN poetry install
 
 FROM python:3.12-slim-bullseye AS app
-COPY --from=build /django-project/.venv/ /django-project/.venv/
-COPY --from=build /django-project/app/ /django-project/app/
-COPY --from=build /django-project/manage.py /django-project/
-COPY --from=build /django-project/project/ /django-project/project/
-COPY --from=build /django-project/start-daphne.sh /django-project/
+COPY --from=build /django-project/ /django-project/
 WORKDIR /django-project
 
 ENV DJANGO_SETTINGS_MODULE=project.prod_settings
