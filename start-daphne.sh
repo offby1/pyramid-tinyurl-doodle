@@ -14,6 +14,7 @@ cd "$(dirname "$0")"
 main() {
     ./.venv/bin/python3 manage.py makemigrations
     ./.venv/bin/python3 manage.py migrate
+    ./.venv/bin/python3 manage.py sync-ddb-data
     ./.venv/bin/python3 manage.py collectstatic --no-input
 
     /django-project/.venv/bin/daphne                                                            \
