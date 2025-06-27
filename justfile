@@ -129,6 +129,14 @@ up *options: git-prep collectstatic
     docker compose up --build {{ options }}
 
 [group('docker')]
-hetz *options:
-    CADDY_HOSTNAME=beta.teensy.info COMPOSE_PROFILES=prod DOCKER_CONTEXT=hetz just dcu {{ options }} --detach
-    COMPOSE_PROFILES=prod                                 DOCKER_CONTEXT=hetz docker compose logs django --follow
+[script('bash')]
+hetz-beta *options:
+    set -euo pipefail
+
+    export CADDY_HOSTNAME=beta.teensy.info
+    export COMPOSE_PROFILES=prod
+    export DJANGO_SETTINGS_MODULE=project.prod_settings
+    export DOCKER_CONTEXT=teensy-beta
+
+    just up {{ options }} --detach
+    docker compose logs django --follow
