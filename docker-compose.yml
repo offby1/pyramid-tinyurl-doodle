@@ -38,4 +38,4 @@ services:
 secrets:
   # TODO -- recaptcha secret too
   django_secret:
-    environment: "SECRET_KEY"
+    environment: "DJANGO_SECRET_KEY"

@@ -13,23 +13,12 @@ RUN poetry install
 
 FROM python:3.12-slim-bullseye AS app
 COPY --from=build /django-project/.venv/ /django-project/.venv/
-COPY --from=build /django-project/manage.py /django-project/
 COPY --from=build /django-project/app/ /django-project/app/
+COPY --from=build /django-project/manage.py /django-project/
 COPY --from=build /django-project/project/ /django-project/project/
+COPY --from=build /django-project/start-daphne.sh /django-project/
 WORKDIR /django-project
 
 ENV DJANGO_SETTINGS_MODULE=project.prod_settings
 
-RUN /django-project/.venv/bin/python3 manage.py makemigrations
-RUN /django-project/.venv/bin/python3 manage.py migrate
-RUN /django-project/.venv/bin/python3 manage.py collectstatic --no-input
-
-CMD ["/django-project/.venv/bin/daphne", \
-    "--verbosity", \
-    "3", \
-    "--bind", \
-    "0.0.0.0", \
-    "--port", \
-    "8000", \
-    "--log-fmt=\"%(asctime)sZ %(levelname)s %(name)s %(filename)s %(funcName)s %(message)s\"", "project.asgi:application" \
-    ]
+CMD ["/bin/bash", "-c", "./start-daphne.sh"]

@@ -4,9 +4,11 @@ set unstable
 # The `tput` mumbo-jumbo just colors the text green; see https://stackoverflow.com/a/20983251
 
 flavor := "dev"
+DJANGO_SECRET_DIRECTORY := config_directory() / "info.teensy.teensy-django"
+
 export AWS_DEFAULT_REGION := "us-west-1"
+export DJANGO_SECRET_FILE := DJANGO_SECRET_DIRECTORY / "django_secret_key"
 export DJANGO_SETTINGS_MODULE := env("DJANGO_SETTINGS_MODULE", "project." + flavor + "_settings")
-export DOTENV := config_directory() / "info.teensy.teensy-django/.env"
 export POETRY_VIRTUALENVS_IN_PROJECT := "false"
 
 [private]
@@ -37,19 +39,6 @@ poetry-install: poetry-env-prep
 
 [group('django')]
 [private]
-[script('sh')]
-dotenv-file:
-    set -eu
-
-    f="{{ DOTENV }}"
-    if ! [ -r  "$f" ]
-    then
-       mkdir -vp "$(dirname "$f")"
-       echo SECRET_KEY={{ choose('64', HEX)}} > "$f"
-    fi
-
-[group('django')]
-[private]
 all-but-django-prep: poetry-env-prep poetry-install git-prep
 
 # To prevent the password from being hard-coded in this file, be sure to invoke this like
@@ -62,7 +51,7 @@ django-superuser: all-but-django-prep makemigrations migrate
 
 [group('django')]
 [private]
-manage *options: all-but-django-prep
+manage *options: all-but-django-prep ensure-django-secret
     poetry run python manage.py {{ options }}
 
 [group('django')]
@@ -76,8 +65,7 @@ migrate *options: makemigrations (manage "migrate " + options)
 sync: django-superuser (manage "sync-ddb-data")
 
 [private]
-collectstatic: all-but-django-prep
-    poetry run python manage.py collectstatic --no-input
+collectstatic: all-but-django-prep (manage "collectstatic --no-input")
 
 # Do all preparations, then run.  `just flavor=prod runme` for production.
 [group('teensy')]
@@ -98,7 +86,7 @@ runme *options: git-prep django-superuser test collectstatic
     fi
 
 [group('teensy')]
-test *options: django-superuser dotenv-file
+test *options: django-superuser
     poetry run pytest --exitfirst --failed-first --create-db {{ options }}
 
 #  Nix the virtualenv and most stuff not checked in to git, but leave the database.
@@ -116,9 +104,27 @@ monitor:
     tmux new-window -n "nginx"   "setterm -linewrap off; tail --follow=name --retry /var/log/nginx/{access,error}.log"
     tmux new-window htop
 
+[private]
+django-secret-directory:
+    mkdir -vp "{{ DJANGO_SECRET_DIRECTORY }}"
+
+[private]
+[script('bash')]
+ensure-django-secret: django-secret-directory
+    set -euo pipefail
+    touch "{{ DJANGO_SECRET_FILE }}"
+    if [ ! -f "{{ DJANGO_SECRET_FILE }}" -o $(stat --format=%s "{{ DJANGO_SECRET_FILE }}") -lt 50 ]
+    then
+    python3  -c 'import secrets; print(secrets.token_urlsafe(100))' > "{{ DJANGO_SECRET_FILE }}"
+    fi
+
 [group('docker')]
+[script('bash')]
 up *options: git-prep collectstatic
-    env $(cat "{{ DOTENV }}")  docker compose up --build {{ options }}
+    set -euo pipefail
+
+    export DJANGO_SECRET_KEY=$(cat "${DJANGO_SECRET_FILE}")
+    docker compose up --build {{ options }}
 
 [group('docker')]
 hetz *options:

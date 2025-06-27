@@ -24,7 +24,7 @@ if (skf := os.environ.get("DJANGO_SECRET_FILE")) is not None:
         SECRET_KEY = inf.read()
 else:
     # This won't be available when we're running `manage.py makemigrations` (when building the Docker image) but that's OK.
-    SECRET_KEY = os.environ.get("SECRET_KEY")
+    SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY")
 
 if SECRET_KEY is None:
     del SECRET_KEY
@@ -98,7 +98,6 @@ ASGI_APPLICATION = "project.asgi.application"
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
 SQLITE_DATA_DIR = Path(os.environ.get("SQLITE_DATA_DIR", BASE_DIR))
-print(f"{BASE_DIR=} {SQLITE_DATA_DIR=}")
 
 DATABASES = {
     "default": {
