@@ -4,6 +4,8 @@ set unstable
 # The `tput` mumbo-jumbo just colors the text green; see https://stackoverflow.com/a/20983251
 
 flavor := "dev"
+
+AWS_CREDENTIAL_FILE := home_directory() / ".aws/credentials"
 DJANGO_SECRET_DIRECTORY := config_directory() / "info.teensy.teensy-django"
 
 export AWS_DEFAULT_REGION := "us-west-1"

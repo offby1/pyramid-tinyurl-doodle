@@ -23,6 +23,7 @@ services:
       context: .
     environment:
       AWS_DEFAULT_REGION: ${AWS_DEFAULT_REGION}
+      AWS_SHARED_CREDENTIALS_FILE: /run/secrets/aws_shared_credentials_file
       DJANGO_SECRET_FILE: /run/secrets/django_secret
       SQLITE_DATA_DIR: /data
     init: true                  # https://docs.docker.com/reference/compose-file/services/#init
@@ -32,11 +33,14 @@ services:
     ports:
       - "127.0.0.1:8000:8000"
     secrets:
+      - aws_shared_credentials_file
       - django_secret
     volumes:
       - sqlite_data:/data
 
 secrets:
   # TODO -- recaptcha secret too
+  aws_shared_credentials_file:
+    file: ${HOME}/.aws/credentials
   django_secret:
     environment: "DJANGO_SECRET_KEY"
