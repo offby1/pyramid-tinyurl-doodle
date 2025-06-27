@@ -44,8 +44,8 @@ dotenv-file:
     f="{{ DOTENV }}"
     if ! [ -r  "$f" ]
     then
-       mkdir -vp $(dirname "$f")
-       echo SECRET_KEY={{ choose('64', HEX)}} >> "$f"
+       mkdir -vp "$(dirname "$f")"
+       echo SECRET_KEY={{ choose('64', HEX)}} > "$f"
     fi
 
 [group('django')]
