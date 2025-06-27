@@ -5,7 +5,6 @@ set unstable
 
 flavor := "dev"
 
-AWS_CREDENTIAL_FILE := home_directory() / ".aws/credentials"
 DJANGO_SECRET_DIRECTORY := config_directory() / "info.teensy.teensy-django"
 
 export AWS_DEFAULT_REGION := "us-west-1"
@@ -125,6 +124,8 @@ ensure-django-secret: django-secret-directory
 up *options: git-prep collectstatic
     set -euo pipefail
 
+    export AWS_ACCESS_KEY_ID=$(poetry run python parse-aws-config.py aws_access_key_id)
+    export AWS_SECRET_ACCESS_KEY=$(poetry run python parse-aws-config.py aws_secret_access_key)
     export DJANGO_SECRET_KEY=$(cat "${DJANGO_SECRET_FILE}")
     docker compose up --build {{ options }}
 

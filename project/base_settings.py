@@ -35,9 +35,9 @@ DEBUG = False
 ALLOWED_HOSTS = [
     ".offby1.info",
     ".orb.local",
+    ".teensy.info",
     "127.0.0.1",
     "localhost",
-    "teensy.info",
 ]
 
 
@@ -185,3 +185,15 @@ STORAGES = {
         "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
     },
 }
+
+for basename in ("aws_access_key_id", "aws_secret_access_key"):
+    fullname = Path("/run/secrets") / basename
+    try:
+        with open(fullname) as inf:
+            os.environ[basename.upper()] = inf.read()
+    except FileNotFoundError as e:
+        logger.warning(f"{e}: ignoring")
+    else:
+        logger.info("%s", f"Read {len(os.environ[basename.upper()])} bytes from {fullname} into env var {basename.upper()}")
+
+del basename

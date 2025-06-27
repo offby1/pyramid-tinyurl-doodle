@@ -7,6 +7,7 @@ services:
   caddy:
     # Unlike the official caddy image, this is falling-down-easy to configure as a lets-encrypt-certificate-fetching
     # reverse proxy.
+    # https://github.com/lucaslorentz/caddy-docker-proxy
     image: lucaslorentz/caddy-docker-proxy:ci-alpine
     ports:
       - 80:80
@@ -23,7 +24,6 @@ services:
       context: .
     environment:
       AWS_DEFAULT_REGION: ${AWS_DEFAULT_REGION}
-      AWS_SHARED_CREDENTIALS_FILE: /run/secrets/aws_shared_credentials_file
       DJANGO_SECRET_FILE: /run/secrets/django_secret
       SQLITE_DATA_DIR: /data
     init: true                  # https://docs.docker.com/reference/compose-file/services/#init
@@ -33,14 +33,17 @@ services:
     ports:
       - "127.0.0.1:8000:8000"
     secrets:
-      - aws_shared_credentials_file
+      - aws_access_key_id
+      - aws_secret_access_key
       - django_secret
     volumes:
       - sqlite_data:/data
 
 secrets:
   # TODO -- recaptcha secret too
-  aws_shared_credentials_file:
-    file: ${HOME}/.aws/credentials
+  aws_access_key_id:
+    environment: AWS_ACCESS_KEY_ID
+  aws_secret_access_key:
+    environment: AWS_SECRET_ACCESS_KEY
   django_secret:
     environment: "DJANGO_SECRET_KEY"
