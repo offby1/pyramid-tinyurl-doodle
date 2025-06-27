@@ -131,13 +131,13 @@ up *options: git-prep collectstatic
 
 [group('docker')]
 [script('bash')]
-hetz-beta *options:
+prod *options:
     set -euo pipefail
 
-    export CADDY_HOSTNAME=beta.teensy.info
+    export CADDY_HOSTNAME=teensy.info
     export COMPOSE_PROFILES=prod
     export DJANGO_SETTINGS_MODULE=project.prod_settings
-    export DOCKER_CONTEXT=teensy-beta
+    export DOCKER_CONTEXT=teensy-prod
 
     just up {{ options }} --detach
     docker compose logs django --follow
