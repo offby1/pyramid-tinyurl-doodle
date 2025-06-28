@@ -99,12 +99,6 @@ clean:
 nuke: clean
     -rm -v *.sqlite3
 
-# See "systemctl status nginx.service" and "journalctl -xeu nginx.service" for details about nginx
-[group('prod')]
-monitor:
-    tmux new-window -n "nginx"   "setterm -linewrap off; tail --follow=name --retry /var/log/nginx/{access,error}.log"
-    tmux new-window htop
-
 [private]
 django-secret-directory:
     mkdir -vp "{{ DJANGO_SECRET_DIRECTORY }}"
