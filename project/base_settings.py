@@ -19,15 +19,31 @@ dotenv.load_dotenv(
 )
 del dotenv_path
 
-if (skf := os.environ.get("DJANGO_SECRET_FILE")) is not None:
-    with open(skf) as inf:
-        SECRET_KEY = inf.read()
-else:
-    # This won't be available when we're running `manage.py makemigrations` (when building the Docker image) but that's OK.
-    SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY")
+def get_secret(secret_name: str) -> str | None:
+    secret_name = secret_name.upper()
+    secret_file_env_var = f"{secret_name}_FILE"
+    if (secret_file_name := os.environ.get(secret_file_env_var)) is not None:
+        try:
+            with open(secret_file_name) as inf:
+                logger.info("%s", f"read {secret_file_name=}")
+                return inf.read()
+        except Exception as e:
+            logger.info("%s", f"{secret_file_name=}: {e}")
 
-if SECRET_KEY is None:
+    logger.info("%s", f"Couldn't read file {secret_file_name=}; continuing")
+    got = os.environ.get(secret_name)
+    logger.info("%s", f"from environment: {'found' if got else 'did not find'} {secret_name=}")
+    return got
+
+if (SECRET_KEY := get_secret("DJANGO_SECRET_KEY")) is None:
     del SECRET_KEY
+
+# False means "really check recaptchas with google"
+# True means "we're running unit tests or something so just pretend all recaptcha responses are valid"
+RECAPTCHA_BACKDOOR = False
+
+if (RECAPTCHA_SECRET := get_secret("RECAPTCHA_SECRET")) is None:
+    del RECAPTCHA_SECRET
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
@@ -166,14 +182,6 @@ except OSError as e:
 # I don't really understand this, but it shaddaps a warning
 # (and replaces it with a deprecation warning :-( )
 FORMS_URLFIELD_ASSUME_HTTPS = True
-
-# False means "really check recaptchas with google"
-# True means "we're running unit tests or something so just pretend all recaptcha responses are valid"
-RECAPTCHA_BACKDOOR = False
-
-RECAPTCHA_SECRET = os.environ.get("RECAPTCHA_SECRET")
-if RECAPTCHA_SECRET is None:
-    del RECAPTCHA_SECRET
 
 RUDYBOT_IP_ADDRESSES = {
     ipaddress.IPv4Address("144.217.82.212"),  # solaria.tethera.net, rudybot's new home.

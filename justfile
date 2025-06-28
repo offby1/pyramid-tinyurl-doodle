@@ -8,9 +8,10 @@ flavor := "dev"
 DJANGO_SECRET_DIRECTORY := config_directory() / "info.teensy.teensy-django"
 
 export AWS_DEFAULT_REGION := "us-west-1"
-export DJANGO_SECRET_FILE := DJANGO_SECRET_DIRECTORY / "django_secret_key"
+export DJANGO_SECRET_KEY_FILE := DJANGO_SECRET_DIRECTORY / "django_secret_key"
 export DJANGO_SETTINGS_MODULE := env("DJANGO_SETTINGS_MODULE", "project." + flavor + "_settings")
 export POETRY_VIRTUALENVS_IN_PROJECT := "false"
+export RECAPTCHA_SECRET_FILE := DJANGO_SECRET_DIRECTORY / "recaptcha_secret"
 
 [private]
 default:
@@ -107,10 +108,10 @@ django-secret-directory:
 [script('bash')]
 ensure-django-secret: django-secret-directory
     set -euo pipefail
-    touch "{{ DJANGO_SECRET_FILE }}"
-    if [ ! -f "{{ DJANGO_SECRET_FILE }}" -o $(stat --format=%s "{{ DJANGO_SECRET_FILE }}") -lt 50 ]
+    touch "{{ DJANGO_SECRET_KEY_FILE }}"
+    if [ ! -f "{{ DJANGO_SECRET_KEY_FILE }}" -o $(stat --format=%s "{{ DJANGO_SECRET_KEY_FILE }}") -lt 50 ]
     then
-    python3  -c 'import secrets; print(secrets.token_urlsafe(100))' > "{{ DJANGO_SECRET_FILE }}"
+    python3  -c 'import secrets; print(secrets.token_urlsafe(100))' > "{{ DJANGO_SECRET_KEY_FILE }}"
     fi
 
 [group('docker')]
@@ -120,7 +121,8 @@ up *options: git-prep collectstatic
 
     export AWS_ACCESS_KEY_ID=$(poetry run python parse-aws-config.py aws_access_key_id)
     export AWS_SECRET_ACCESS_KEY=$(poetry run python parse-aws-config.py aws_secret_access_key)
-    export DJANGO_SECRET_KEY=$(cat "${DJANGO_SECRET_FILE}")
+    export DJANGO_SECRET_KEY=$(cat "${DJANGO_SECRET_KEY_FILE}")
+    export RECAPTCHA_SECRET=$(cat "${RECAPTCHA_SECRET_FILE}")
     docker compose up --build {{ options }}
 
 [group('docker')]

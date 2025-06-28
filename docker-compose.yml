@@ -24,7 +24,8 @@ services:
       context: .
     environment:
       AWS_DEFAULT_REGION: ${AWS_DEFAULT_REGION}
-      DJANGO_SECRET_FILE: /run/secrets/django_secret
+      DJANGO_SECRET_KEY_FILE: /run/secrets/django_secret
+      RECAPTCHA_SECRET_FILE: /run/secrets/recaptcha_secret
       SQLITE_DATA_DIR: /data
     init: true                  # https://docs.docker.com/reference/compose-file/services/#init
     labels:
@@ -36,14 +37,16 @@ services:
       - aws_access_key_id
       - aws_secret_access_key
       - django_secret
+      - recaptcha_secret
     volumes:
       - sqlite_data:/data
 
 secrets:
-  # TODO -- recaptcha secret too
   aws_access_key_id:
     environment: AWS_ACCESS_KEY_ID
   aws_secret_access_key:
     environment: AWS_SECRET_ACCESS_KEY
   django_secret:
     environment: "DJANGO_SECRET_KEY"
+  recaptcha_secret:
+    environment: "RECAPTCHA_SECRET"
