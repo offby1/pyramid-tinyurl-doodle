@@ -192,7 +192,7 @@ for basename in ("aws_access_key_id", "aws_secret_access_key"):
         with open(fullname) as inf:
             os.environ[basename.upper()] = inf.read()
     except FileNotFoundError as e:
-        logger.warning(f"{e}: ignoring")
+        pass
     else:
         logger.info("%s", f"Read {len(os.environ[basename.upper()])} bytes from {fullname} into env var {basename.upper()}")
 
