@@ -84,6 +84,7 @@ MIDDLEWARE = [
     "debug_toolbar.middleware.DebugToolbarMiddleware",
 ]
 
+CSRF_TRUSTED_ORIGINS = ["https://*.teensy.info"]
 CSRF_COOKIE_SECURE = True
 SESSION_COOKIE_SECURE = True
 
