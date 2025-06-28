@@ -7,54 +7,16 @@
 
 ### prod
 
-I did these on Ubuntu "24.04 LTS (Noble Numbat)"
+Set up a cloud machine as per <https://gitlab.com/offby1/bridge-server/-/blob/dcfc26bfa7bd5d28edd2edf0a2f4070c39ff900f/docs/README.ubuntu-hetz.setup.md>
 
-As root:
-
-```shell
-yes '' | adduser --disabled-password --quiet teensy
-DEBIAN_FRONTEND=noninteractive apt install -y git nginx snapd python3-poetry
-```
-
-- `su - teensy`
-
-```shell
-mkdir ~/shorty
-cd ~/shorty
-git clone https://gitlab.com/offby1/teensy.git .
-mkdir -vp ~/.config/info.teensy.teensy-django
-cat > ~/.config/info.teensy.teensy-django/.env
-```
-
-- Now paste the env file:
-  - grab the `RECAPTCHA_SECRET` from <https://www.google.com/recaptcha/admin#site/320420908>, log in as me, click the gear, click the "reCAPTCHA keys" thing, click "copy secret key"
-  - generate `SECRET_KEY` with `python3  -c 'import secrets; print(secrets.token_urlsafe(100))'`
-  In a perfect world, if you're moving the site from one host to another, you'd use the same SECRET_KEY on both, since I think that means that auth tokens would then transfer over.  But on the other hand, the only person who needs to authenticate is me, so ... 🤷
-
-- `exit` # back to root
-- `cat > /etc/systemd/system/teensy.service`
-
-Then paste the file of that name from this directory
-
-```shell
-snap install lego
-lego --email="eric.hanchrow@gmail.com" --domains="teensy.com" --http run
-```
-  - scrape generated cert and key outta wherever they wound up -- [/var/snap/lego/common/ iirc](https://github.com/go-acme/lego/issues/2236#issue-2430848155) -- , and plop 'em in `/etc/pki/nginx`, where the config looks for it
-  - yeah this should probably all be a recipe (or recipes) in the justfile
-
-To start & stop, do `sudo systemctl start teensy` and `sudo systemctl stop teensy`.
+Now run `just prod`.  This works for both the initial deployment, and for updates.
 
 ## TODO
 
 * [ ] Set up cron job to run `sync-ddb-data`, as above.
    `DJANGO_SETTINGS_MODULE=project.prod_settings nice  ~/git-repos/me/teensy-django/.venv/bin/python manage.py sync-ddb-data` will probably do it.
 
-### TLS
-
-* [ ] Consider <https://github.com/NginxProxyManager/nginx-proxy-manager> instead of lego &c
-* [ ] Similarly <https://caddyserver.com/>
-* [ ] <https://github.com/amerkurev/django-docker-template>
+   I might not need to do this: I run `sync-ddb-data` every time I deploy, which might be enough.
 
 ### Easy Auth
 
