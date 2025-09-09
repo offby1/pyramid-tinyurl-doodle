@@ -20,7 +20,7 @@ default:
 # Set up the post-checkout hook so that the server knows its git commit hash.
 [group('git')]
 git-prep:
-    ln --symbolic --force  {{justfile_directory()}}/git/post-checkout .git/hooks
+    PATH=/opt/homebrew/opt/coreutils/libexec/gnubin/:$PATH ln --symbolic --force  {{justfile_directory()}}/git/post-checkout .git/hooks
     git checkout
 
 # install into the virtualenv a recent python (if we can find one)
@@ -108,6 +108,7 @@ django-secret-directory:
 [script('bash')]
 ensure-django-secret: django-secret-directory
     set -euo pipefail
+    PATH=/opt/homebrew/opt/coreutils/libexec/gnubin/:$PATH
     touch "{{ DJANGO_SECRET_KEY_FILE }}"
     if [ ! -f "{{ DJANGO_SECRET_KEY_FILE }}" -o $(stat --format=%s "{{ DJANGO_SECRET_KEY_FILE }}") -lt 50 ]
     then
