@@ -1,34 +1,36 @@
-[tool.poetry]
+[project]
 name = "tinyurl"
 version = "0.1.0"
 description = ""
-authors = ["Eric Hanchrow <eric.hanchrow@gmail.com>"]
-package-mode = false
+authors = [{ name = "Eric Hanchrow", email = "eric.hanchrow@gmail.com" }]
+requires-python = ">=3.11"
+dependencies = [
+    "django>=5.2,<5.3",
+    "requests>=2.32.4,<3",
+    "platformdirs>=4.2.2,<5",
+    "python-dotenv>=1.0.1,<2",
+    "whitenoise>=6.7.0,<7",
+    "daphne>=4.1.2,<5",
+]
 
-[tool.poetry.dependencies]
-python = ">=3.11"
-django = "~5.2"
-requests = "^2.32.4"
-platformdirs = "^4.2.2"
-python-dotenv = "^1.0.1"
-whitenoise = "^6.7.0"
-daphne = "^4.1.2"
+[dependency-groups]
+dev = [
+    "boto3>=1.34.140,<2",
+    "django-debug-toolbar>=4.4.5,<5",
+    "django-extensions>=3.2.3,<4",
+    "pytest-django>=4.8.0,<5",
+    "tqdm>=4.66.4,<5",
+    "ipython>=9.3.0,<10",
+]
 
+[tool.uv]
+package = false
 
-[tool.poetry.group.dev.dependencies]
-boto3 = "^1.34.140"
-django-debug-toolbar = "^4.4.5"
-django-extensions = "^3.2.3"
-pytest-django = "^4.8.0"
-tqdm = "^4.66.4"
-ipython = "^9.3.0"
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
 
 [tool.pytest.ini_options]
 DJANGO_SETTINGS_MODULE = "project.dev_settings"
 # -- recommended but optional:
 python_files = ["tests.py", "test_*.py", "*_test.py", "testing/python/*.py"]
-
-
-[build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
