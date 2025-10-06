@@ -32,7 +32,7 @@ Now run `just prod`.  This works for both the initial deployment, and for update
 * [x] plop it on an actual EC2 box and test it in "production" mode.
   In particular: the recaptcha
 * [x] Come up with a better django admin password, and a better mechanism for getting it onto the prod host
-  The password is now in bitwarden and Firefox.  The "better mechanism" is just running `DJANGO_SETTINGS_MODULE=project.prod_settings poetry run python manage.py changepassword ubuntu` at the command line.
+  The password is now in bitwarden and Firefox.  The "better mechanism" is just running `DJANGO_SETTINGS_MODULE=project.prod_settings uv run python manage.py changepassword ubuntu` at the command line.
 * [x] Tell Google not to index the site
 * [x] Tweak gunicorn logging so it puts the actual IP address in the log, not `127.0.0.1`
 * [x] Again look into replacing `runme.sh` with ["just"](https://just.systems/man/en/)
