@@ -10,7 +10,6 @@ DJANGO_SECRET_DIRECTORY := config_directory() / "info.teensy.teensy-django"
 export AWS_DEFAULT_REGION := "us-west-1"
 export DJANGO_SECRET_KEY_FILE := DJANGO_SECRET_DIRECTORY / "django_secret_key"
 export DJANGO_SETTINGS_MODULE := env("DJANGO_SETTINGS_MODULE", "project." + flavor + "_settings")
-export POETRY_VIRTUALENVS_IN_PROJECT := "false"
 export RECAPTCHA_SECRET_FILE := DJANGO_SECRET_DIRECTORY / "recaptcha_secret"
 
 [private]
@@ -23,25 +22,13 @@ git-prep:
     PATH=/opt/homebrew/opt/coreutils/libexec/gnubin/:$PATH ln --symbolic --force  {{justfile_directory()}}/git/post-checkout .git/hooks
     git checkout
 
-# install into the virtualenv a recent python (if we can find one)
 [group('virtualenv')]
-[macos]
-poetry-env-prep:
-    -poetry env use /Library/Frameworks/Python.framework/Versions/3.13/bin/python3
-
-# install into the virtualenv a recent python (if we can find one)
-[group('virtualenv')]
-[linux]
-poetry-env-prep:
-    -poetry env use $HOME/.pyenv/versions/3.12.0a3/bin/python
-
-[group('virtualenv')]
-poetry-install: poetry-env-prep
-    poetry install
+uv-install:
+    uv sync
 
 [group('django')]
 [private]
-all-but-django-prep: poetry-env-prep poetry-install git-prep
+all-but-django-prep: uv-install git-prep
 
 # To prevent the password from being hard-coded in this file, be sure to invoke this like
 # `DJANGO_SUPERUSER_PASSWORD=SEKRIT just django-superuser`
@@ -49,12 +36,12 @@ all-but-django-prep: poetry-env-prep poetry-install git-prep
 [group('django')]
 [private]
 django-superuser: all-but-django-prep makemigrations migrate
-    if ! poetry run python3 manage.py createsuperuser --no-input --username=$USER --email=eric.hanchrow@gmail.com;  then echo "$(tput setaf 2)'That username is already taken' is OK! ctfo$(tput sgr0)"; fi
+    if ! uv run python3 manage.py createsuperuser --no-input --username=$USER --email=eric.hanchrow@gmail.com;  then echo "$(tput setaf 2)'That username is already taken' is OK! ctfo$(tput sgr0)"; fi
 
 [group('django')]
 [private]
 manage *options: all-but-django-prep ensure-django-secret
-    poetry run python manage.py {{ options }}
+    uv run python manage.py {{ options }}
 
 [group('django')]
 makemigrations *options: (manage "makemigrations " + options)
@@ -77,23 +64,22 @@ runme *options: git-prep django-superuser test collectstatic
 
     if [ "{{ flavor }}" = "prod" ]
     then
-       poetry run gunicorn                                                                                      \
+       uv run gunicorn                                                                                      \
               --access-logfile=-                                                                                \
               --access-logformat '%({x-forwarded-for}i)s %(l)s %(u)s %(t)s "%(r)s" %(s)s %(b)s "%(f)s" "%(a)s"' \
               --logger-class project.wsgi.TolerableLogger                                                       \
               project.wsgi
 
     else
-       poetry run python manage.py runserver 0.0.0.0:8000
+       uv run python manage.py runserver 0.0.0.0:8000
     fi
 
 [group('teensy')]
 test *options: django-superuser
-    poetry run pytest --exitfirst --failed-first --create-db {{ options }}
+    uv run pytest --exitfirst --failed-first --create-db {{ options }}
 
 #  Nix the virtualenv and most stuff not checked in to git, but leave the database.
 clean:
-    poetry env info --path | xargs --no-run-if-empty rm -rf
     git clean -dx --interactive --exclude='*.sqlite3'
     -docker compose down --volumes
 
@@ -120,8 +106,8 @@ ensure-django-secret: django-secret-directory
 up *options: git-prep collectstatic
     set -euo pipefail
 
-    export AWS_ACCESS_KEY_ID=$(poetry run python parse-aws-config.py aws_access_key_id)
-    export AWS_SECRET_ACCESS_KEY=$(poetry run python parse-aws-config.py aws_secret_access_key)
+    export AWS_ACCESS_KEY_ID=$(uv run python parse-aws-config.py aws_access_key_id)
+    export AWS_SECRET_ACCESS_KEY=$(uv run python parse-aws-config.py aws_secret_access_key)
     export DJANGO_SECRET_KEY=$(cat "${DJANGO_SECRET_KEY_FILE}")
     export RECAPTCHA_SECRET=$(cat "${RECAPTCHA_SECRET_FILE}")
     docker compose up --build {{ options }}
