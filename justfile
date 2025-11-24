@@ -1,8 +1,6 @@
 set quiet := true
 set unstable
 
-# The `tput` mumbo-jumbo just colors the text green; see https://stackoverflow.com/a/20983251
-
 flavor := "dev"
 
 DJANGO_SECRET_DIRECTORY := config_directory() / "info.teensy.teensy-django"
@@ -33,6 +31,8 @@ all-but-django-prep: uv-install git-prep
 # To prevent the password from being hard-coded in this file, be sure to invoke this like
 # `DJANGO_SUPERUSER_PASSWORD=SEKRIT just django-superuser`
 # `just manage changepassword` if you forget it.
+
+# The `tput` mumbo-jumbo just colors the text green; see https://stackoverflow.com/a/20983251
 [group('django')]
 [private]
 django-superuser: all-but-django-prep makemigrations migrate
