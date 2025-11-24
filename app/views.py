@@ -78,6 +78,7 @@ def maybe_render(request, context=None, status=None):
     context["approximate_table_size"] = ShortenedURL.objects.count()
     context["display_captcha"] = "short" not in context
     context["form"] = ShortenForm(request.POST) if request.method == "POST" else ShortenForm()
+    context["git_info"] = settings.GIT_INFO
     context["gitlab_home_page"] = gitlab_home_page
     context["recent_entries"] = ShortenedURL.objects.order_by("-created_at")[:10]
     context["this_commit_url"] = f"{gitlab_home_page}commit/{settings.GIT_INFO}"

@@ -91,7 +91,7 @@
               A shameless (but nicer-looking) ripoff of <a href="http://tinyurl.com/">tinyurl.com</a>
               {% if this_commit_url %}
               |
-                <a href="{{ this_commit_url }}">Version</a>
+                <a href="{{ this_commit_url }}">Version {{ git_info|truncatechars:8 }}</a>
                 {% endif %}
                 |
                 Now with ✨<a href="https://docs.djangoproject.com/">Django</a>💖 and <a href="https://www.docker.com/">Docker</a>
